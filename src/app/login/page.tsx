@@ -1,0 +1,157 @@
+"use client";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema, LoginInput } from "@/schemas/loginSchema";
+import { useLogin } from "@/hooks/useLogin";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+import { Eye, EyeOff } from "lucide-react";
+
+const LoginPage = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginInput>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const { mutate: login, status } = useLogin();
+  const isLoading = status === "pending";
+  const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const onSubmit = (data: LoginInput) => {
+    login(data);
+  };
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (token) {
+      router.replace("/dashboard");
+    }
+  }, [router]);
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 min-h-screen bg-[#2F3349]">
+      {/* Left - Form Section */}
+      <div className="flex items-center justify-center px-6 py-12">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="w-full max-w-md space-y-6"
+        >
+          <div>
+            <h1 className="text-2xl font-semibold">Welcome back</h1>
+            <p className="text-sm text-gray-500">Please enter your details</p>
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-2" htmlFor="email">
+                Email
+              </label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="Email"
+                {...register("email")}
+              />
+              {errors.email && (
+                <p className="text-sm text-red-500 mt-1">
+                  {errors.email.message}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label
+                className="block text-sm font-medium mb-2"
+                htmlFor="password"
+              >
+                Password
+              </label>
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  {...register("password")}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+              {errors.password && (
+                <p className="text-sm text-red-500 mt-1">
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
+
+            <div className="flex justify-between items-center text-sm">
+              <label className="flex items-center gap-2">
+                <input type="checkbox" className="accent-purple-600" />
+                Remember me
+              </label>
+              <Link href="#" className="text-purple-600 hover:underline">
+                Forgot password?
+              </Link>
+            </div>
+
+            <Button type="submit" disabled={isLoading} className="w-full">
+              {isLoading ? "Logging in..." : "Login"}
+            </Button>
+
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full flex items-center justify-center gap-2"
+            >
+              <Image
+                src="/google-icon.svg"
+                alt="Google"
+                width={18}
+                height={18}
+              />
+              Continue with Google
+            </Button>
+
+            <p className="text-center text-sm">
+              Don’t have an account?{" "}
+              <Link href="#" className="text-purple-600 hover:underline">
+                Sign up
+              </Link>
+            </p>
+          </div>
+        </form>
+      </div>
+
+      {/* Right - Illustration */}
+      <div className="hidden md:flex items-center justify-center bg-[#E9E5FB]">
+        <Image
+          src="/photos/login.png"
+          alt="Illustration"
+          width={400}
+          height={400}
+          className="object-contain"
+        />
+      </div>
+    </div>
+  );
+};
+
+export default LoginPage;
