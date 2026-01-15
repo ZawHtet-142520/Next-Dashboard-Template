@@ -5,12 +5,15 @@ import { useAuthStore } from "@/stores/authStore";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { LoginResponse } from "@/types/auth";
+import { useShallow } from "zustand/react/shallow";
 
 export const useLogin = () => {
-  const { setToken, setUser } = useAuthStore((state) => ({
-    setToken: state.setToken,
-    setUser: state.setUser,
-  }));
+  const { setToken, setUser } = useAuthStore(
+    useShallow((state) => ({
+      setToken: state.setToken,
+      setUser: state.setUser,
+    }))
+  );
   const router = useRouter();
 
   return useMutation({
