@@ -10,12 +10,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const ForgotPasswordPage = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<ForgetPasswordInput>({
     resolver: zodResolver(forgetPasswordSchema),
     defaultValues: {
@@ -23,7 +26,7 @@ const ForgotPasswordPage = () => {
     },
   });
 
-  const { mutate: forgetPassword, status } = useForgetPassword();
+  const { mutate: forgetPassword, status, reset: resetMutation } = useForgetPassword();
   const isLoading = status === "pending";
   const isSuccess = status === "success";
   const [submittedEmail, setSubmittedEmail] = useState("");
@@ -96,7 +99,9 @@ const ForgotPasswordPage = () => {
               <Button
                 onClick={() => {
                   setSubmittedEmail("");
-                  window.location.href = window.location.pathname;
+                  reset();
+                  resetMutation();
+                  router.refresh();
                 }}
                 variant="outline"
                 className="w-full"

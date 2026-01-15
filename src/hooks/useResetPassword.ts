@@ -30,7 +30,6 @@ export const useResetPassword = () => {
   return useMutation({
     mutationFn: resetPassword,
     onSuccess: (data: ResetPasswordResponse) => {
-      console.log("Password reset successful", data);
       toast.success(data?.message || "Password reset successful! Redirecting to login...");
       setTimeout(() => {
         router.push("/login");

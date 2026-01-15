@@ -25,7 +25,6 @@ export const useForgetPassword = () => {
   return useMutation({
     mutationFn: forgetPassword,
     onSuccess: (data: ForgetPasswordResponse) => {
-      console.log("Forget password request successful", data);
       toast.success(data?.message || "Password reset link sent to your email!");
     },
     onError: (error: ApiError) => {
