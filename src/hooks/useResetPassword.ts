@@ -2,34 +2,16 @@ import { useMutation } from "@tanstack/react-query";
 import { resetPassword } from "@/services/authService";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { BaseApiResponse, ApiError } from "@/types/api";
 
 const REDIRECT_DELAY_MS = 2000;
-
-interface ResetPasswordResponse {
-  success: boolean;
-  message: string;
-  status: number;
-}
-
-interface ApiErrorDetails {
-  issue: string;
-}
-
-interface ApiError {
-  response?: {
-    data?: {
-      details?: ApiErrorDetails[];
-      message?: string;
-    };
-  };
-}
 
 export const useResetPassword = () => {
   const router = useRouter();
 
   return useMutation({
     mutationFn: resetPassword,
-    onSuccess: (data: ResetPasswordResponse) => {
+    onSuccess: (data: BaseApiResponse) => {
       toast.success(data?.message || "Password reset successful! Redirecting to login...");
       setTimeout(() => {
         router.push("/login");
