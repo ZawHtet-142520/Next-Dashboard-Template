@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { verifyOtpSchema, VerifyOtpInput } from "@/schemas/verifyOtpSchema";
 import { useVerifyOtp } from "@/hooks/useVerifyOtp";
+import { useForgetPassword } from "@/hooks/useForgetPassword";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -33,6 +34,7 @@ const VerifyOtpForm = () => {
   });
 
   const { mutate: verifyOtp, status } = useVerifyOtp();
+  const { mutate: resendOtp } = useForgetPassword();
   const isLoading = status === "pending";
 
   useEffect(() => {
@@ -53,11 +55,11 @@ const VerifyOtpForm = () => {
   }, [countdown]);
 
   const handleResendOtp = () => {
-    // Here you would call the forgot-password API again
-    // For now, we'll just reset the countdown
+    if (!email) return;
+    // Reset the countdown and resend OTP
     setCountdown(60);
     setCanResend(false);
-    // TODO: Call forgetPassword API again
+    resendOtp({ email });
   };
 
   const onSubmit = (data: VerifyOtpInput) => {

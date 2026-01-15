@@ -22,14 +22,12 @@ export const useVerifyOtp = () => {
       toast.success(data?.message || "OTP verified successfully!");
       // Redirect to reset password page after successful OTP verification
       // Pass the token if available
-      setTimeout(() => {
-        const token = data?.data?.token;
-        if (token) {
-          router.push(`/reset-password?token=${encodeURIComponent(token)}`);
-        } else {
-          router.push("/reset-password");
-        }
-      }, 1000);
+      const token = data?.data?.token;
+      if (token) {
+        router.push(`/reset-password?token=${encodeURIComponent(token)}`);
+      } else {
+        router.push("/reset-password");
+      }
     },
     onError: (error: ApiError) => {
       toast.error(

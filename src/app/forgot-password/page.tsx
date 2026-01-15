@@ -38,7 +38,7 @@ const ForgotPasswordPage = () => {
         // Redirect to OTP verification page after successful email submission
         setTimeout(() => {
           router.push(`/verify-otp?email=${encodeURIComponent(data.email)}`);
-        }, 2000);
+        }, 500);
       },
     });
   };
