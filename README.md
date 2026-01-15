@@ -1,5 +1,26 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Project Structure
+
+This project follows an organized folder structure for better maintainability:
+
+```
+src/
+├── api/              # API clients (axios instances with interceptors)
+├── app/              # Next.js app directory (pages, layouts, styles)
+├── components/       # Reusable React components
+│   ├── layouts/      # Layout components (dashboard, sidebar, navbar)
+│   └── ui/           # UI components (buttons, cards, inputs)
+├── data/             # Static data and configuration
+├── hooks/            # Custom React hooks
+├── lib/              # Utility functions and helpers
+├── providers/        # Context providers (theme, query client)
+├── schemas/          # Zod validation schemas
+├── services/         # API service layer
+├── stores/           # Zustand state management stores
+└── types/            # TypeScript type definitions
+```
+
 ## Getting Started
 
 First, run the development server:
