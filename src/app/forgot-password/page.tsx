@@ -33,7 +33,14 @@ const ForgotPasswordPage = () => {
 
   const onSubmit = (data: ForgetPasswordInput) => {
     setSubmittedEmail(data.email);
-    forgetPassword(data);
+    forgetPassword(data, {
+      onSuccess: () => {
+        // Redirect to OTP verification page after successful email submission
+        setTimeout(() => {
+          router.push(`/verify-otp?email=${encodeURIComponent(data.email)}`);
+        }, 2000);
+      },
+    });
   };
 
   return (
@@ -53,8 +60,8 @@ const ForgotPasswordPage = () => {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div>
                 <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Forgot Password?</h1>
-                <p className="text-sm text-gray-600 dark:text-gray-500 mt-2">
-                  Enter your email address and we&apos;ll send you a link to reset your password
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                  Enter your email address and we&apos;ll send you a verification code
                 </p>
               </div>
 
@@ -77,7 +84,7 @@ const ForgotPasswordPage = () => {
                 </div>
 
                 <Button type="submit" disabled={isLoading} className="w-full">
-                  {isLoading ? "Sending..." : "Send Reset Link"}
+                  {isLoading ? "Sending..." : "Send Verification Code"}
                 </Button>
               </div>
             </form>
@@ -114,7 +121,7 @@ const ForgotPasswordPage = () => {
       </div>
 
       {/* Right - Illustration */}
-      <div className="hidden md:flex items-center justify-center bg-[#E9E5FB]">
+      <div className="hidden md:flex items-center justify-center bg-[#E9E5FB] dark:bg-[#3a3f5c]">
         <Image
           src="/photos/login.png"
           alt="Illustration"
