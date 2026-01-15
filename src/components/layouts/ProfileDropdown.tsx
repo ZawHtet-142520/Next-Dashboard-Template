@@ -12,33 +12,55 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User, Settings, DollarSign, HelpCircle, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useDashboardStore } from "@/stores/useDashboardStore";
+import { useAuthStore } from "@/stores/authStore";
 
 export default function ProfileDropdown() {
   const router = useRouter();
   const handleLogout = useDashboardStore((state) => state.handleLogout);
+  const { user, logout } = useAuthStore((state) => ({
+    user: state.user,
+    logout: state.logout,
+  }));
 
   const onLogout = () => {
+    logout();
     handleLogout();
     router.push("/login");
   };
+
+  // Get user initials from name
+  const getInitials = (name: string) => {
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
+  const userName = user?.name || "User";
+  const userEmail = user?.email || "user@example.com";
+  const userRole = user?.role?.name || "User";
+  const userProfile = user?.profile || "/profile.jpg";
+
   return (
     <DropdownMenu>
       <div className="flex items-center gap-3 dark:text-white">
         {/* Optional: Add name or role */}
         <div>
           <div className="font-bold text-gray-700 hidden sm:block text-right dark:text-white">
-            John Doe
+            {userName}
           </div>
           <div className="text-sm text-gray-700 hidden sm:block text-right dark:text-white">
-            Super Admin
+            {userRole}
           </div>
         </div>
 
         <DropdownMenuTrigger asChild>
           <Avatar className="w-10 h-10 cursor-pointer dark:bg-white">
-            <AvatarImage src="/profile.jpg" alt="User Profile" />
+            <AvatarImage src={userProfile} alt="User Profile" />
             <AvatarFallback className="dark:bg-white text-gray-700 dark:text-black">
-              JD
+              {getInitials(userName)}
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
@@ -47,15 +69,15 @@ export default function ProfileDropdown() {
       <DropdownMenuContent align="end" className="w-56 p-2">
         <div className="flex items-center gap-3 p-3">
           <Avatar className="w-10 h-10">
-            <AvatarImage src="/profile.jpg" alt="User Profile" />
+            <AvatarImage src={userProfile} alt="User Profile" />
             <AvatarFallback className="dark:bg-white dark:text-black">
-              JD
+              {getInitials(userName)}
             </AvatarFallback>
           </Avatar>
           <div>
-            <p className="font-medium text-sm dark:text-white">John Doe</p>
+            <p className="font-medium text-sm dark:text-white">{userName}</p>
             <p className="text-xs text-gray-500 dark:text-white">
-              admin@vuexy.com
+              {userEmail}
             </p>
           </div>
         </div>

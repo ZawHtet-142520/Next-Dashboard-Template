@@ -7,7 +7,7 @@ import { AxiosError } from "axios";
 let sessionExpiredToastId: string | null = null;
 
 export const showSessionExpiredToast = () => {
-  if (window.location.pathname.startsWith("/signin")) return;
+  if (window.location.pathname.startsWith("/login")) return;
 
   if (sessionExpiredToastId) return;
 
@@ -30,7 +30,7 @@ export const showSessionExpiredToast = () => {
                 toast.dismiss(sessionExpiredToastId!);
                 sessionExpiredToastId = null;
                 useAuthStore.getState().logout();
-                window.location.href = "/signin";
+                window.location.href = "/login";
               }}
               className="mt-3 bg-bg-blue text-right text-white px-4 py-2 rounded cursor-pointer"
             >

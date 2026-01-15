@@ -2,16 +2,25 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
+import { useAuthStore } from "@/stores/authStore";
 
 export function useAuthGuard() {
   const router = useRouter();
+  const { initializeAuth, isTokenExpired, logout } = useAuthStore((state) => ({
+    initializeAuth: state.initializeAuth,
+    isTokenExpired: state.isTokenExpired,
+    logout: state.logout,
+  }));
 
   useEffect(() => {
-    const token = Cookies.get("token");
+    // Initialize auth state from cookies
+    initializeAuth();
 
-    if (!token) {
+    const token = useAuthStore.getState().token;
+
+    if (!token || isTokenExpired()) {
+      logout();
       router.replace("/login");
     }
-  }, [router]);
+  }, [router, initializeAuth, isTokenExpired, logout]);
 }

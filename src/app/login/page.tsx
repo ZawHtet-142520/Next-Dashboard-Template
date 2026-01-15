@@ -10,8 +10,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
 import { Eye, EyeOff } from "lucide-react";
+import { useAuthStore } from "@/stores/authStore";
 
 const LoginPage = () => {
   const {
@@ -30,17 +30,22 @@ const LoginPage = () => {
   const isLoading = status === "pending";
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const { initializeAuth, isTokenExpired } = useAuthStore((state) => ({
+    initializeAuth: state.initializeAuth,
+    isTokenExpired: state.isTokenExpired,
+  }));
 
   const onSubmit = (data: LoginInput) => {
     login(data);
   };
 
   useEffect(() => {
-    const token = Cookies.get("token");
-    if (token) {
+    initializeAuth();
+    const token = useAuthStore.getState().token;
+    if (token && !isTokenExpired()) {
       router.replace("/dashboard");
     }
-  }, [router]);
+  }, [router, initializeAuth, isTokenExpired]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 min-h-screen bg-[#2F3349]">
