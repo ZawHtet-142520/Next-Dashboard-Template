@@ -94,7 +94,10 @@ const ForgotPasswordPage = () => {
               </div>
 
               <Button
-                onClick={() => window.location.reload()}
+                onClick={() => {
+                  setSubmittedEmail("");
+                  window.location.href = window.location.pathname;
+                }}
                 variant="outline"
                 className="w-full"
               >
