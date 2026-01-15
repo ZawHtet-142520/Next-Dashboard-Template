@@ -114,7 +114,7 @@ const ForgotPasswordPage = () => {
       </div>
 
       {/* Right - Illustration */}
-      <div className="hidden md:flex items-center justify-center bg-[#E9E5FB] dark:bg-[#E9E5FB]">
+      <div className="hidden md:flex items-center justify-center bg-[#E9E5FB]">
         <Image
           src="/photos/login.png"
           alt="Illustration"
