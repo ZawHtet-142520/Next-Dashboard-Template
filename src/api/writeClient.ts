@@ -48,8 +48,8 @@ writeClient.interceptors.response.use(
     if (axios.isAxiosError(error) && error.response?.status === 401) {
       toast.error("Session expired. Please login again");
       Cookies.remove("token");
-      // Only redirect if not already on login page
-      if (!window.location.pathname.startsWith("/login")) {
+      // Only redirect if not already on login page and if running in browser
+      if (typeof window !== "undefined" && !window.location.pathname.startsWith("/login")) {
         window.location.href = "/login";
       }
     }

@@ -3,6 +3,8 @@ import { persist } from "zustand/middleware";
 import Cookies from "js-cookie";
 import { Admin } from "@/types/auth";
 
+const SECONDS_PER_DAY = 86400;
+
 interface AuthState {
   token: string | null;
   user: Admin | null;
@@ -23,7 +25,7 @@ export const useAuthStore = create<AuthState>()(
       setToken: (token, expiresIn) => {
         const expiry = expiresIn ? Date.now() + expiresIn * 1000 : null;
         set({ token, tokenExpiry: expiry });
-        Cookies.set("token", token, { expires: expiresIn ? expiresIn / 86400 : 7 }); // Convert seconds to days
+        Cookies.set("token", token, { expires: expiresIn ? expiresIn / SECONDS_PER_DAY : 7 }); // Convert seconds to days
       },
       setUser: (user) => set({ user }),
       logout: () => {
