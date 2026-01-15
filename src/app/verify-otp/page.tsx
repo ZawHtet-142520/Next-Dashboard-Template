@@ -13,11 +13,13 @@ import { ArrowLeft } from "lucide-react";
 import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
+const RESEND_COUNTDOWN_SECONDS = 60;
+
 const VerifyOtpForm = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const email = searchParams.get("email");
-  const [countdown, setCountdown] = useState(60);
+  const [countdown, setCountdown] = useState(RESEND_COUNTDOWN_SECONDS);
   const [canResend, setCanResend] = useState(false);
 
   const {
@@ -57,7 +59,7 @@ const VerifyOtpForm = () => {
   const handleResendOtp = () => {
     if (!email) return;
     // Reset the countdown and resend OTP
-    setCountdown(60);
+    setCountdown(RESEND_COUNTDOWN_SECONDS);
     setCanResend(false);
     resendOtp({ email });
   };
