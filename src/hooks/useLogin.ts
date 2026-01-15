@@ -2,13 +2,15 @@
 import { useMutation } from "@tanstack/react-query";
 import { login } from "@/services/authService";
 import { useAuthStore } from "@/stores/authStore";
-import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { LoginResponse } from "@/types/auth";
 
 export const useLogin = () => {
-  const setToken = useAuthStore((state) => state.setToken);
+  const { setToken, setUser } = useAuthStore((state) => ({
+    setToken: state.setToken,
+    setUser: state.setUser,
+  }));
   const router = useRouter();
 
   return useMutation({
@@ -17,15 +19,16 @@ export const useLogin = () => {
       console.log("Login successful", data);
 
       const token = data?.data?.jwt?.token;
+      const expiresIn = data?.data?.jwt?.expiresIn;
       const adminData = data?.data?.admin;
 
-      if (token) {
-        Cookies.set("token", token);
-        setToken(token);
+      if (token && adminData) {
+        setToken(token, expiresIn);
+        setUser(adminData);
         router.push("/dashboard");
         toast.success(`Welcome ${adminData?.name}!`);
       } else {
-        toast.error("Login succeeded but token is missing!");
+        toast.error("Login succeeded but token or user data is missing!");
       }
     },
     onError: (error: any) => {
