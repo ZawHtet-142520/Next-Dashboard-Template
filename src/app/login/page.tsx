@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 import { useAuthStore } from "@/stores/authStore";
+import { useShallow } from "zustand/react/shallow";
 
 const LoginPage = () => {
   const {
@@ -30,10 +31,12 @@ const LoginPage = () => {
   const isLoading = status === "pending";
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-  const { initializeAuth, isTokenExpired } = useAuthStore((state) => ({
-    initializeAuth: state.initializeAuth,
-    isTokenExpired: state.isTokenExpired,
-  }));
+  const { initializeAuth, isTokenExpired } = useAuthStore(
+    useShallow((state) => ({
+      initializeAuth: state.initializeAuth,
+      isTokenExpired: state.isTokenExpired,
+    }))
+  );
 
   const onSubmit = (data: LoginInput) => {
     login(data);

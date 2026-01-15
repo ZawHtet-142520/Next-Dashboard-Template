@@ -13,14 +13,17 @@ import { User, Settings, DollarSign, HelpCircle, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useDashboardStore } from "@/stores/useDashboardStore";
 import { useAuthStore } from "@/stores/authStore";
+import { useShallow } from "zustand/react/shallow";
 
 export default function ProfileDropdown() {
   const router = useRouter();
   const handleLogout = useDashboardStore((state) => state.handleLogout);
-  const { user, logout } = useAuthStore((state) => ({
-    user: state.user,
-    logout: state.logout,
-  }));
+  const { user, logout } = useAuthStore(
+    useShallow((state) => ({
+      user: state.user,
+      logout: state.logout,
+    }))
+  );
 
   const onLogout = () => {
     logout();
