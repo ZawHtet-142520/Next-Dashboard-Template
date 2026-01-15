@@ -8,11 +8,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 
-const ResetPasswordPage = () => {
+const ResetPasswordForm = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const token = searchParams.get("token");
@@ -44,10 +44,6 @@ const ResetPasswordPage = () => {
     setValue("token", token);
   }, [token, router, setValue]);
 
-  const onSubmit = (data: ResetPasswordInput) => {
-    resetPassword(data);
-  };
-
   if (!token) {
     return null;
   }
@@ -57,7 +53,7 @@ const ResetPasswordPage = () => {
       {/* Left - Form Section */}
       <div className="flex items-center justify-center px-6 py-12">
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit((data) => resetPassword(data))}
           className="w-full max-w-md space-y-6"
         >
           <div>
@@ -151,6 +147,14 @@ const ResetPasswordPage = () => {
         />
       </div>
     </div>
+  );
+};
+
+const ResetPasswordPage = () => {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#2F3349] flex items-center justify-center"><p>Loading...</p></div>}>
+      <ResetPasswordForm />
+    </Suspense>
   );
 };
 
