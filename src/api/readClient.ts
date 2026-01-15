@@ -1,4 +1,4 @@
-import { showErrorToast, showSessionExpiredToast } from "@/utils/showErrorToast";
+import { showErrorToast, showSessionExpiredToast } from "@/lib/showErrorToast";
 import axios from "axios";
 import Cookies from "js-cookie";
 

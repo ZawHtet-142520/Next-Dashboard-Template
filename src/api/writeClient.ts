@@ -26,9 +26,6 @@ openWriteClient.interceptors.request.use(
 
 export const writeClient = axios.create({
   baseURL: API_BASE_URL,
-  // headers: {
-  //   "Content-Type": "application/json",
-  // },
 });
 
 writeClient.interceptors.request.use(
