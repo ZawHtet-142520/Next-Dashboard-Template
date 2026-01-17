@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { resetPasswordSchema, ResetPasswordInput } from "@/schemas/resetPasswordSchema";
-import { useResetPassword } from "@/hooks/useResetPassword";
+import { useResetPassword } from "@/queries/useResetPassword";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
