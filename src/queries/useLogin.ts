@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMutation } from "@tanstack/react-query";
 import { login } from "@/services/authService";
 import { useAuthStore } from "@/stores/authStore";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { LoginResponse } from "@/types/auth";
+import { ApiError } from "@/types/api";
 import { useShallow } from "zustand/react/shallow";
 
 export const useLogin = () => {
@@ -19,8 +19,6 @@ export const useLogin = () => {
   return useMutation({
     mutationFn: login,
     onSuccess: (data: LoginResponse) => {
-      console.log("Login successful", data);
-
       const token = data?.data?.jwt?.token;
       const expiresIn = data?.data?.jwt?.expiresIn;
       const adminData = data?.data?.admin;
@@ -34,7 +32,7 @@ export const useLogin = () => {
         toast.error("Login succeeded but token or user data is missing!");
       }
     },
-    onError: (error: any) => {
+    onError: (error: ApiError) => {
       toast.error(error?.response?.data?.details?.[0]?.issue || "Login failed");
     },
   });

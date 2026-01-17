@@ -19,7 +19,7 @@ Use `useQuery` when you need to:
 ### Example: User Profile
 
 ```typescript
-// hooks/useUserProfile.ts
+// queries/useUserProfile.ts
 import { useQuery } from "@tanstack/react-query";
 import { fetchUserProfile } from "@/services/userService";
 
@@ -52,7 +52,7 @@ Use `useMutation` when you need to:
 ### Example: Login (Already Implemented)
 
 ```typescript
-// hooks/useLogin.ts
+// queries/useLogin.ts
 import { useMutation } from "@tanstack/react-query";
 import { login } from "@/services/authService";
 
@@ -146,7 +146,7 @@ export const fetchUserProfile = async () => {
 Wrap queries in custom hooks for reusability:
 
 ```typescript
-// hooks/useUserProfile.ts
+// queries/useUserProfile.ts
 export const useUserProfile = () => {
   return useQuery({
     queryKey: ["userProfile"],
@@ -190,7 +190,7 @@ export const fetchDashboardStats = async () => {
   return response.data;
 };
 
-// hooks/useDashboardStats.ts
+// queries/useDashboardStats.ts
 export const useDashboardStats = () => {
   return useQuery({
     queryKey: ["dashboardStats"],
@@ -223,7 +223,7 @@ export const fetchUsers = async (page: number) => {
   return response.data;
 };
 
-// hooks/useUsers.ts
+// queries/useUsers.ts
 export const useUsers = (page: number) => {
   return useQuery({
     queryKey: ["users", page],
