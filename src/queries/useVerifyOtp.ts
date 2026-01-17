@@ -20,13 +20,17 @@ export const useVerifyOtp = () => {
     mutationFn: verifyOtp,
     onSuccess: (data: VerifyOtpResponse) => {
       toast.success(data?.message || "OTP verified successfully!");
+      
       // Redirect to reset password page after successful OTP verification
-      // Pass the token if available
+      // The token is required for password reset
       const token = data?.data?.token;
       if (token) {
         router.push(`/reset-password?token=${encodeURIComponent(token)}`);
       } else {
-        router.push("/reset-password");
+        // If no token is provided, redirect to login as the flow cannot proceed
+        console.warn("No token received from OTP verification, redirecting to login");
+        toast.error("Unable to proceed with password reset. Please try again.");
+        router.push("/login");
       }
     },
     onError: (error: ApiError) => {
