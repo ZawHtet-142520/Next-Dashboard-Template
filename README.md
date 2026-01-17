@@ -12,9 +12,10 @@ src/
 │   ├── layouts/      # Layout components (dashboard, sidebar, navbar)
 │   └── ui/           # UI components (buttons, cards, inputs)
 ├── data/             # Static data and configuration
-├── hooks/            # Custom React hooks
+├── hooks/            # Custom React hooks (non-query hooks)
 ├── lib/              # Utility functions and helpers
 ├── providers/        # Context providers (theme, query client)
+├── queries/          # React Query hooks (queries and mutations)
 ├── schemas/          # Zod validation schemas
 ├── services/         # API service layer
 ├── stores/           # Zustand state management stores

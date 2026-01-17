@@ -3,8 +3,8 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { verifyOtpSchema, VerifyOtpInput } from "@/schemas/verifyOtpSchema";
-import { useVerifyOtp } from "@/hooks/useVerifyOtp";
-import { useForgetPassword } from "@/hooks/useForgetPassword";
+import { useVerifyOtp } from "@/queries/useVerifyOtp";
+import { useForgetPassword } from "@/queries/useForgetPassword";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";

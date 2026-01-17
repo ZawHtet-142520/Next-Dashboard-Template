@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { forgetPasswordSchema, ForgetPasswordInput } from "@/schemas/forgetPasswordSchema";
-import { useForgetPassword } from "@/hooks/useForgetPassword";
+import { useForgetPassword } from "@/queries/useForgetPassword";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
