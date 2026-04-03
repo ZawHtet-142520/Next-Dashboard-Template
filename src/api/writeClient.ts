@@ -2,8 +2,9 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://mvs-b.cbs.com.mm";
-
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL ||
+  "https://contact-us-mail-api.cbs.com.mm";
 
 export const openWriteClient = axios.create({
   baseURL: API_BASE_URL,
@@ -21,7 +22,7 @@ openWriteClient.interceptors.request.use(
       toast.error("Session expired. Please login again");
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export const writeClient = axios.create({
@@ -30,7 +31,7 @@ export const writeClient = axios.create({
 
 writeClient.interceptors.request.use(
   (request) => {
-    const token = Cookies.get('token')
+    const token = Cookies.get("token");
 
     if (token) {
       request.headers["Authorization"] = `Bearer ${token}`;
@@ -39,7 +40,7 @@ writeClient.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 writeClient.interceptors.response.use(
@@ -49,10 +50,13 @@ writeClient.interceptors.response.use(
       toast.error("Session expired. Please login again");
       Cookies.remove("token");
       // Only redirect if not already on login page and if running in browser
-      if (typeof window !== "undefined" && !window.location.pathname.startsWith("/login")) {
+      if (
+        typeof window !== "undefined" &&
+        !window.location.pathname.startsWith("/login")
+      ) {
         window.location.href = "/login";
       }
     }
     return Promise.reject(error);
-  }
+  },
 );

@@ -12,7 +12,7 @@ export const useLogin = () => {
     useShallow((state) => ({
       setToken: state.setToken,
       setUser: state.setUser,
-    }))
+    })),
   );
   const router = useRouter();
 
@@ -27,7 +27,7 @@ export const useLogin = () => {
         setToken(token, expiresIn);
         setUser(adminData);
         router.push("/dashboard");
-        toast.success(`Welcome ${adminData?.name}!`);
+        toast.success(`Welcome ${adminData?.name || "to dashboard"}!`);
       } else {
         toast.error("Login succeeded but token or user data is missing!");
       }

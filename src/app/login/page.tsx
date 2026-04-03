@@ -22,7 +22,7 @@ const LoginPage = () => {
   } = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
+      identifier: "",
       password: "",
     },
   });
@@ -35,7 +35,7 @@ const LoginPage = () => {
     useShallow((state) => ({
       initializeAuth: state.initializeAuth,
       isTokenExpired: state.isTokenExpired,
-    }))
+    })),
   );
 
   const onSubmit = (data: LoginInput) => {
@@ -59,24 +59,31 @@ const LoginPage = () => {
           className="w-full max-w-md space-y-6"
         >
           <div>
-            <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Welcome back</h1>
-            <p className="text-sm text-gray-600 dark:text-gray-400">Please enter your details</p>
+            <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
+              Welcome back
+            </h1>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Please enter your details
+            </p>
           </div>
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" htmlFor="email">
+              <label
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                htmlFor="email"
+              >
                 Email
               </label>
               <Input
                 id="email"
                 type="email"
                 placeholder="Email"
-                {...register("email")}
+                {...register("identifier")}
               />
-              {errors.email && (
+              {errors.identifier && (
                 <p className="text-sm text-red-500 dark:text-red-400 mt-1">
-                  {errors.email.message}
+                  {errors.identifier.message}
                 </p>
               )}
             </div>
@@ -115,7 +122,10 @@ const LoginPage = () => {
                 <input type="checkbox" className="accent-purple-600" />
                 Remember me
               </label>
-              <Link href="/forgot-password" className="text-purple-600 dark:text-purple-400 hover:underline">
+              <Link
+                href="/forgot-password"
+                className="text-purple-600 dark:text-purple-400 hover:underline"
+              >
                 Forgot password?
               </Link>
             </div>
@@ -123,27 +133,6 @@ const LoginPage = () => {
             <Button type="submit" disabled={isLoading} className="w-full">
               {isLoading ? "Logging in..." : "Login"}
             </Button>
-
-            <Button
-              type="button"
-              variant="outline"
-              className="w-full flex items-center justify-center gap-2"
-            >
-              <Image
-                src="/google-icon.svg"
-                alt="Google"
-                width={18}
-                height={18}
-              />
-              Continue with Google
-            </Button>
-
-            <p className="text-center text-sm text-gray-700 dark:text-gray-300">
-              Don’t have an account?{" "}
-              <Link href="#" className="text-purple-600 dark:text-purple-400 hover:underline">
-                Sign up
-              </Link>
-            </p>
           </div>
         </form>
       </div>
