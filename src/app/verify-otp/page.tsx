@@ -3,8 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { verifyOtpSchema, VerifyOtpInput } from "@/schemas/verifyOtpSchema";
-import { useVerifyOtp } from "@/queries/useVerifyOtp";
-import { useForgetPassword } from "@/queries/useForgetPassword";
+import { useForgetPassword, useVerifyOtp } from "@/queries";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -87,16 +86,23 @@ const VerifyOtpForm = () => {
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div>
-              <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Verify OTP</h1>
+              <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
+                Verify OTP
+              </h1>
               <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
                 We&apos;ve sent a 6-digit verification code to{" "}
-                <span className="font-medium text-gray-900 dark:text-white">{email}</span>
+                <span className="font-medium text-gray-900 dark:text-white">
+                  {email}
+                </span>
               </p>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" htmlFor="otp">
+                <label
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  htmlFor="otp"
+                >
                   Verification Code
                 </label>
                 <Input
@@ -129,7 +135,10 @@ const VerifyOtpForm = () => {
                   </button>
                 ) : (
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Resend OTP in <span className="font-medium text-gray-900 dark:text-white">{countdown}s</span>
+                    Resend OTP in{" "}
+                    <span className="font-medium text-gray-900 dark:text-white">
+                      {countdown}s
+                    </span>
                   </p>
                 )}
               </div>
@@ -154,7 +163,13 @@ const VerifyOtpForm = () => {
 
 const VerifyOtpPage = () => {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-white dark:bg-[#2F3349] flex items-center justify-center"><p className="text-gray-900 dark:text-white">Loading...</p></div>}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-white dark:bg-[#2F3349] flex items-center justify-center">
+          <p className="text-gray-900 dark:text-white">Loading...</p>
+        </div>
+      }
+    >
       <VerifyOtpForm />
     </Suspense>
   );

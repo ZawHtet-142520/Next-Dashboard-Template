@@ -2,8 +2,11 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { resetPasswordSchema, ResetPasswordInput } from "@/schemas/resetPasswordSchema";
-import { useResetPassword } from "@/queries/useResetPassword";
+import {
+  resetPasswordSchema,
+  ResetPasswordInput,
+} from "@/schemas/resetPasswordSchema";
+import { useResetPassword } from "@/queries";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -57,7 +60,9 @@ const ResetPasswordForm = () => {
           className="w-full max-w-md space-y-6"
         >
           <div>
-            <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Reset Password</h1>
+            <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
+              Reset Password
+            </h1>
             <p className="text-sm text-gray-600 dark:text-gray-500 mt-2">
               Enter your new password below
             </p>
@@ -112,7 +117,11 @@ const ResetPasswordForm = () => {
                   onClick={() => setShowConfirmPassword((prev) => !prev)}
                   className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500 dark:text-gray-400"
                 >
-                  {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showConfirmPassword ? (
+                    <EyeOff size={18} />
+                  ) : (
+                    <Eye size={18} />
+                  )}
                 </button>
               </div>
               {errors.confirmPassword && (
@@ -152,7 +161,13 @@ const ResetPasswordForm = () => {
 
 const ResetPasswordPage = () => {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-white dark:bg-[#2F3349] flex items-center justify-center"><p className="text-gray-900 dark:text-white">Loading...</p></div>}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-white dark:bg-[#2F3349] flex items-center justify-center">
+          <p className="text-gray-900 dark:text-white">Loading...</p>
+        </div>
+      }
+    >
       <ResetPasswordForm />
     </Suspense>
   );
