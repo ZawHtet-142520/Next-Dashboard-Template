@@ -13,6 +13,9 @@ export const sidebarLinks: SidebarLink[] = [
   {
     label: "Settings",
     icon: Settings,
-    children: [{ label: "Role", href: "/dashboard/settings/role" }],
+    children: [
+      { label: "Role", href: "/dashboard/settings/role" },
+      { label: "Admin", href: "/dashboard/settings/admin" },
+    ],
   },
 ];
