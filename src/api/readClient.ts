@@ -1,4 +1,8 @@
 import { showErrorToast, showSessionExpiredToast } from "@/lib/showErrorToast";
+import {
+  decrementApiLoading,
+  incrementApiLoading,
+} from "@/lib/apiLoadingStore";
 import axios from "axios";
 import Cookies from "js-cookie";
 
@@ -15,6 +19,7 @@ export const readClient = axios.create({
 
 readClient.interceptors.request.use(
   (request) => {
+    incrementApiLoading();
     const token = Cookies.get("token");
     if (token) {
       request.headers["Authorization"] = `Bearer ${token}`;
@@ -29,8 +34,12 @@ readClient.interceptors.request.use(
 );
 
 readClient.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    decrementApiLoading();
+    return response;
+  },
   (error) => {
+    decrementApiLoading();
     if (axios.isAxiosError(error)) {
       const status = error.response?.status;
       const errorMessage =
