@@ -30,7 +30,7 @@ const VerifyOtpForm = () => {
     resolver: zodResolver(verifyOtpSchema),
     defaultValues: {
       email: "",
-      otp: "",
+      otpCode: "",
     },
   });
 
@@ -110,12 +110,12 @@ const VerifyOtpForm = () => {
                   type="text"
                   placeholder="Enter 6-digit code"
                   maxLength={6}
-                  {...register("otp")}
+                  {...register("otpCode")}
                   className="text-center text-2xl tracking-widest"
                 />
-                {errors.otp && (
+                {errors.otpCode && (
                   <p className="text-sm text-red-500 dark:text-red-400 mt-1">
-                    {errors.otp.message}
+                    {errors.otpCode.message}
                   </p>
                 )}
               </div>

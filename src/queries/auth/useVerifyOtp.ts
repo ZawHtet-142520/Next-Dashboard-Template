@@ -8,9 +8,6 @@ interface VerifyOtpResponse {
   success: boolean;
   message: string;
   status: number;
-  data?: {
-    token?: string;
-  };
 }
 
 export const useVerifyOtp = () => {
@@ -18,17 +15,14 @@ export const useVerifyOtp = () => {
 
   return useMutation({
     mutationFn: verifyOtp,
-    onSuccess: (data: VerifyOtpResponse) => {
+    onSuccess: (data: VerifyOtpResponse, { email }) => {
       toast.success(data?.message || "OTP verified successfully!");
 
       // Redirect to reset password page after successful OTP verification.
-      const token = data?.data?.token;
-      if (token) {
-        router.push(`/reset-password?token=${encodeURIComponent(token)}`);
+      if (email) {
+        router.push(`/reset-password?email=${encodeURIComponent(email)}`);
       } else {
-        console.warn(
-          "No token received from OTP verification, redirecting to login",
-        );
+        console.warn("No email is provided, redirecting to login");
         toast.error("Unable to proceed with password reset. Please try again.");
         router.push("/login");
       }
