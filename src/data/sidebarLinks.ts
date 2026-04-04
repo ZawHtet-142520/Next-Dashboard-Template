@@ -16,6 +16,8 @@ export const sidebarLinks: SidebarLink[] = [
     children: [
       { label: "Role", href: "/dashboard/settings/role" },
       { label: "Admin", href: "/dashboard/settings/admin" },
+      { label: "Audit Logs", href: "/dashboard/settings/logs/audit" },
+      { label: "User Logs", href: "/dashboard/settings/logs/user" },
     ],
   },
 ];
