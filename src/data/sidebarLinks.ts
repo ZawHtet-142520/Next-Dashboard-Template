@@ -19,6 +19,10 @@ export const sidebarLinks: SidebarLink[] = [
       { label: "Audit Logs", href: "/dashboard/settings/logs/audit" },
       { label: "User Logs", href: "/dashboard/settings/logs/user" },
       { label: "Email", href: "/dashboard/settings/email" },
+      {
+        label: "Notification Template",
+        href: "/dashboard/settings/notification",
+      },
     ],
   },
 ];
