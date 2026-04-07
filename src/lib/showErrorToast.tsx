@@ -32,7 +32,7 @@ export const showSessionExpiredToast = () => {
                 useAuthStore.getState().logout();
                 window.location.href = "/login";
               }}
-              className="mt-3 bg-bg-blue text-right text-white px-4 py-2 rounded cursor-pointer"
+              className="mt-3 bg-bg-blue text-right dark:text-white text-black px-4 py-2 rounded cursor-pointer border dark:border-white"
             >
               Logout
             </button>
@@ -40,7 +40,7 @@ export const showSessionExpiredToast = () => {
         </div>
       </div>
     ),
-    { duration: Infinity }
+    { duration: Infinity },
   );
 };
 
@@ -54,7 +54,7 @@ let errorToastId: string | null = null;
 
 export const showErrorToast = (
   message: string,
-  details?: { field: string; issue: string }[]
+  details?: { field: string; issue: string }[],
 ) => {
   if (errorToastId) return;
 
@@ -82,9 +82,7 @@ export const showErrorToast = (
   });
 };
 
-export const handleApiError = (
-  error: AxiosError<ErrorResponseInterface>,
-) => {
+export const handleApiError = (error: AxiosError<ErrorResponseInterface>) => {
   const errorMessage =
     error?.response?.data?.message || "An error occurred. Please try again.";
 

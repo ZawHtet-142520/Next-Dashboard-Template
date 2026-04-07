@@ -150,3 +150,11 @@
     transform: translateX(380%);
   }
 }
+
+.dark .jodit-wysiwyg,
+.dark .jodit__preview-box,
+.dark .jodit-dialog__header {
+  background: #1f2937 !important;
+  color: white !important;
+  border-color: #4b5563 !important;
+}
