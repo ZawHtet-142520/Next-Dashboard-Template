@@ -14,11 +14,11 @@ export const sidebarLinks: SidebarLink[] = [
     label: "Settings",
     icon: Settings,
     children: [
-      { label: "Role", href: "/dashboard/settings/role" },
       { label: "Admin", href: "/dashboard/settings/admin" },
-      { label: "Audit Logs", href: "/dashboard/settings/logs/audit" },
+      { label: "Role", href: "/dashboard/settings/role" },
       { label: "User Logs", href: "/dashboard/settings/logs/user" },
-      { label: "Email", href: "/dashboard/settings/email" },
+      { label: "Audit Logs", href: "/dashboard/settings/logs/audit" },
+      { label: "Email Setting", href: "/dashboard/settings/email" },
       {
         label: "Notification Template",
         href: "/dashboard/settings/notification",
