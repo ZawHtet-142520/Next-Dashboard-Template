@@ -1,0 +1,71 @@
+name: Deploy to m4-1-2 (Dev)
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout code
+      - uses: actions/checkout@v4
+
+      # 2. Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # 3. Build project
+      - name: Build project
+        run: npm run build
+
+      # 5. Setup SSH key and known_hosts
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          # Add server public key (replace with your actual ed25519 key)
+          echo "[160.30.212.82]:112 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJWTJQv71WRDoQ44XdAA+wSSymHEsiMmhnLQu9uKmlzg" >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+          chmod 700 ~/.ssh
+
+      # 6. Rsync files directly via SSH
+      - name: Test SSH connection
+        run: |
+          ssh -p 112 \
+            -o BatchMode=yes \
+            -o ConnectTimeout=15 \
+            -o ServerAliveInterval=5 \
+            -o ServerAliveCountMax=3 \
+            -o StrictHostKeyChecking=no \
+            -o UserKnownHostsFile=/dev/null \
+            root@160.30.212.82 exit
+
+      - name: Rsync files to server
+        run: |
+          rsync -avz --delete \
+            -e "ssh -p 112 -o BatchMode=yes -o ConnectTimeout=15 -o ServerAliveInterval=5 -o ServerAliveCountMax=3 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
+            --exclude='.git/' \
+            ./ root@160.30.212.82:/www/wwwroot/contact-us-mail.cbs.com.mm/
+
+      # 7. Install dependencies and restart PM2
+      - name: Install and restart PM2 on server
+        run: |
+          ssh -p 112 \
+            -o BatchMode=yes \
+            -o ConnectTimeout=15 \
+            -o ServerAliveInterval=5 \
+            -o ServerAliveCountMax=3 \
+            -o StrictHostKeyChecking=no \
+            -o UserKnownHostsFile=/dev/null \
+            root@160.30.212.82 << 'EOF'
+            cd /www/wwwroot/contact-us-mail.cbs.com.mm
+            npm install
+            pm2 delete contact-us-mail || true
+            pm2 start ecosystem.config.js --env development
+            pm2 save
+          EOF
