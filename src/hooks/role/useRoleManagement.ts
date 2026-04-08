@@ -11,6 +11,13 @@ import {
 } from "@/queries";
 import { PermissionName, Role } from "@/types/role";
 
+const actionOrder: Record<string, number> = {
+  create: 1,
+  read: 2,
+  update: 3,
+  delete: 4,
+};
+
 export function useRoleManagement() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [pendingDeleteRole, setPendingDeleteRole] = useState<{
@@ -45,14 +52,10 @@ export function useRoleManagement() {
   const deleteRoleMutation = useDeleteRole();
 
   const roles = rolesResponse?.data?.roles ?? [];
-  const permissionGroups = permissionNamesResponse?.data ?? {};
-
-  const actionOrder: Record<string, number> = {
-    create: 1,
-    read: 2,
-    update: 3,
-    delete: 4,
-  };
+  const permissionGroups = useMemo(
+    () => permissionNamesResponse?.data ?? {},
+    [permissionNamesResponse?.data],
+  );
 
   const filteredPermissionGroups = useMemo(() => {
     const search = permissionSearch.trim().toLowerCase();

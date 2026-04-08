@@ -9,7 +9,7 @@ import {
   //   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User, Settings, DollarSign, HelpCircle, LogOut } from "lucide-react";
+import { User, Settings, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useDashboardStore } from "@/stores/useDashboardStore";
 import { useAuthStore } from "@/stores/authStore";

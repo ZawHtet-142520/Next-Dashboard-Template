@@ -10,7 +10,7 @@ import {
   updateEmailSettingType,
 } from "@/schemas/updateEmailSettingSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
@@ -49,13 +49,13 @@ export function useEmailManagement() {
     resolver: zodResolver(testEmailSchema),
   });
 
-  const resetEmailSettingForm = () => {
+  const resetEmailSettingForm = useCallback(() => {
     emailSettingForm.reset(emailSetting);
-  };
+  }, [emailSettingForm, emailSetting]);
 
-  const resetTestEmailForm = () => {
+  const resetTestEmailForm = useCallback(() => {
     testEmailForm.reset(emailSetting);
-  };
+  }, [testEmailForm, emailSetting]);
 
   const updateEmailMutation = useUpdateEmail();
   const testEmailMutation = useTestEmail();
@@ -63,7 +63,12 @@ export function useEmailManagement() {
   useEffect(() => {
     resetEmailSettingForm();
     resetTestEmailForm();
-  }, [emailSettingLoading, emailSettingFetching]);
+  }, [
+    emailSettingLoading,
+    emailSettingFetching,
+    resetEmailSettingForm,
+    resetTestEmailForm,
+  ]);
 
   const openTestEmailModal = () => {
     setIsTestEmailModalOpen(true);

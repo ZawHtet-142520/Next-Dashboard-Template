@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { ImagePlus, Trash2 } from "lucide-react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Role } from "@/types/role";
@@ -59,12 +60,15 @@ export function CreateAdminModal({
           <div className="rounded-xl border bg-slate-50/60 p-4">
             <p className="mb-3 text-sm font-medium">Profile</p>
             <div className="flex items-center gap-4">
-              <div className="h-20 w-20 overflow-hidden rounded-full border bg-slate-200">
+              <div className="relative h-20 w-20 overflow-hidden rounded-full border bg-slate-200">
                 {profilePreview ? (
-                  <img
+                  <Image
                     src={profilePreview}
                     alt="Profile preview"
-                    className="h-full w-full object-cover"
+                    fill
+                    sizes="80px"
+                    className="object-cover"
+                    unoptimized
                   />
                 ) : (
                   <div className="grid h-full w-full place-items-center text-xl font-semibold text-slate-600">
