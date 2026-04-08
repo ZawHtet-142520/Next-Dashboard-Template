@@ -10,24 +10,18 @@ export const login = async (data: LoginInput) => {
 };
 
 export const forgetPassword = async (data: ForgetPasswordInput) => {
-  const response = await openWriteClient.post(
-    "/v1/dashboard/auth/forget-password",
-    data,
-  );
+  const response = await openWriteClient.post("/api/v1/otp", data);
   return response.data;
 };
 
 export const verifyOtp = async (data: VerifyOtpInput) => {
-  const response = await openWriteClient.post(
-    "/v1/dashboard/auth/verify-otp",
-    data,
-  );
+  const response = await openWriteClient.patch("/api/v1/otp/verify", data);
   return response.data;
 };
 
 export const resetPassword = async (data: ResetPasswordInput) => {
-  const response = await openWriteClient.post(
-    "/v1/dashboard/auth/reset-password",
+  const response = await openWriteClient.patch(
+    "/api/v1/otp/resetPassword",
     data,
   );
   return response.data;

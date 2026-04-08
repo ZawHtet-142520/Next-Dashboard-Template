@@ -2,8 +2,11 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { forgetPasswordSchema, ForgetPasswordInput } from "@/schemas/forgetPasswordSchema";
-import { useForgetPassword } from "@/queries/useForgetPassword";
+import {
+  forgetPasswordSchema,
+  ForgetPasswordInput,
+} from "@/schemas/forgetPasswordSchema";
+import { useForgetPassword } from "@/queries";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -26,7 +29,11 @@ const ForgotPasswordPage = () => {
     },
   });
 
-  const { mutate: forgetPassword, status, reset: resetMutation } = useForgetPassword();
+  const {
+    mutate: forgetPassword,
+    status,
+    reset: resetMutation,
+  } = useForgetPassword();
   const isLoading = status === "pending";
   const isSuccess = status === "success";
   const [submittedEmail, setSubmittedEmail] = useState("");
@@ -59,15 +66,21 @@ const ForgotPasswordPage = () => {
           {!isSuccess ? (
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div>
-                <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Forgot Password?</h1>
+                <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
+                  Forgot Password?
+                </h1>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-                  Enter your email address and we&apos;ll send you a verification code
+                  Enter your email address and we&apos;ll send you a
+                  verification code
                 </p>
               </div>
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" htmlFor="email">
+                  <label
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    htmlFor="email"
+                  >
                     Email
                   </label>
                   <Input
@@ -96,10 +109,13 @@ const ForgotPasswordPage = () => {
                 </h2>
                 <p className="text-sm text-gray-700 dark:text-gray-400">
                   We&apos;ve sent a password reset link to{" "}
-                  <span className="font-medium text-gray-900 dark:text-white">{submittedEmail}</span>
+                  <span className="font-medium text-gray-900 dark:text-white">
+                    {submittedEmail}
+                  </span>
                 </p>
                 <p className="text-sm text-gray-700 dark:text-gray-400 mt-2">
-                  Click the link in the email to reset your password. If you don&apos;t see the email, check your spam folder.
+                  Click the link in the email to reset your password. If you
+                  don&apos;t see the email, check your spam folder.
                 </p>
               </div>
 

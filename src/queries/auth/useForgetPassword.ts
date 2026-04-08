@@ -11,9 +11,9 @@ export const useForgetPassword = () => {
     },
     onError: (error: ApiError) => {
       toast.error(
-        error?.response?.data?.details?.[0]?.issue || 
-        error?.response?.data?.message ||
-        "Failed to send reset link. Please try again."
+        error?.response?.data?.details?.[0]?.issue ||
+          error?.response?.data?.message ||
+          "Failed to send reset link. Please try again.",
       );
     },
   });

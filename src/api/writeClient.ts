@@ -1,6 +1,10 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
+import {
+  decrementApiLoading,
+  incrementApiLoading,
+} from "@/lib/apiLoadingStore";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL ||
@@ -15,6 +19,7 @@ export const openWriteClient = axios.create({
 
 openWriteClient.interceptors.request.use(
   (request) => {
+    incrementApiLoading();
     return request;
   },
   (error) => {
@@ -25,12 +30,24 @@ openWriteClient.interceptors.request.use(
   },
 );
 
+openWriteClient.interceptors.response.use(
+  (response) => {
+    decrementApiLoading();
+    return response;
+  },
+  (error) => {
+    decrementApiLoading();
+    return Promise.reject(error);
+  },
+);
+
 export const writeClient = axios.create({
   baseURL: API_BASE_URL,
 });
 
 writeClient.interceptors.request.use(
   (request) => {
+    incrementApiLoading();
     const token = Cookies.get("token");
 
     if (token) {
@@ -44,8 +61,12 @@ writeClient.interceptors.request.use(
 );
 
 writeClient.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    decrementApiLoading();
+    return response;
+  },
   (error) => {
+    decrementApiLoading();
     if (axios.isAxiosError(error) && error.response?.status === 401) {
       toast.error("Session expired. Please login again");
       Cookies.remove("token");

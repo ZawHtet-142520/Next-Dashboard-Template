@@ -2,8 +2,11 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { resetPasswordSchema, ResetPasswordInput } from "@/schemas/resetPasswordSchema";
-import { useResetPassword } from "@/queries/useResetPassword";
+import {
+  resetPasswordSchema,
+  ResetPasswordInput,
+} from "@/schemas/resetPasswordSchema";
+import { useResetPassword } from "@/queries";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -15,9 +18,8 @@ import { Eye, EyeOff } from "lucide-react";
 const ResetPasswordForm = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const token = searchParams.get("token");
+  const email = searchParams.get("email");
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     register,
@@ -27,9 +29,8 @@ const ResetPasswordForm = () => {
   } = useForm<ResetPasswordInput>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
-      token: "",
-      password: "",
-      confirmPassword: "",
+      email: "",
+      newPassword: "",
     },
   });
 
@@ -37,14 +38,14 @@ const ResetPasswordForm = () => {
   const isLoading = status === "pending";
 
   useEffect(() => {
-    if (!token) {
+    if (!email) {
       router.push("/login");
       return;
     }
-    setValue("token", token);
-  }, [token, router, setValue]);
+    setValue("email", email);
+  }, [email, router, setValue]);
 
-  if (!token) {
+  if (!email) {
     return null;
   }
 
@@ -57,7 +58,9 @@ const ResetPasswordForm = () => {
           className="w-full max-w-md space-y-6"
         >
           <div>
-            <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Reset Password</h1>
+            <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
+              Reset Password
+            </h1>
             <p className="text-sm text-gray-600 dark:text-gray-500 mt-2">
               Enter your new password below
             </p>
@@ -76,7 +79,7 @@ const ResetPasswordForm = () => {
                   id="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter new password"
-                  {...register("password")}
+                  {...register("newPassword")}
                 />
                 <button
                   type="button"
@@ -86,38 +89,9 @@ const ResetPasswordForm = () => {
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
-              {errors.password && (
+              {errors.newPassword && (
                 <p className="text-sm text-red-500 dark:text-red-400 mt-1">
-                  {errors.password.message}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <label
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                htmlFor="confirmPassword"
-              >
-                Confirm Password
-              </label>
-              <div className="relative">
-                <Input
-                  id="confirmPassword"
-                  type={showConfirmPassword ? "text" : "password"}
-                  placeholder="Confirm new password"
-                  {...register("confirmPassword")}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword((prev) => !prev)}
-                  className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500 dark:text-gray-400"
-                >
-                  {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              </div>
-              {errors.confirmPassword && (
-                <p className="text-sm text-red-500 dark:text-red-400 mt-1">
-                  {errors.confirmPassword.message}
+                  {errors.newPassword.message}
                 </p>
               )}
             </div>
@@ -152,7 +126,13 @@ const ResetPasswordForm = () => {
 
 const ResetPasswordPage = () => {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-white dark:bg-[#2F3349] flex items-center justify-center"><p className="text-gray-900 dark:text-white">Loading...</p></div>}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-white dark:bg-[#2F3349] flex items-center justify-center">
+          <p className="text-gray-900 dark:text-white">Loading...</p>
+        </div>
+      }
+    >
       <ResetPasswordForm />
     </Suspense>
   );
