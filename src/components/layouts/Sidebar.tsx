@@ -39,7 +39,7 @@ export default function Sidebar() {
     >
       <div className="flex items-center justify-center h-16 sticky top-0 bg-white z-10 dark:bg-[#2F3349] text-gray-700 dark:text-white">
         {sidebarOpen ? (
-          <h2 className="text-2xl font-bold text-nowrap">MVS Dashboard</h2>
+          <h2 className="text-2xl font-bold text-nowrap">Mail Dashboard</h2>
         ) : (
           <span className="text-2xl">MVS</span>
         )}
