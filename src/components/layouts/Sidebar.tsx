@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useDashboardStore } from "@/stores/useDashboardStore";
 import { sidebarLinks } from "@/data/sidebarLinks";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronRight, DotIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { SidebarLink } from "@/types/sidebar";
 
@@ -22,7 +22,7 @@ export default function Sidebar() {
     const timer = setTimeout(() => setLoading(false), 100);
 
     const activeParentIndex = sidebarLinks.findIndex((item) =>
-      item.children?.some((child) => child.href === pathname)
+      item.children?.some((child) => child.href === pathname),
     );
     if (activeParentIndex !== -1) {
       setOpenDropdown(activeParentIndex);
@@ -39,7 +39,7 @@ export default function Sidebar() {
     >
       <div className="flex items-center justify-center h-16 sticky top-0 bg-white z-10 dark:bg-[#2F3349] text-gray-700 dark:text-white">
         {sidebarOpen ? (
-          <h2 className="text-2xl font-bold">MVS Dashboard</h2>
+          <h2 className="text-2xl font-bold text-nowrap">MVS Dashboard</h2>
         ) : (
           <span className="text-2xl">MVS</span>
         )}
@@ -71,7 +71,7 @@ export default function Sidebar() {
                   <div className="space-y-2">
                     <button
                       onClick={() => handleDropdownClick(idx)}
-                      className="flex items-center justify-between w-full text-gray-700 dark:text-white font-semibold px-2 py-2 rounded hover:bg-purple-200"
+                      className="flex items-center justify-between w-full text-gray-700 dark:text-white font-semibold px-2 py-2 rounded hover:bg-blue-400"
                     >
                       <div className="flex items-center gap-3">
                         <item.icon className="w-5 h-5 dark:text-white" />
@@ -90,16 +90,18 @@ export default function Sidebar() {
                           <Link
                             key={ci}
                             href={child.href}
-                            className={`block px-2 py-2 rounded hover:bg-purple-200 ${
+                            className={`block px-2 py-2 rounded hover:bg-blue-400 ${
                               pathname === child.href
                                 ? "bg-[#9087F3] font-medium"
                                 : ""
                             }`}
                           >
-                            <span className="flex items-center gap-2 text-gray-700 dark:text-white">
-                              <span className="w-[11px] h-[11px] rounded-full bg-white border-2 border-gray-700 dark:border-white" />
-                              {child.label}
-                            </span>
+                            <div className="flex items-center gap-3">
+                              <span className="flex items-center gap-2 text-gray-700 dark:text-white text-nowrap">
+                                <DotIcon />
+                                {child.label}
+                              </span>
+                            </div>
                           </Link>
                         ))}
                       </div>

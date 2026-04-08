@@ -22,7 +22,7 @@ export default function ProfileDropdown() {
     useShallow((state) => ({
       user: state.user,
       logout: state.logout,
-    }))
+    })),
   );
 
   const onLogout = () => {
@@ -40,8 +40,8 @@ export default function ProfileDropdown() {
       .toUpperCase()
       .slice(0, 2);
   };
-
-  const userName = user?.name || "User";
+  console.log(user);
+  const userName = user?.username || "User";
   const userEmail = user?.email || "user@example.com";
   const userRole = user?.role?.name || "User";
   const userProfile = user?.profile || "/profile.jpg";
@@ -79,9 +79,7 @@ export default function ProfileDropdown() {
           </Avatar>
           <div>
             <p className="font-medium text-sm dark:text-white">{userName}</p>
-            <p className="text-xs text-gray-500 dark:text-white">
-              {userEmail}
-            </p>
+            <p className="text-xs text-gray-500 dark:text-white">{userEmail}</p>
           </div>
         </div>
 
@@ -92,12 +90,6 @@ export default function ProfileDropdown() {
         </DropdownMenuItem>
         <DropdownMenuItem className="cursor-pointer">
           <Settings className="w-4 h-4 mr-2" /> Settings
-        </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer">
-          <DollarSign className="w-4 h-4 mr-2" /> Pricing
-        </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer">
-          <HelpCircle className="w-4 h-4 mr-2" /> FAQ
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
