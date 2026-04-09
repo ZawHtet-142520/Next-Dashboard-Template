@@ -34,6 +34,7 @@ export default function UserLogPage() {
         onDelete={log.openDeleteLogConfirm}
         onPageSizeChange={log.onPageSizeChange}
         onPageChange={log.setPage}
+        type="user"
       />
       <DeleteLogConfirmModal
         open={Boolean(log.pendingDeleteLog)}

@@ -40,7 +40,6 @@ export default function ProfileDropdown() {
       .toUpperCase()
       .slice(0, 2);
   };
-  console.log(user);
   const userName = user?.username || "User";
   const userEmail = user?.email || "user@example.com";
   const userRole = user?.role?.name || "User";

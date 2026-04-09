@@ -23,7 +23,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { LogItem, LogsPagination } from "@/types/log";
+import { LogItem, LogsPagination, LogType } from "@/types/log";
 import { format } from "date-fns";
 
 interface LogsTableProps {
@@ -33,6 +33,7 @@ interface LogsTableProps {
   page: number;
   pageSize: number;
   deletingId: string | null;
+  type: LogType;
   onDelete: (log: LogItem) => void;
   onPageSizeChange: (value: number) => void;
   onPageChange: (nextPage: number) => void;
@@ -73,6 +74,7 @@ export function LogsTable({
   page,
   pageSize,
   deletingId,
+  type,
   onDelete,
   onPageSizeChange,
   onPageChange,
@@ -104,9 +106,12 @@ export function LogsTable({
                   <TableHead>Role</TableHead>
                   <TableHead>Agent</TableHead>
                   <TableHead>IP Address</TableHead>
+                  {type == "audit" && <TableHead>Resource</TableHead>}
                   <TableHead>Action</TableHead>
                   <TableHead>Platform</TableHead>
-                  <TableHead>Created Date</TableHead>
+                  <TableHead>
+                    {type == "user" ? "Login Time" : "Created Date"}
+                  </TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -117,6 +122,9 @@ export function LogsTable({
                     <TableCell>{log?.admin?.role?.name || "-"}</TableCell>
                     <TableCell>{log?.agent || "-"}</TableCell>
                     <TableCell>{log?.ip || "-"}</TableCell>
+                    {type == "audit" && (
+                      <TableCell>{log?.resource || "-"}</TableCell>
+                    )}
                     <TableCell>
                       <span className="capitalize">{log?.action || "-"}</span>
                     </TableCell>

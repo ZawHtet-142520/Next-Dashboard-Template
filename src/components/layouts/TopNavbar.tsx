@@ -1,7 +1,7 @@
 "use client";
 
 import { useDashboardStore } from "@/stores/useDashboardStore";
-import { Menu, Moon, Sun, Bell } from "lucide-react";
+import { Menu, Moon, Sun } from "lucide-react";
 import ProfileDropdown from "./ProfileDropdown";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
@@ -40,17 +40,6 @@ export default function TopNavbar() {
       </button>
 
       <div className="flex items-center gap-4">
-        <button
-          onClick={() => alert("No new notifications")}
-          className="relative text-gray-700 dark:text-white"
-          aria-label="Notifications"
-        >
-          <Bell className="w-5 h-5" />
-          {/* Red dot for unread notifications */}
-          <span className="absolute top-0 right-0 block w-2 h-2 rounded-full bg-red-500 animate-ping" />
-          <span className="absolute top-0 right-0 block w-2 h-2 rounded-full bg-red-500" />
-        </button>
-
         {/* Theme toggle button */}
         <button
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}

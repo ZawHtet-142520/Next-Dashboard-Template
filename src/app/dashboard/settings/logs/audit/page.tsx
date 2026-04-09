@@ -34,6 +34,7 @@ export default function AuditLogPage() {
         onDelete={log.openDeleteLogConfirm}
         onPageSizeChange={log.onPageSizeChange}
         onPageChange={log.setPage}
+        type="audit"
       />
       <DeleteLogConfirmModal
         open={Boolean(log.pendingDeleteLog)}
