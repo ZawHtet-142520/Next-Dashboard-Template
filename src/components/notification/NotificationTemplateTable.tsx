@@ -50,7 +50,6 @@ export function NotificationTemplatesTable({
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Type</TableHead>
                   <TableHead>Subject</TableHead>
                   <TableHead>Date</TableHead>
                   <TableHead className="text-right">Action</TableHead>
@@ -59,7 +58,6 @@ export function NotificationTemplatesTable({
               <TableBody>
                 {templates.map((template) => (
                   <TableRow key={template._id}>
-                    <TableCell>{template.type || "-"}</TableCell>
                     <TableCell>{template.subject || "-"}</TableCell>
                     <TableCell>
                       {template.createdAt
