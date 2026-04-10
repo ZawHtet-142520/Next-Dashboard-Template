@@ -31,6 +31,24 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cbs-dev21.s3.ap-southeast-1.amazonaws.com",
+        port: "",
+        pathname: "/contactUsMail/uploads/websites/**",
+      },
+      {
+        protocol: "https",
+        hostname: "cbs-dev21.s3.**",
+      },
+      {
+        protocol: "https",
+        hostname: "**your-domain**.s3.*.amazonaws.com",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

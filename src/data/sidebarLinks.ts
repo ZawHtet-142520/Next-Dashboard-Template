@@ -1,4 +1,4 @@
-import { LayoutDashboard, Settings } from "lucide-react";
+import { AtomIcon, LayoutDashboard, Settings } from "lucide-react";
 import type { SidebarLink } from "@/types/sidebar";
 
 export const sidebarLinks: SidebarLink[] = [
@@ -9,6 +9,11 @@ export const sidebarLinks: SidebarLink[] = [
       { label: "Overview", href: "/dashboard" },
       { label: "Analytics", href: "/dashboard/analytics" },
     ],
+  },
+  {
+    label: "Website",
+    icon: AtomIcon,
+    href: "/dashboard/website",
   },
   {
     label: "Settings",
