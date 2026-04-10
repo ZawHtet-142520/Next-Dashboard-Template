@@ -42,15 +42,7 @@ export default function TopNavbar() {
       </button>
 
       <div className="flex items-center gap-4">
-        <button
-          onClick={() => alert("No new notifications")}
-          className="relative inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border/70 bg-background/70 text-foreground transition-colors hover:bg-accent"
-          aria-label="Notifications"
-        >
-          <Bell className="w-5 h-5" />
-          <span className="absolute right-1.5 top-1.5 block h-2 w-2 rounded-full bg-red-500 shadow-[0_0_0_2px_rgba(255,255,255,0.5)] animate-ping" />
-          <span className="absolute right-1.5 top-1.5 block h-2 w-2 rounded-full bg-red-500" />
-        </button>
+      
 
         <button
           onClick={() => setTheme(currentTheme === "dark" ? "light" : "dark")}
