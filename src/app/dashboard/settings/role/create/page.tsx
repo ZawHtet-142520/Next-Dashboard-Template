@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -135,9 +135,12 @@ export default function CreateRolePage() {
           toast.success("Role created successfully");
           router.push("/dashboard/settings/role");
         },
-        onError: (error: any) => {
+        onError: (error: unknown) => {
           const message =
-            error?.response?.data?.message || "Failed to create role";
+            typeof error === "object" && error !== null && "response" in error
+              ? (error as { response?: { data?: { message?: string } } }).response?.data?.message ||
+                "Failed to create role"
+              : "Failed to create role";
           toast.error(message);
         },
       }

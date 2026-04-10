@@ -89,9 +89,12 @@ export default function EditAdminPage() {
           toast.success("Admin updated successfully");
           router.push("/dashboard/settings/admin");
         },
-        onError: (error: any) => {
+        onError: (error: unknown) => {
           const message =
-            error?.response?.data?.message || "Failed to update admin";
+            typeof error === "object" && error !== null && "response" in error
+              ? (error as { response?: { data?: { message?: string } } }).response?.data?.message ||
+                "Failed to update admin"
+              : "Failed to update admin";
           toast.error(message);
         },
       }

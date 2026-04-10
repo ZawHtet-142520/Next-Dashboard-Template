@@ -71,9 +71,12 @@ export default function CreateAdminPage() {
           toast.success("Admin created successfully");
           router.push("/dashboard/settings/admin");
         },
-        onError: (error: any) => {
+        onError: (error: unknown) => {
           const message =
-            error?.response?.data?.message || "Failed to create admin";
+            typeof error === "object" && error !== null && "response" in error
+              ? (error as { response?: { data?: { message?: string } } }).response?.data?.message ||
+                "Failed to create admin"
+              : "Failed to create admin";
           toast.error(message);
         },
       }

@@ -152,9 +152,12 @@ export default function EditRolePage() {
           toast.success("Role updated successfully");
           router.push("/dashboard/settings/role");
         },
-        onError: (error: any) => {
+        onError: (error: unknown) => {
           const message =
-            error?.response?.data?.message || "Failed to update role";
+            typeof error === "object" && error !== null && "response" in error
+              ? (error as { response?: { data?: { message?: string } } }).response?.data?.message ||
+                "Failed to update role"
+              : "Failed to update role";
           toast.error(message);
         },
       }

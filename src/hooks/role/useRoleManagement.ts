@@ -6,7 +6,6 @@ import {
   useDeleteRole,
   useRoles,
 } from "@/queries";
-import { Role } from "@/types/role";
 
 export function useRoleManagement() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
