@@ -33,6 +33,8 @@ export const useLogin = () => {
       }
     },
     onError: (error: ApiError) => {
+      if (error?.response) return;
+
       toast.error(error?.response?.data?.details?.[0]?.issue || "Login failed");
     },
   });

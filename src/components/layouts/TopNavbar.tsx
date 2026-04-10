@@ -8,8 +8,10 @@ import { useEffect, useState } from "react";
 
 export default function TopNavbar() {
   const { toggleSidebar } = useDashboardStore();
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+
+  const currentTheme = resolvedTheme ?? "light";
 
   // Avoid hydration mismatch
   useEffect(() => {
@@ -18,7 +20,7 @@ export default function TopNavbar() {
 
   if (!mounted) {
     return (
-      <div className="flex items-center justify-between p-4 border-b shadow-sm sticky top-0 rounded-lg bg-white dark:bg-[#2F3349] z-10 animate-pulse">
+      <div className="sticky top-0 z-10 flex items-center justify-between rounded-2xl border border-border/60 bg-card/85 p-4 shadow-sm backdrop-blur-sm animate-pulse">
         <div className="w-6 h-6 bg-gray-300 dark:bg-gray-600 rounded-md" />
         <div className="flex items-center gap-4">
           <div className="w-5 h-5 bg-gray-300 dark:bg-gray-600 rounded-full" />
@@ -30,9 +32,9 @@ export default function TopNavbar() {
   }
 
   return (
-    <div className="flex items-center justify-between p-4 border-b shadow-sm sticky top-0 rounded-lg bg-white dark:bg-[#2F3349] dark:text-white z-10">
+    <div className="sticky top-0 z-10 flex items-center justify-between rounded-2xl border border-border/60 bg-card/85 p-4 text-foreground shadow-sm backdrop-blur-sm">
       <button
-        className="text-gray-700 dark:text-white"
+        className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border/70 bg-background/70 text-foreground transition-colors hover:bg-accent"
         onClick={toggleSidebar}
         aria-label="Toggle Sidebar"
       >
@@ -42,29 +44,26 @@ export default function TopNavbar() {
       <div className="flex items-center gap-4">
         <button
           onClick={() => alert("No new notifications")}
-          className="relative text-gray-700 dark:text-white"
+          className="relative inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border/70 bg-background/70 text-foreground transition-colors hover:bg-accent"
           aria-label="Notifications"
         >
           <Bell className="w-5 h-5" />
-          {/* Red dot for unread notifications */}
-          <span className="absolute top-0 right-0 block w-2 h-2 rounded-full bg-red-500 animate-ping" />
-          <span className="absolute top-0 right-0 block w-2 h-2 rounded-full bg-red-500" />
+          <span className="absolute right-1.5 top-1.5 block h-2 w-2 rounded-full bg-red-500 shadow-[0_0_0_2px_rgba(255,255,255,0.5)] animate-ping" />
+          <span className="absolute right-1.5 top-1.5 block h-2 w-2 rounded-full bg-red-500" />
         </button>
 
-        {/* Theme toggle button */}
         <button
-          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          className="text-gray-700 dark:text-white"
+          onClick={() => setTheme(currentTheme === "dark" ? "light" : "dark")}
+          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border/70 bg-background/70 text-foreground transition-colors hover:bg-accent"
           aria-label="Toggle Dark Mode"
         >
-          {theme === "dark" ? (
+          {currentTheme === "dark" ? (
             <Sun className="w-5 h-5" />
           ) : (
             <Moon className="w-5 h-5" />
           )}
         </button>
 
-        {/* Profile dropdown */}
         <ProfileDropdown />
       </div>
     </div>

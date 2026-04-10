@@ -50,6 +50,55 @@ export const closeSessionExpiredToast = () => {
   }
 };
 
+export const forceLogout = (message?: string) => {
+  if (message) {
+    toast.error(message);
+  }
+
+  useAuthStore.getState().logout();
+
+  if (
+    typeof window !== "undefined" &&
+    !window.location.pathname.startsWith("/login")
+  ) {
+    window.location.href = "/login";
+  }
+};
+
+export const handleAuthErrorStatus = (
+  status?: number,
+  message?: string,
+  details?: { field: string; issue: string }[],
+): boolean => {
+  if (!status) return false;
+
+  if (status === 801) {
+    showErrorToast(message || "Incorrect credentials", details);
+    return true;
+  }
+
+  if (status === 802) {
+    forceLogout(message || "Invalid token or expired token");
+    return true;
+  }
+
+  if (status === 803) {
+    showErrorToast(message || "No permission", details);
+    return true;
+  }
+
+  if (status === 804) {
+    forceLogout(message || "Account suspended");
+    return true;
+  }
+
+  return false;
+};
+
+export const isAuthErrorStatus = (status?: number): boolean => {
+  return status === 801 || status === 802 || status === 803 || status === 804;
+};
+
 let errorToastId: string | null = null;
 
 export const showErrorToast = (

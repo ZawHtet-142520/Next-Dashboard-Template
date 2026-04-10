@@ -23,7 +23,7 @@ interface RolesTableProps {
   roles: Role[];
   rolesLoading: boolean;
   deletingId: string | null;
-  onEdit: (role: Role) => void;
+  onEdit: (roleId: string) => void;
   onDelete: (role: Role) => void;
 }
 
@@ -76,13 +76,14 @@ export function RolesTable({
                         variant="outline"
                         size="sm"
                         disabled={role.type === "system"}
-                        onClick={() => onEdit(role)}
+                        onClick={() => onEdit(role._id)}
                       >
                         Edit
                       </Button>
                       <Button
                         variant="destructive"
                         size="sm"
+                        className="bg-red-600 text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-400"
                         disabled={
                           deletingId === role._id || role.type === "system"
                         }

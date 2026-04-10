@@ -51,7 +51,7 @@ const LoginPage = () => {
   }, [router, initializeAuth, isTokenExpired]);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 min-h-screen bg-white dark:bg-[#2F3349]">
+    <div className="grid min-h-screen grid-cols-1 bg-background text-foreground md:grid-cols-2">
       {/* Left - Form Section */}
       <div className="flex items-center justify-center px-6 py-12">
         <form
@@ -59,10 +59,10 @@ const LoginPage = () => {
           className="w-full max-w-md space-y-6"
         >
           <div>
-            <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
+            <h1 className="text-2xl font-semibold text-foreground">
               Welcome back
             </h1>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-muted-foreground">
               Please enter your details
             </p>
           </div>
@@ -70,7 +70,7 @@ const LoginPage = () => {
           <div className="space-y-4">
             <div>
               <label
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                className="mb-2 block text-sm font-medium text-foreground"
                 htmlFor="email"
               >
                 Email
@@ -82,7 +82,7 @@ const LoginPage = () => {
                 {...register("identifier")}
               />
               {errors.identifier && (
-                <p className="text-sm text-red-500 dark:text-red-400 mt-1">
+                <p className="mt-1 text-sm text-destructive">
                   {errors.identifier.message}
                 </p>
               )}
@@ -90,7 +90,7 @@ const LoginPage = () => {
 
             <div>
               <label
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                className="mb-2 block text-sm font-medium text-foreground"
                 htmlFor="password"
               >
                 Password
@@ -105,32 +105,36 @@ const LoginPage = () => {
                 <button
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
-                  className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500 dark:text-gray-400"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
               {errors.password && (
-                <p className="text-sm text-red-500 dark:text-red-400 mt-1">
+                <p className="mt-1 text-sm text-destructive">
                   {errors.password.message}
                 </p>
               )}
             </div>
 
-            <div className="flex justify-between items-center text-sm">
-              <label className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                <input type="checkbox" className="accent-purple-600" />
+            <div className="flex items-center justify-between text-sm">
+              <label className="flex items-center gap-2 text-muted-foreground">
+                <input type="checkbox" className="accent-primary" />
                 Remember me
               </label>
               <Link
                 href="/forgot-password"
-                className="text-purple-600 dark:text-purple-400 hover:underline"
+                className="text-primary hover:underline"
               >
                 Forgot password?
               </Link>
             </div>
 
-            <Button type="submit" disabled={isLoading} className="w-full">
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="h-11 w-full border border-transparent bg-primary font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 dark:border-primary/40 disabled:cursor-not-allowed disabled:opacity-60"
+            >
               {isLoading ? "Logging in..." : "Login"}
             </Button>
           </div>
@@ -138,7 +142,7 @@ const LoginPage = () => {
       </div>
 
       {/* Right - Illustration */}
-      <div className="hidden md:flex items-center justify-center bg-[#E9E5FB] dark:bg-[#3a3f5c]">
+      <div className="hidden items-center justify-center bg-secondary md:flex">
         <Image
           src="/photos/login.png"
           alt="Illustration"

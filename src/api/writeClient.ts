@@ -5,6 +5,7 @@ import {
   decrementApiLoading,
   incrementApiLoading,
 } from "@/lib/apiLoadingStore";
+import { handleAuthErrorStatus, showErrorToast } from "@/lib/showErrorToast";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL ||
@@ -37,6 +38,21 @@ openWriteClient.interceptors.response.use(
   },
   (error) => {
     decrementApiLoading();
+    if (axios.isAxiosError(error)) {
+      const status = error.response?.data?.status;
+      const message = error.response?.data?.message;
+      const details = error.response?.data?.details;
+
+      const isHandledAuthStatus = handleAuthErrorStatus(
+        status,
+        message,
+        details,
+      );
+
+      if (!isHandledAuthStatus) {
+        showErrorToast(message || "An error occurred. Please try again.", details);
+      }
+    }
     return Promise.reject(error);
   },
 );
@@ -67,15 +83,19 @@ writeClient.interceptors.response.use(
   },
   (error) => {
     decrementApiLoading();
-    if (axios.isAxiosError(error) && error.response?.status === 401) {
-      toast.error("Session expired. Please login again");
-      Cookies.remove("token");
-      // Only redirect if not already on login page and if running in browser
-      if (
-        typeof window !== "undefined" &&
-        !window.location.pathname.startsWith("/login")
-      ) {
-        window.location.href = "/login";
+    if (axios.isAxiosError(error)) {
+      const status = error.response?.data?.status;
+      const message = error.response?.data?.message;
+      const details = error.response?.data?.details;
+
+      const isHandledAuthStatus = handleAuthErrorStatus(
+        status,
+        message,
+        details,
+      );
+
+      if (!isHandledAuthStatus) {
+        showErrorToast(message || "An error occurred. Please try again.", details);
       }
     }
     return Promise.reject(error);

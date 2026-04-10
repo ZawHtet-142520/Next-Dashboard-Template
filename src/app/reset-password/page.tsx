@@ -50,7 +50,7 @@ const ResetPasswordForm = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 min-h-screen bg-white dark:bg-[#2F3349]">
+    <div className="grid min-h-screen grid-cols-1 bg-background text-foreground md:grid-cols-2">
       {/* Left - Form Section */}
       <div className="flex items-center justify-center px-6 py-12">
         <form
@@ -58,10 +58,10 @@ const ResetPasswordForm = () => {
           className="w-full max-w-md space-y-6"
         >
           <div>
-            <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
+            <h1 className="text-2xl font-semibold text-foreground">
               Reset Password
             </h1>
-            <p className="text-sm text-gray-600 dark:text-gray-500 mt-2">
+            <p className="mt-2 text-sm text-muted-foreground">
               Enter your new password below
             </p>
           </div>
@@ -69,7 +69,7 @@ const ResetPasswordForm = () => {
           <div className="space-y-4">
             <div>
               <label
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                className="mb-2 block text-sm font-medium text-foreground"
                 htmlFor="password"
               >
                 New Password
@@ -84,25 +84,29 @@ const ResetPasswordForm = () => {
                 <button
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
-                  className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500 dark:text-gray-400"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
               {errors.newPassword && (
-                <p className="text-sm text-red-500 dark:text-red-400 mt-1">
+                <p className="mt-1 text-sm text-destructive">
                   {errors.newPassword.message}
                 </p>
               )}
             </div>
 
-            <Button type="submit" disabled={isLoading} className="w-full">
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="w-full border border-transparent dark:border-primary/40"
+            >
               {isLoading ? "Resetting..." : "Reset Password"}
             </Button>
 
-            <p className="text-center text-sm text-gray-700 dark:text-gray-300">
+            <p className="text-center text-sm text-muted-foreground">
               Remember your password?{" "}
-              <Link href="/login" className="text-purple-600 hover:underline">
+              <Link href="/login" className="text-primary hover:underline">
                 Back to login
               </Link>
             </p>
@@ -111,7 +115,7 @@ const ResetPasswordForm = () => {
       </div>
 
       {/* Right - Illustration */}
-      <div className="hidden md:flex items-center justify-center bg-[#E9E5FB] dark:bg-[#3a3f5c]">
+      <div className="hidden items-center justify-center bg-secondary md:flex">
         <Image
           src="/photos/login.png"
           alt="Illustration"
@@ -128,8 +132,8 @@ const ResetPasswordPage = () => {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-white dark:bg-[#2F3349] flex items-center justify-center">
-          <p className="text-gray-900 dark:text-white">Loading...</p>
+        <div className="flex min-h-screen items-center justify-center bg-background text-foreground">
+          <p className="text-foreground">Loading...</p>
         </div>
       }
     >

@@ -1,4 +1,4 @@
-import { showErrorToast, showSessionExpiredToast } from "@/lib/showErrorToast";
+import { handleAuthErrorStatus, showErrorToast } from "@/lib/showErrorToast";
 import {
   decrementApiLoading,
   incrementApiLoading,
@@ -41,14 +41,18 @@ readClient.interceptors.response.use(
   (error) => {
     decrementApiLoading();
     if (axios.isAxiosError(error)) {
-      const status = error.response?.status;
+      const status = error.response?.data?.status;
       const errorMessage =
         error.response?.data?.message || "An error occurred. Please try again.";
       const details = error.response?.data?.details;
 
-      if (status === 401) {
-        showSessionExpiredToast();
-      } else {
+      const isHandledAuthStatus = handleAuthErrorStatus(
+        status,
+        errorMessage,
+        details,
+      );
+
+      if (!isHandledAuthStatus) {
         showErrorToast(errorMessage, details);
       }
     }

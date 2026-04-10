@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useModalPortal } from "@/hooks/useModalPortal";
 import { UseFormReturn } from "react-hook-form";
 import { UpdateNotificationTemplateType } from "@/schemas/updateNotificationTemplateSchema";
 
@@ -23,7 +24,10 @@ export function EditNotificationTemplateModal({
   onClose,
   updateNotificationTemplate,
 }: EditNotificationTemplateModalProps) {
-  if (!open) return null;
+  const { isMounted, createPortal } = useModalPortal();
+
+  if (!open || !isMounted) return null;
+
   const {
     register,
     handleSubmit,
@@ -32,11 +36,11 @@ export function EditNotificationTemplateModal({
     setValue,
   } = updateNotificationForm;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-3xl max-h-lvh overflow-scroll rounded-lg border bg-background p-6 shadow-lg">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/35 backdrop-blur-sm dark:bg-black/80 dark:backdrop-blur-md p-4">
+      <div className="w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-lg border border-slate-200 bg-white p-6 text-slate-900 shadow-lg dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
         <div className="mb-4">
-          <h2 className="text-lg font-semibold">Edit Template</h2>
-          <p className="text-sm text-muted-foreground">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Edit Template</h2>
+          <p className="text-sm text-slate-600 dark:text-slate-300">
             Update template details
           </p>
         </div>
@@ -46,7 +50,7 @@ export function EditNotificationTemplateModal({
           className="space-y-3"
         >
           <div className="space-y-1.5">
-            <label htmlFor="subject" className="text-sm font-medium">
+            <label htmlFor="subject" className="text-sm font-medium text-slate-900 dark:text-slate-100">
               Subject
             </label>
             <Input
@@ -62,7 +66,7 @@ export function EditNotificationTemplateModal({
           </div>
 
           <div className="space-y-1.5">
-            <label htmlFor="edit-admin-email" className="text-sm font-medium">
+            <label htmlFor="edit-admin-email" className="text-sm font-medium text-slate-900 dark:text-slate-100">
               Template
             </label>
             <JoditEditor
@@ -110,4 +114,6 @@ export function EditNotificationTemplateModal({
       </div>
     </div>
   );
+
+  return createPortal(modalContent);
 }

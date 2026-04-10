@@ -28,6 +28,8 @@ export const useVerifyOtp = () => {
       }
     },
     onError: (error: ApiError) => {
+      if (error?.response) return;
+
       toast.error(
         error?.response?.data?.details?.[0]?.issue ||
           error?.response?.data?.message ||

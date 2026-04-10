@@ -22,7 +22,12 @@ export function RoleHeader({
         </p>
       </div>
       <div className="flex items-center gap-2">
-        <Button onClick={onOpenCreate}>Create Role</Button>
+        <Button
+          onClick={onOpenCreate}
+          className="border border-transparent dark:border-primary/40"
+        >
+          Create Role
+        </Button>
         <Button onClick={onRefresh} disabled={rolesLoading} variant="outline">
           {rolesLoading ? "Refreshing..." : "Refresh"}
         </Button>

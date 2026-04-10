@@ -43,6 +43,18 @@ export interface GetAdminsResponse {
   };
 }
 
+export interface GetAdminResponse {
+  success: boolean;
+  message: string;
+  status: number;
+  data: {
+    admin: AdminItem;
+    fileLocation?: {
+      admin?: string;
+    };
+  };
+}
+
 export interface CreateAdminPayload {
   username: string;
   email: string;
@@ -78,6 +90,17 @@ export interface UpdateAdminResponse {
 }
 
 export interface DeleteAdminResponse {
+  success: boolean;
+  message: string;
+  status: number;
+}
+
+export interface ChangeAdminPasswordPayload {
+  oldPassword: string;
+  newPassword: string;
+}
+
+export interface ChangeAdminPasswordResponse {
   success: boolean;
   message: string;
   status: number;

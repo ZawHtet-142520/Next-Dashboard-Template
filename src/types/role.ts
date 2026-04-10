@@ -41,6 +41,7 @@ export interface GetRolesResponse {
 export interface CreateRolePayload {
   name: string;
   description: string;
+  permissions?: string[];
 }
 
 export interface CreateRoleResponse {

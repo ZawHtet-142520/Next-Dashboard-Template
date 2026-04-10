@@ -44,7 +44,12 @@ export function AdminHeader({
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button onClick={onOpenCreate}>Create Admin</Button>
+          <Button
+            onClick={onOpenCreate}
+            className="border border-transparent dark:border-primary/40"
+          >
+            Create Admin
+          </Button>
           <Button onClick={onClearFilters} variant="outline">
             Clear Filters
           </Button>

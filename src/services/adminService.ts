@@ -1,9 +1,12 @@
 import { readClient } from "@/api/readClient";
 import { writeClient } from "@/api/writeClient";
 import {
+  ChangeAdminPasswordPayload,
+  ChangeAdminPasswordResponse,
   CreateAdminPayload,
   CreateAdminResponse,
   DeleteAdminResponse,
+  GetAdminResponse,
   GetAdminsParams,
   GetAdminsResponse,
   UpdateAdminPayload,
@@ -33,6 +36,11 @@ export const getAdmins = async (
   params?: GetAdminsParams,
 ): Promise<GetAdminsResponse> => {
   const response = await readClient.get("/api/v1/admins", { params });
+  return response.data;
+};
+
+export const getAdminById = async (adminId: string): Promise<GetAdminResponse> => {
+  const response = await readClient.get(`/api/v1/admins/${adminId}`);
   return response.data;
 };
 
@@ -71,5 +79,12 @@ export const deleteAdmin = async (
   adminId: string,
 ): Promise<DeleteAdminResponse> => {
   const response = await writeClient.delete(`/api/v1/admins/${adminId}`);
+  return response.data;
+};
+
+export const changeAdminPassword = async (
+  payload: ChangeAdminPasswordPayload,
+): Promise<ChangeAdminPasswordResponse> => {
+  const response = await writeClient.patch("/api/v1/admins/password", payload);
   return response.data;
 };

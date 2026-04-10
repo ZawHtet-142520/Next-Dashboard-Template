@@ -72,13 +72,13 @@ const VerifyOtpForm = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 min-h-screen bg-white dark:bg-[#2F3349]">
+    <div className="grid min-h-screen grid-cols-1 bg-background text-foreground md:grid-cols-2">
       {/* Left - Form Section */}
       <div className="flex items-center justify-center px-6 py-12">
         <div className="w-full max-w-md space-y-6">
           <Link
             href="/forgot-password"
-            className="inline-flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             <ArrowLeft size={16} />
             Back to forgot password
@@ -86,12 +86,12 @@ const VerifyOtpForm = () => {
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div>
-              <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
+              <h1 className="text-2xl font-semibold text-foreground">
                 Verify OTP
               </h1>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+              <p className="mt-2 text-sm text-muted-foreground">
                 We&apos;ve sent a 6-digit verification code to{" "}
-                <span className="font-medium text-gray-900 dark:text-white">
+                <span className="font-medium text-foreground">
                   {email}
                 </span>
               </p>
@@ -100,7 +100,7 @@ const VerifyOtpForm = () => {
             <div className="space-y-4">
               <div>
                 <label
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  className="mb-2 block text-sm font-medium text-foreground"
                   htmlFor="otp"
                 >
                   Verification Code
@@ -114,13 +114,17 @@ const VerifyOtpForm = () => {
                   className="text-center text-2xl tracking-widest"
                 />
                 {errors.otpCode && (
-                  <p className="text-sm text-red-500 dark:text-red-400 mt-1">
+                  <p className="mt-1 text-sm text-destructive">
                     {errors.otpCode.message}
                   </p>
                 )}
               </div>
 
-              <Button type="submit" disabled={isLoading} className="w-full">
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="w-full border border-transparent dark:border-primary/40"
+              >
                 {isLoading ? "Verifying..." : "Verify OTP"}
               </Button>
 
@@ -129,14 +133,14 @@ const VerifyOtpForm = () => {
                   <button
                     type="button"
                     onClick={handleResendOtp}
-                    className="text-sm text-purple-600 dark:text-purple-400 hover:underline"
+                    className="text-sm text-primary hover:underline"
                   >
                     Resend OTP
                   </button>
                 ) : (
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-sm text-muted-foreground">
                     Resend OTP in{" "}
-                    <span className="font-medium text-gray-900 dark:text-white">
+                    <span className="font-medium text-foreground">
                       {countdown}s
                     </span>
                   </p>
@@ -148,7 +152,7 @@ const VerifyOtpForm = () => {
       </div>
 
       {/* Right - Illustration */}
-      <div className="hidden md:flex items-center justify-center bg-[#E9E5FB] dark:bg-[#3a3f5c]">
+      <div className="hidden items-center justify-center bg-secondary md:flex">
         <Image
           src="/photos/login.png"
           alt="Illustration"
@@ -165,8 +169,8 @@ const VerifyOtpPage = () => {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-white dark:bg-[#2F3349] flex items-center justify-center">
-          <p className="text-gray-900 dark:text-white">Loading...</p>
+        <div className="flex min-h-screen items-center justify-center bg-background text-foreground">
+          <p className="text-foreground">Loading...</p>
         </div>
       }
     >

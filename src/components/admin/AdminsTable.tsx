@@ -34,7 +34,7 @@ interface AdminsTableProps {
   page: number;
   pageSize: number;
   deletingId: string | null;
-  onEdit: (admin: AdminItem) => void;
+  onEdit: (adminId: string) => void;
   onDelete: (admin: AdminItem) => void;
   onPageSizeChange: (value: number) => void;
   onPageChange: (nextPage: number) => void;
@@ -134,13 +134,14 @@ export function AdminsTable({
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => onEdit(admin)}
+                          onClick={() => onEdit(admin._id)}
                         >
                           Edit
                         </Button>
                         <Button
                           variant="destructive"
                           size="sm"
+                          className="bg-red-600 text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-400"
                           disabled={deletingId === admin._id}
                           onClick={() => onDelete(admin)}
                         >

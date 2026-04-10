@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import type { SidebarLink } from "@/types/sidebar";
 
 export default function Sidebar() {
-  const { sidebarOpen, setSidebarOpen, mainOpen } = useDashboardStore();
+  const { sidebarOpen } = useDashboardStore();
   const pathname = usePathname();
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
@@ -33,30 +33,24 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`bg-white shadow border-r dark:border-r-0 transition-all duration-300 ease-in-out
+      className={`border-r border-sidebar-border bg-sidebar text-sidebar-foreground shadow-[0_0_40px_-28px_rgba(8,12,34,0.8)] transition-all duration-300 ease-in-out
       ${sidebarOpen ? "w-[250px]" : "w-[80px]"}
       flex flex-col h-screen`}
     >
-      <div className="flex items-center justify-center h-16 sticky top-0 bg-white z-10 dark:bg-[#2F3349] text-gray-700 dark:text-white">
+      <div className="sticky top-0 z-10 flex h-16 items-center justify-center border-b border-sidebar-border bg-sidebar">
         {sidebarOpen ? (
-          <h2 className="text-2xl font-bold text-nowrap">Mail Dashboard</h2>
+          <h2 className="text-nowrap text-2xl font-bold text-sidebar-foreground">
+            Mail Dashboard
+          </h2>
         ) : (
-          <span className="text-2xl">MVS</span>
+          <span className="text-xl font-bold text-sidebar-foreground">M</span>
         )}
       </div>
 
       <nav
-        onMouseEnter={() => {
-          if (!sidebarOpen) {
-            setSidebarOpen(true);
-          }
-        }}
-        onMouseLeave={() => {
-          if (!mainOpen) {
-            setSidebarOpen(false);
-          }
-        }}
-        className="flex-1 overflow-y-auto px-4 pt-4 space-y-2 dark:bg-[#2F3349] dark:text-white scrollbar scrollbar-thumb-rounded-md scrollbar-thumb-blue-500"
+        className={`flex-1 overflow-y-auto pt-4 space-y-2 bg-sidebar scrollbar scrollbar-thumb-rounded-md scrollbar-thumb-slate-400/70 ${
+          sidebarOpen ? "px-4" : "px-2"
+        }`}
       >
         {loading
           ? Array.from({ length: 15 }).map((_, i) => (
@@ -69,36 +63,57 @@ export default function Sidebar() {
               <div key={idx}>
                 {item.children ? (
                   <div className="space-y-2">
+                    {(() => {
+                      const hasActiveChild = item.children.some(
+                        (child) => child.href === pathname,
+                      );
+                      const parentStateClass = hasActiveChild
+                        ? sidebarOpen
+                          ? "bg-sidebar-primary/15 text-sidebar-primary"
+                          : "bg-sidebar-primary text-sidebar-primary-foreground"
+                        : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground";
+
+                      return (
                     <button
                       onClick={() => handleDropdownClick(idx)}
-                      className="flex items-center justify-between w-full text-gray-700 dark:text-white font-semibold px-2 py-2 rounded hover:bg-blue-400"
+                      className={`flex items-center w-full font-semibold rounded transition-colors ${parentStateClass} ${
+                        sidebarOpen
+                          ? "justify-between px-2 py-2"
+                          : "mx-auto h-11 w-11 justify-center p-0"
+                      }`}
                     >
-                      <div className="flex items-center gap-3">
-                        <item.icon className="w-5 h-5 dark:text-white" />
+                      <div
+                        className={`flex items-center ${
+                          sidebarOpen ? "gap-3" : "justify-center"
+                        }`}
+                      >
+                        <item.icon className="w-5 h-5" />
                         {sidebarOpen && <span>{item.label}</span>}
                       </div>
                       {sidebarOpen &&
                         (openDropdown === idx ? (
-                          <ChevronDown className="w-4 h-4 dark:text-white" />
+                          <ChevronDown className="w-4 h-4" />
                         ) : (
-                          <ChevronRight className="w-4 h-4 dark:text-white" />
+                          <ChevronRight className="w-4 h-4" />
                         ))}
                     </button>
+                      );
+                    })()}
                     {sidebarOpen && openDropdown === idx && (
                       <div className="ml-2 space-y-1 animate-slide-down">
                         {item.children.map((child, ci) => (
                           <Link
                             key={ci}
                             href={child.href}
-                            className={`block px-2 py-2 rounded hover:bg-blue-400 ${
+                            className={`block px-2 py-2 rounded transition-colors ${
                               pathname === child.href
-                                ? "bg-[#9087F3] font-medium"
-                                : ""
+                                ? "bg-sidebar-primary text-sidebar-primary-foreground font-medium"
+                                : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                             }`}
                           >
                             <div className="flex items-center gap-3">
-                              <span className="flex items-center gap-2 text-gray-700 dark:text-white text-nowrap">
-                                <DotIcon />
+                              <span className="flex items-center gap-2 text-nowrap">
+                                <DotIcon className="h-4 w-4" />
                                 {child.label}
                               </span>
                             </div>
@@ -110,16 +125,18 @@ export default function Sidebar() {
                 ) : (
                   <Link
                     href={item.href!}
-                    className={`flex items-center gap-3 px-2 py-2 rounded group ${
-                      pathname === item.href ? "bg-[#9087F3] font-medium" : ""
+                    className={`flex items-center rounded group transition-colors ${
+                      pathname === item.href
+                        ? "bg-sidebar-primary text-sidebar-primary-foreground font-medium"
+                        : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                    } ${
+                      sidebarOpen
+                        ? "gap-3 px-2 py-2"
+                        : "mx-auto h-11 w-11 justify-center p-0"
                     }`}
                   >
-                    <item.icon className="w-5 h-5 text-gray-700 dark:text-white" />
-                    {sidebarOpen && (
-                      <span className="text-gray-700 dark:text-white">
-                        {item.label}
-                      </span>
-                    )}
+                    <item.icon className="w-5 h-5" />
+                    {sidebarOpen && <span>{item.label}</span>}
                   </Link>
                 )}
               </div>

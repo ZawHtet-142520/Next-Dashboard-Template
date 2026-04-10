@@ -1,14 +1,11 @@
-import { LayoutDashboard, Settings } from "lucide-react";
+import { MessageSquareMore, Settings } from "lucide-react";
 import type { SidebarLink } from "@/types/sidebar";
 
 export const sidebarLinks: SidebarLink[] = [
   {
-    label: "Dashboard",
-    icon: LayoutDashboard,
-    children: [
-      { label: "Overview", href: "/dashboard" },
-      { label: "Analytics", href: "/dashboard/analytics" },
-    ],
+    label: "Messages",
+    icon: MessageSquareMore,
+    href: "/dashboard/messages",
   },
   {
     label: "Settings",
