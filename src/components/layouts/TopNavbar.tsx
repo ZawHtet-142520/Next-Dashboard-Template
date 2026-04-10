@@ -1,7 +1,7 @@
 "use client";
 
 import { useDashboardStore } from "@/stores/useDashboardStore";
-import { Menu, Moon, Sun, Bell } from "lucide-react";
+import { Menu, Moon, Sun } from "lucide-react";
 import ProfileDropdown from "./ProfileDropdown";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
