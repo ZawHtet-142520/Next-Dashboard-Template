@@ -1,13 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -34,7 +28,6 @@ export function NotificationTemplatesTable({
     <Card>
       <CardHeader>
         <CardTitle>Templates ({templates.length})</CardTitle>
-        <CardDescription>Current templates from the API</CardDescription>
       </CardHeader>
       <CardContent>
         {templatesResponseLoading ? (

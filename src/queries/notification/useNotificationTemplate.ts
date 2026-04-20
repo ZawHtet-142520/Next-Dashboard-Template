@@ -1,7 +1,7 @@
 import { getAllNotificationTemplates } from "@/services/notificationTemplateService";
 import { useQuery } from "@tanstack/react-query";
 
-export const useNotificateTemplate = () => {
+export const useNotificationTemplate = () => {
   return useQuery({
     queryKey: ["templates"],
     queryFn: getAllNotificationTemplates,
