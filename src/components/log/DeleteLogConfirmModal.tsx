@@ -21,10 +21,12 @@ export function DeleteLogConfirmModal({
   if (!open || !isMounted) return null;
 
   const modalContent = (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/35 backdrop-blur-sm dark:bg-black/80 dark:backdrop-blur-md p-4">
-      <div className="w-full max-w-md max-h-[90vh] overflow-y-auto rounded-lg border border-slate-200 bg-white p-6 text-slate-900 shadow-lg dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
-        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Delete Log</h2>
-        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/35 backdrop-blur-[4px]  p-4">
+      <div className="w-full max-w-md max-h-[90vh] overflow-y-auto rounded-lg border border-slate-200 bg-[var(--background)] p-6 shadow-lg dark:border-slate-700">
+        <h2 className="text-lg font-semibold text-[var(--secondary-foreground)]">
+          Delete Log
+        </h2>
+        <p className="mt-2 text-sm text-[var(--foreground)]">
           Are you sure you want to delete this log? This action cannot be
           undone.
         </p>
@@ -43,6 +45,7 @@ export function DeleteLogConfirmModal({
             variant="destructive"
             onClick={onConfirm}
             disabled={isPending}
+            className="bg-red-600 text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-400"
           >
             {isPending ? "Deleting..." : "Delete"}
           </Button>

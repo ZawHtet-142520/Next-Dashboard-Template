@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { useModalPortal } from "@/hooks/useModalPortal";
 import { UseFormReturn } from "react-hook-form";
 import { UpdateNotificationTemplateType } from "@/schemas/updateNotificationTemplateSchema";
+import { useTheme } from "next-themes";
+import { useMemo } from "react";
 
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
@@ -26,6 +28,27 @@ export function EditNotificationTemplateModal({
 }: EditNotificationTemplateModalProps) {
   const { isMounted, createPortal } = useModalPortal();
 
+  const { theme } = useTheme();
+
+  // Memoize the config to prevent unnecessary recalculations on each render
+  const config = useMemo(
+    () => ({
+      readonly: false,
+      placeholder: "",
+      height: 300,
+      buttons: "bold,italic,underline,|,link,|,table,source",
+      theme: theme,
+      style: {
+        background: theme === "dark" ? "#1b1919" : "oklch(1 0 0)",
+        color: theme === "dark" ? "#ffffff" : "#000000",
+      },
+      askBeforePasteFromHTML: false, // Prevent modal asking to keep HTML
+      askBeforePasteHTML: false, // Prevent modal for HTML paste
+      pasteHTML: true, // Automatically paste HTML
+    }),
+    [theme],
+  );
+
   if (!open || !isMounted) return null;
 
   const {
@@ -36,11 +59,13 @@ export function EditNotificationTemplateModal({
     setValue,
   } = updateNotificationForm;
   const modalContent = (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/35 backdrop-blur-sm dark:bg-black/80 dark:backdrop-blur-md p-4">
-      <div className="w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-lg border border-slate-200 bg-white p-6 text-slate-900 shadow-lg dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/35 backdrop-blur-[4px]  p-4">
+      <div className="w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-lg border border-slate-200 bg-[var(--background)] p-6 shadow-lg dark:border-slate-700">
         <div className="mb-4">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Edit Template</h2>
-          <p className="text-sm text-slate-600 dark:text-slate-300">
+          <h2 className="text-lg font-semibold text-[var(--secodary-foreground)]">
+            Edit Template
+          </h2>
+          <p className="text-sm text-[var(--foreground)]">
             Update template details
           </p>
         </div>
@@ -50,7 +75,10 @@ export function EditNotificationTemplateModal({
           className="space-y-3"
         >
           <div className="space-y-1.5">
-            <label htmlFor="subject" className="text-sm font-medium text-slate-900 dark:text-slate-100">
+            <label
+              htmlFor="subject"
+              className="text-sm font-medium text-slate-900 dark:text-slate-100"
+            >
               Subject
             </label>
             <Input
@@ -66,22 +94,16 @@ export function EditNotificationTemplateModal({
           </div>
 
           <div className="space-y-1.5">
-            <label htmlFor="edit-admin-email" className="text-sm font-medium text-slate-900 dark:text-slate-100">
+            <label
+              htmlFor="edit-admin-email"
+              className="text-sm font-medium text-slate-900 dark:text-slate-100"
+            >
               Template
             </label>
             <JoditEditor
               onChange={(value) => setValue("template", value)}
               value={getValues("template")}
-              config={{
-                height: 250,
-                toolbarSticky: false,
-                showCharsCounter: false,
-                showWordsCounter: false,
-                saveSelectionOnBlur: false,
-                uploader: {
-                  url: "data:text/plain,disabled",
-                },
-              }}
+              config={config}
             />
             {errors.template && (
               <span className="text-sm text-destructive">

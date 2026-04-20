@@ -23,8 +23,8 @@ export function DeleteAdminConfirmModal({
   if (!open || !isMounted) return null;
 
   const modalContent = (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-      <div className="w-full max-w-md max-h-[90vh] overflow-y-auto rounded-lg border border-border bg-card p-6 text-foreground shadow-lg shadow-slate-900/5">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/35 backdrop-blur-[4px]  p-4">
+      <div className="w-full max-w-md max-h-[90vh] overflow-y-auto rounded-lg border border-border bg-card p-6 bg-[var(--background)] text-foreground shadow-lg shadow-slate-900/5">
         <h2 className="text-lg font-semibold text-foreground">Delete Admin</h2>
         <p className="mt-2 text-sm text-muted-foreground">
           Are you sure you want to delete{" "}

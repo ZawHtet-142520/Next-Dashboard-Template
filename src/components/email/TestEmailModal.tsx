@@ -31,16 +31,21 @@ export function TestEmailModal({
   if (!open || !isMounted) return null;
 
   const modalContent = (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/35 backdrop-blur-sm dark:bg-black/80 dark:backdrop-blur-md p-4">
-      <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-lg border border-slate-200 bg-white p-6 text-slate-900 shadow-lg dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/35 backdrop-blur-[4px]  p-4">
+      <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-lg border border-slate-200 bg-[var(--background)] p-6 shadow-lg dark:border-slate-700">
         <div className="mb-4">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Test Email</h2>
-          <p className="text-sm text-slate-600 dark:text-slate-300">Try to send email</p>
+          <h2 className="text-lg font-semibold text-[var(--secondary-foreground)]">
+            Test Email
+          </h2>
+          <p className="text-sm text-[var(--foreground)]">Try to send email</p>
         </div>
 
         <form onSubmit={handleSubmit(sendEmail)} className="space-y-3">
           <div className="space-y-1.5">
-            <label htmlFor="from" className="text-sm font-medium text-slate-900 dark:text-slate-100">
+            <label
+              htmlFor="from"
+              className="text-sm font-medium text-slate-900 dark:text-slate-100"
+            >
               From
             </label>
             <Input id="from" placeholder="From" {...register("from")} />
@@ -52,7 +57,10 @@ export function TestEmailModal({
           </div>
 
           <div className="space-y-1.5">
-            <label htmlFor="email" className="text-sm font-medium text-slate-900 dark:text-slate-100">
+            <label
+              htmlFor="email"
+              className="text-sm font-medium text-slate-900 dark:text-slate-100"
+            >
               Email
             </label>
             <Input
@@ -69,7 +77,10 @@ export function TestEmailModal({
           </div>
 
           <div className="space-y-1.5">
-            <label htmlFor="subject" className="text-sm font-medium text-slate-900 dark:text-slate-100">
+            <label
+              htmlFor="subject"
+              className="text-sm font-medium text-slate-900 dark:text-slate-100"
+            >
               Subject
             </label>
             <Input
@@ -86,7 +97,10 @@ export function TestEmailModal({
           </div>
 
           <div className="space-y-1.5">
-            <label htmlFor="body" className="text-sm font-medium text-slate-900 dark:text-slate-100">
+            <label
+              htmlFor="body"
+              className="text-sm font-medium text-slate-900 dark:text-slate-100"
+            >
               Body
             </label>
             <Input

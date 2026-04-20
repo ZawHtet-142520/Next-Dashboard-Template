@@ -58,14 +58,14 @@ export function EditWebsiteModal({
   if (!open) return null;
 
   return (
-    <div className="fixed h-screen inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-lg max-h-svh overflow-auto rounded-lg border bg-background p-6 shadow-lg">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/35 backdrop-blur-[4px]  p-4">
+      <div className="w-full max-w-lg max-h-svh overflow-auto rounded-lg border bg-[var(--background)] p-6 shadow-lg">
         <div className="mb-4">
           <h2 className="text-lg font-semibold">Edit Website</h2>
         </div>
 
         <form onSubmit={handleSubmit(onEditWebsite)} className="space-y-3">
-          <div className="rounded-xl border bg-slate-50/60 p-4">
+          <div className="rounded-xl border bg-[var(--background)] p-4">
             <p className="mb-3 text-sm font-medium">Website Logo</p>
             <div className="flex items-center gap-4">
               <div className="relative h-20 w-20 overflow-hidden rounded-full border bg-slate-200">

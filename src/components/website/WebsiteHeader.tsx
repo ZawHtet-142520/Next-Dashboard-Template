@@ -65,7 +65,10 @@ export function WebsiteHeader({
               <ChevronDownIcon />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto overflow-hidden p-0" align="center">
+          <PopoverContent
+            className="w-auto overflow-hidden p-0 bg-[var(--background)]"
+            align="center"
+          >
             <Calendar
               mode="single"
               captionLayout="dropdown"
@@ -90,7 +93,10 @@ export function WebsiteHeader({
               <ChevronDownIcon />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto overflow-hidden p-0" align="center">
+          <PopoverContent
+            className="w-auto overflow-hidden p-0 bg-[var(--background)]"
+            align="center"
+          >
             <Calendar
               mode="single"
               captionLayout="dropdown"

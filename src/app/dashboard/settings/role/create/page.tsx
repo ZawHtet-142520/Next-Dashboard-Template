@@ -22,11 +22,14 @@ export default function CreateRolePage() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [selectedPermissionIds, setSelectedPermissionIds] = useState<string[]>([]);
+  const [selectedPermissionIds, setSelectedPermissionIds] = useState<string[]>(
+    [],
+  );
   const [permissionSearch, setPermissionSearch] = useState("");
 
   const createRoleMutation = useCreateRole();
-  const { data: permissionNamesResponse, isFetching: permissionsLoading } = usePermissionNames(true);
+  const { data: permissionNamesResponse, isFetching: permissionsLoading } =
+    usePermissionNames(true);
 
   const permissionGroups = useMemo(
     () => permissionNamesResponse?.data ?? {},
@@ -138,12 +141,12 @@ export default function CreateRolePage() {
         onError: (error: unknown) => {
           const message =
             typeof error === "object" && error !== null && "response" in error
-              ? (error as { response?: { data?: { message?: string } } }).response?.data?.message ||
-                "Failed to create role"
+              ? (error as { response?: { data?: { message?: string } } })
+                  .response?.data?.message || "Failed to create role"
               : "Failed to create role";
           toast.error(message);
         },
-      }
+      },
     );
   };
 
@@ -170,187 +173,194 @@ export default function CreateRolePage() {
 
         {/* Form Card */}
         <div className="rounded-2xl border border-border bg-card p-8 shadow-lg shadow-slate-900/5">
-        <form onSubmit={onSubmit} className="space-y-3">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <div className="space-y-1.5">
-              <label
-                htmlFor="role-name"
-                className="text-sm font-medium text-foreground"
-              >
-                Name *
-              </label>
-              <Input
-                id="role-name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Enter role name"
-                required
-              />
-            </div>
-
-            <div className="space-y-1.5">
-              <label
-                htmlFor="role-description"
-                className="text-sm font-medium text-foreground"
-              >
-                Description
-              </label>
-              <Input
-                id="role-description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Description"
-                required
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <p className="text-sm font-medium text-foreground">Permissions</p>
-            {permissionsLoading ? (
-              <p className="text-sm text-muted-foreground">
-                Loading permissions...
-              </p>
-            ) : shownPermissionCount === 0 && filteredPermissionGroups.length === 0 && !permissionSearch ? (
-              <p className="text-sm text-muted-foreground">
-                No permissions available
-              </p>
-            ) : (
-              <div className="rounded-xl border bg-muted/40 p-3">
-                <div className="mb-3 flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <span className="rounded-md bg-emerald-100 px-2 py-1 text-emerald-700">
-                      Selected:{selectedPermissionIds.length}
-                    </span>
-                    <span>{shownPermissionCount} shown</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={selectShownPermissions}
-                      disabled={shownPermissionCount === 0}
-                    >
-                      Select Shown
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={clearAllPermissions}
-                      disabled={selectedPermissionIds.length === 0}
-                    >
-                      clear
-                    </Button>
-                  </div>
-                </div>
-
-                <div className="relative mb-3">
-                  <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                  <Input
-                    value={permissionSearch}
-                    onChange={(e) => setPermissionSearch(e.target.value)}
-                    placeholder="Search permission name, resource, action..."
-                    className="pl-8"
-                  />
-                </div>
-
-                <div className="max-h-64 space-y-3 overflow-y-auto rounded-md border bg-background p-2">
-                  {filteredPermissionGroups.map(([resource, permissions]) => {
-                    const allSelected =
-                      permissions.length > 0 &&
-                      permissions.every((permission) =>
-                        selectedPermissionIds.includes(permission._id),
-                      );
-
-                    return (
-                      <div
-                        key={resource}
-                        className="rounded-md border border-border p-2"
-                      >
-                        <div className="mb-2 flex items-center justify-between rounded-md bg-muted/60 px-3 py-1.5">
-                          <p className="text-xs font-semibold uppercase tracking-wide text-foreground">
-                            {resource}
-                          </p>
-                          <button
-                            type="button"
-                            onClick={() =>
-                              toggleGroupPermissions(
-                                permissions,
-                                !allSelected,
-                              )
-                            }
-                            className="text-xs font-medium text-foreground hover:underline"
-                          >
-                            {allSelected ? "Clear Group" : "Select Group"}
-                          </button>
-                        </div>
-
-                        <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                          {permissions.map((permission) => {
-                            const checked = selectedPermissionIds.includes(
-                              permission._id,
-                            );
-
-                            return (
-                              <div
-                                key={permission._id}
-                                className="flex items-start gap-2 rounded-md p-2"
-                              >
-                                <button
-                                  type="button"
-                                  role="switch"
-                                  aria-checked={checked}
-                                  onClick={() =>
-                                    togglePermission(permission._id)
-                                  }
-                                  className={`mt-0.5 h-5 w-9 rounded-full transition ${
-                                    checked ? "bg-emerald-500" : "bg-muted"
-                                  }`}
-                                >
-                                  <span
-                                    className={`block h-4 w-4 rounded-full bg-background transition ${
-                                      checked
-                                        ? "translate-x-4"
-                                        : "translate-x-0.5"
-                                    }`}
-                                  />
-                                </button>
-                                <div>
-                                  <p className="text-sm font-semibold text-foreground">
-                                    {permission.name}
-                                  </p>
-                                  <p className="text-xs text-muted-foreground">
-                                    {getPermissionHint(permission)}
-                                  </p>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
+          <form onSubmit={onSubmit} className="space-y-3">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <div className="space-y-1.5">
+                <label
+                  htmlFor="role-name"
+                  className="text-sm font-medium text-foreground"
+                >
+                  Name *
+                </label>
+                <Input
+                  id="role-name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Enter role name"
+                  required
+                />
               </div>
-            )}
-          </div>
 
-          <div className="flex items-center justify-end gap-2 pt-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => router.back()}
-              disabled={createRoleMutation.isPending}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" disabled={createRoleMutation.isPending || permissionsLoading}>
-              {createRoleMutation.isPending ? "Creating..." : "Create"}
-            </Button>
-          </div>
-        </form>
+              <div className="space-y-1.5">
+                <label
+                  htmlFor="role-description"
+                  className="text-sm font-medium text-foreground"
+                >
+                  Description
+                </label>
+                <Input
+                  id="role-description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="Description"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-foreground">Permissions</p>
+              {permissionsLoading ? (
+                <p className="text-sm text-muted-foreground">
+                  Loading permissions...
+                </p>
+              ) : shownPermissionCount === 0 &&
+                filteredPermissionGroups.length === 0 &&
+                !permissionSearch ? (
+                <p className="text-sm text-muted-foreground">
+                  No permissions available
+                </p>
+              ) : (
+                <div className="rounded-xl border bg-muted/40 p-3">
+                  <div className="mb-3 flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <span className="rounded-md bg-emerald-100 px-2 py-1 text-emerald-700">
+                        Selected:{selectedPermissionIds.length}
+                      </span>
+                      <span>{shownPermissionCount} shown</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={selectShownPermissions}
+                        disabled={shownPermissionCount === 0}
+                      >
+                        Select Shown
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={clearAllPermissions}
+                        disabled={selectedPermissionIds.length === 0}
+                      >
+                        clear
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="relative mb-3">
+                    <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                    <Input
+                      value={permissionSearch}
+                      onChange={(e) => setPermissionSearch(e.target.value)}
+                      placeholder="Search permission name, resource, action..."
+                      className="pl-8"
+                    />
+                  </div>
+
+                  <div className="max-h-64 space-y-3 overflow-y-auto rounded-md border bg-background p-2">
+                    {filteredPermissionGroups.map(([resource, permissions]) => {
+                      const allSelected =
+                        permissions.length > 0 &&
+                        permissions.every((permission) =>
+                          selectedPermissionIds.includes(permission._id),
+                        );
+
+                      return (
+                        <div
+                          key={resource}
+                          className="rounded-md border border-border p-2"
+                        >
+                          <div className="mb-2 flex items-center justify-between rounded-md bg-muted/60 px-3 py-1.5">
+                            <p className="text-xs font-semibold uppercase tracking-wide text-foreground">
+                              {resource}
+                            </p>
+                            <button
+                              type="button"
+                              onClick={() =>
+                                toggleGroupPermissions(
+                                  permissions,
+                                  !allSelected,
+                                )
+                              }
+                              className="text-xs font-medium text-foreground hover:underline"
+                            >
+                              {allSelected ? "Clear Group" : "Select Group"}
+                            </button>
+                          </div>
+
+                          <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                            {permissions.map((permission) => {
+                              const checked = selectedPermissionIds.includes(
+                                permission._id,
+                              );
+
+                              return (
+                                <div
+                                  key={permission._id}
+                                  className="flex items-start gap-2 rounded-md p-2"
+                                >
+                                  <button
+                                    type="button"
+                                    role="switch"
+                                    aria-checked={checked}
+                                    onClick={() =>
+                                      togglePermission(permission._id)
+                                    }
+                                    className={`mt-0.5 h-5 w-9 rounded-full transition ${
+                                      checked
+                                        ? "bg-emerald-500"
+                                        : "bg-[var(--muted)]"
+                                    }`}
+                                  >
+                                    <span
+                                      className={`block h-4 w-4 rounded-full bg-background transition ${
+                                        checked
+                                          ? "translate-x-4"
+                                          : "translate-x-0.5"
+                                      }`}
+                                    />
+                                  </button>
+                                  <div>
+                                    <p className="text-sm font-semibold text-foreground">
+                                      {permission.name}
+                                    </p>
+                                    <p className="text-xs text-muted-foreground">
+                                      {getPermissionHint(permission)}
+                                    </p>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="flex items-center justify-end gap-2 pt-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => router.back()}
+                disabled={createRoleMutation.isPending}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                disabled={createRoleMutation.isPending || permissionsLoading}
+              >
+                {createRoleMutation.isPending ? "Creating..." : "Create"}
+              </Button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
