@@ -37,12 +37,14 @@ export function MessageDetailsModal({
   if (!open || !isMounted) return null;
 
   const modalContent = (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/35 backdrop-blur-sm dark:bg-black/80 dark:backdrop-blur-md p-4">
-      <div className="w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-lg border border-slate-200 bg-white p-6 text-slate-900 shadow-lg dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/35 backdrop-blur-[4px]  p-4">
+      <div className="w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-lg border border-slate-200 bg-[var(--background)] p-6 text-[var(--foreground)] shadow-lg">
         <div className="mb-4 flex items-start justify-between gap-3">
           <div>
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Message Details</h2>
-            <p className="text-sm text-slate-600 dark:text-slate-300">
+            <h2 className="text-lg font-semibold text-[var(--foreground)]">
+              Message Details
+            </h2>
+            <p className="text-sm text-[var(--foreground)]">
               View full contact message data
             </p>
           </div>
@@ -52,32 +54,38 @@ export function MessageDetailsModal({
         </div>
 
         {isLoading ? (
-          <div className="text-sm text-slate-600 dark:text-slate-300">
+          <div className="text-sm text-[var(--foreground)]">
             Loading message details...
           </div>
         ) : !message ? (
-          <div className="text-sm text-slate-600 dark:text-slate-300">
+          <div className="text-sm text-[var(--foreground)]">
             Unable to load message details.
           </div>
         ) : (
           <div className="space-y-4">
             <div className="grid grid-cols-1 gap-3 rounded-lg border border-slate-200 p-3 md:grid-cols-2 dark:border-slate-700">
               <div>
-                <p className="text-xs text-slate-600 dark:text-slate-300">Website</p>
-                <p className="font-medium text-slate-900 dark:text-slate-100">{message.website?.name || "-"}</p>
+                <p className="text-xs text-[var(--foreground)]">Website</p>
+                <p className="font-medium text-[var(--secondary-foreground)]">
+                  {message.website?.name || "-"}
+                </p>
               </div>
               <div>
-                <p className="text-xs text-slate-600 dark:text-slate-300">Website Email</p>
-                <p className="font-medium text-slate-900 dark:text-slate-100">{message.website?.email || "-"}</p>
+                <p className="text-xs text-[var(--foreground)]">
+                  Website Email
+                </p>
+                <p className="font-medium text-[var(--secondary-foreground)]">
+                  {message.website?.email || "-"}
+                </p>
               </div>
               <div>
-                <p className="text-xs text-slate-600 dark:text-slate-300">Organization</p>
-                <p className="font-medium text-slate-900 dark:text-slate-100">
+                <p className="text-xs text-[var(--foreground)]">Organization</p>
+                <p className="font-medium text-[var(--secondary-foreground)]">
                   {message.website?.organization || "-"}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-slate-600 dark:text-slate-300">Status</p>
+                <p className="text-xs text-[var(--foreground)]">Status</p>
                 <span
                   className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium capitalize ${getStatusClasses(message.status || "pending")}`}
                 >
@@ -85,16 +93,16 @@ export function MessageDetailsModal({
                 </span>
               </div>
               <div>
-                <p className="text-xs text-slate-600 dark:text-slate-300">Created At</p>
-                <p className="font-medium text-slate-900 dark:text-slate-100">
+                <p className="text-xs text-[var(--foreground)]">Created At</p>
+                <p className="font-medium text-[var(--secondary-foreground)]">
                   {message.createdAt
                     ? format(message.createdAt, "dd MMM yyyy, hh:mm:ss a")
                     : "-"}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-slate-600 dark:text-slate-300">Updated At</p>
-                <p className="font-medium text-slate-900 dark:text-slate-100">
+                <p className="text-xs text-[var(--foreground)]">Updated At</p>
+                <p className="font-medium text-[var(--secondary-foreground)]">
                   {message.updatedAt
                     ? format(message.updatedAt, "dd MMM yyyy, hh:mm:ss a")
                     : "-"}
@@ -103,14 +111,19 @@ export function MessageDetailsModal({
             </div>
 
             <div className="rounded-lg border border-slate-200 p-3 dark:border-slate-700">
-              <p className="mb-2 text-sm font-medium text-slate-900 dark:text-slate-100">Payload</p>
+              <p className="mb-2 text-sm font-medium text-[var(--secondary-foreground)]">
+                Payload
+              </p>
               <div className="space-y-2">
                 {Object.entries(message.payload || {}).map(([key, value]) => (
-                  <div key={key} className="grid grid-cols-1 gap-1 md:grid-cols-5">
-                    <p className="text-xs font-medium uppercase tracking-wide text-slate-600 dark:text-slate-300 md:col-span-2">
+                  <div
+                    key={key}
+                    className="grid grid-cols-1 gap-1 md:grid-cols-5"
+                  >
+                    <p className="text-xs font-medium uppercase tracking-wide text-[var(--foreground)] md:col-span-2">
                       {key.replaceAll("_", " ")}
                     </p>
-                    <p className="text-sm text-slate-900 dark:text-slate-100 md:col-span-3 break-words">
+                    <p className="text-sm text-[var(--secondary-foreground)] md:col-span-3 break-words">
                       {value === null || value === undefined || value === ""
                         ? "-"
                         : String(value)}

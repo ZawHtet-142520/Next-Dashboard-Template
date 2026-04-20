@@ -54,10 +54,7 @@ export default function Sidebar() {
       >
         {loading
           ? Array.from({ length: 15 }).map((_, i) => (
-              <div
-                key={i}
-                className="h-10 rounded bg-gray-200 dark:bg-gray-700 animate-pulse"
-              />
+              <div key={i} className="h-10 rounded bg-gray-400 animate-pulse" />
             ))
           : sidebarLinks.map((item: SidebarLink, idx: number) => (
               <div key={idx}>
@@ -74,29 +71,29 @@ export default function Sidebar() {
                         : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground";
 
                       return (
-                    <button
-                      onClick={() => handleDropdownClick(idx)}
-                      className={`flex items-center w-full font-semibold rounded transition-colors ${parentStateClass} ${
-                        sidebarOpen
-                          ? "justify-between px-2 py-2"
-                          : "mx-auto h-11 w-11 justify-center p-0"
-                      }`}
-                    >
-                      <div
-                        className={`flex items-center ${
-                          sidebarOpen ? "gap-3" : "justify-center"
-                        }`}
-                      >
-                        <item.icon className="w-5 h-5" />
-                        {sidebarOpen && <span>{item.label}</span>}
-                      </div>
-                      {sidebarOpen &&
-                        (openDropdown === idx ? (
-                          <ChevronDown className="w-4 h-4" />
-                        ) : (
-                          <ChevronRight className="w-4 h-4" />
-                        ))}
-                    </button>
+                        <button
+                          onClick={() => handleDropdownClick(idx)}
+                          className={`flex items-center w-full font-semibold rounded transition-colors ${parentStateClass} ${
+                            sidebarOpen
+                              ? "justify-between px-2 py-2"
+                              : "mx-auto h-11 w-11 justify-center p-0"
+                          }`}
+                        >
+                          <div
+                            className={`flex items-center ${
+                              sidebarOpen ? "gap-3" : "justify-center"
+                            }`}
+                          >
+                            <item.icon className="w-5 h-5" />
+                            {sidebarOpen && <span>{item.label}</span>}
+                          </div>
+                          {sidebarOpen &&
+                            (openDropdown === idx ? (
+                              <ChevronDown className="w-4 h-4" />
+                            ) : (
+                              <ChevronRight className="w-4 h-4" />
+                            ))}
+                        </button>
                       );
                     })()}
                     {sidebarOpen && openDropdown === idx && (

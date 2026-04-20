@@ -62,7 +62,7 @@ export function MessageHeader({
           <SelectTrigger>
             <SelectValue placeholder="All status" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-[var(--background)]">
             <SelectItem value="all">All status</SelectItem>
             <SelectItem value="pending">Pending</SelectItem>
             <SelectItem value="success">Success</SelectItem>
@@ -79,7 +79,7 @@ export function MessageHeader({
           <SelectTrigger>
             <SelectValue placeholder="All websites" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-[var(--background)]">
             <SelectItem value="all">All websites</SelectItem>
             {websiteOptions.map((website) => (
               <SelectItem key={website._id} value={website._id}>

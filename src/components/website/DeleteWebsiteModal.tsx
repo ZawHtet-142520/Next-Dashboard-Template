@@ -18,11 +18,11 @@ export function DeleteWebsiteConfirmModal({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-md rounded-lg border bg-background p-6 shadow-lg">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/35 backdrop-blur-[4px]  p-4">
+      <div className="w-full max-w-md rounded-lg border bg-[var(--background)] p-6 shadow-lg">
         <h2 className="text-lg font-semibold">Delete Website</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          Are you sure you want to delete{" "}
+          <span>Are you sure you want to delete this </span>
           <span className="font-medium text-foreground">website</span>? This
           action cannot be undone.
         </p>
@@ -41,6 +41,7 @@ export function DeleteWebsiteConfirmModal({
             variant="destructive"
             onClick={onConfirm}
             disabled={isPending}
+            className="bg-red-600 text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-400"
           >
             {isPending ? "Deleting..." : "Delete"}
           </Button>

@@ -141,6 +141,7 @@ export function LogsTable({
                           size="sm"
                           disabled={deletingId === log._id}
                           onClick={() => onDelete(log)}
+                          className="bg-red-600 text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-400"
                         >
                           {deletingId === log._id ? "Deleting..." : "Delete"}
                         </Button>

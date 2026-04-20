@@ -53,7 +53,11 @@ export function LogHeader({
           <h1 className="text-2xl font-semibold">{title}</h1>
         </div>
         <div className="flex items-center gap-2">
-          <Button onClick={onDelete} variant="destructive">
+          <Button
+            onClick={onDelete}
+            variant="destructive"
+            className="bg-red-600 text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-400"
+          >
             Delete All Logs
           </Button>
           <Button onClick={onClearFilters} variant="outline">
@@ -78,7 +82,7 @@ export function LogHeader({
           <SelectTrigger>
             <SelectValue placeholder="All roles" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-[var(--background)]">
             <SelectItem value="all">All roles</SelectItem>
             {roleOptions.map((role) => (
               <SelectItem key={role._id} value={role._id}>
@@ -99,7 +103,10 @@ export function LogHeader({
               <ChevronDownIcon />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto overflow-hidden p-0" align="center">
+          <PopoverContent
+            className="w-auto overflow-hidden p-0 bg-[var(--background)]"
+            align="center"
+          >
             <Calendar
               mode="single"
               captionLayout="dropdown"
@@ -124,7 +131,10 @@ export function LogHeader({
               <ChevronDownIcon />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto overflow-hidden p-0" align="center">
+          <PopoverContent
+            className="w-auto overflow-hidden p-0 bg-[var(--background)]"
+            align="center"
+          >
             <Calendar
               mode="single"
               captionLayout="dropdown"

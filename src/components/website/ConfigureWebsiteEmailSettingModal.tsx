@@ -36,8 +36,8 @@ export function ConfigureWebsiteEmailSettingModal({
   } = configureEmailSettingForm;
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-lg rounded-lg border bg-background p-6 shadow-lg">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/35 backdrop-blur-[4px]  p-4">
+      <div className="w-full max-w-lg rounded-lg border bg-[var(--background)] p-6 shadow-lg">
         <div className="mb-4">
           <h2 className="text-lg font-semibold">Configure Setting</h2>
         </div>

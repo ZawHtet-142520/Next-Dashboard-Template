@@ -72,7 +72,7 @@ export function AdminHeader({
           <SelectTrigger>
             <SelectValue placeholder="All status" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-[var(--background)]">
             <SelectItem value="all">All status</SelectItem>
             <SelectItem value="active">Active</SelectItem>
             <SelectItem value="inactive">Inactive</SelectItem>
@@ -88,7 +88,7 @@ export function AdminHeader({
           <SelectTrigger>
             <SelectValue placeholder="All roles" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-[var(--background)]">
             <SelectItem value="all">All roles</SelectItem>
             {roleOptions.map((role) => (
               <SelectItem key={role._id} value={role._id}>

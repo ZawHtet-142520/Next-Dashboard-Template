@@ -74,12 +74,12 @@ export default function CreateAdminPage() {
         onError: (error: unknown) => {
           const message =
             typeof error === "object" && error !== null && "response" in error
-              ? (error as { response?: { data?: { message?: string } } }).response?.data?.message ||
-                "Failed to create admin"
+              ? (error as { response?: { data?: { message?: string } } })
+                  .response?.data?.message || "Failed to create admin"
               : "Failed to create admin";
           toast.error(message);
         },
-      }
+      },
     );
   };
 
@@ -106,159 +106,173 @@ export default function CreateAdminPage() {
 
         {/* Form Card */}
         <div className="rounded-2xl border border-border bg-card p-8 shadow-lg shadow-slate-900/5">
-        <form onSubmit={onSubmit} className="space-y-4">
-          {/* Profile Section */}
-          <div className="rounded-xl border border-border bg-muted/35 p-4">
-            <p className="mb-3 text-sm font-semibold text-foreground">Profile Photo</p>
-            <div className="flex items-center gap-4">
-              <div className="relative h-20 w-20 overflow-hidden rounded-full border border-border bg-background">
-                {profilePreview ? (
-                  <Image
-                    src={profilePreview}
-                    alt="Profile preview"
-                    fill
-                    sizes="80px"
-                    className="object-cover"
-                    unoptimized
+          <form onSubmit={onSubmit} className="space-y-4">
+            {/* Profile Section */}
+            <div className="rounded-xl border border-border bg-muted/35 p-4">
+              <p className="mb-3 text-sm font-semibold text-foreground">
+                Profile Photo
+              </p>
+              <div className="flex items-center gap-4">
+                <div className="relative h-20 w-20 overflow-hidden rounded-full border border-border bg-background">
+                  {profilePreview ? (
+                    <Image
+                      src={profilePreview}
+                      alt="Profile preview"
+                      fill
+                      sizes="80px"
+                      className="object-cover"
+                      unoptimized
+                    />
+                  ) : (
+                    <div className="grid h-full w-full place-items-center text-xl font-semibold text-muted-foreground">
+                      {(name?.trim()?.charAt(0) || "A").toUpperCase()}
+                    </div>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) =>
+                      onProfileFileChange(e.target.files?.[0] || null)
+                    }
                   />
-                ) : (
-                  <div className="grid h-full w-full place-items-center text-xl font-semibold text-muted-foreground">
-                    {(name?.trim()?.charAt(0) || "A").toUpperCase()}
+                  <div className="flex items-center gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="border-border bg-background text-foreground hover:bg-accent"
+                    >
+                      <ImagePlus className="h-4 w-4" />
+                      Pick Image
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      disabled={!profilePreview}
+                      onClick={() => onProfileFileChange(null)}
+                      className="text-foreground hover:text-foreground"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                      Remove
+                    </Button>
                   </div>
-                )}
+                  <p className="text-xs text-muted-foreground">
+                    PNG, JPG, WEBP image files are supported.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Form Fields */}
+            <div className="space-y-4 pt-2">
+              <div className="space-y-2">
+                <label
+                  htmlFor="admin-name"
+                  className="text-sm font-semibold text-foreground"
+                >
+                  Username *
+                </label>
+                <Input
+                  id="admin-name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="e.g., john.doe"
+                  className="h-10 border-input bg-background text-foreground placeholder:text-muted-foreground"
+                  required
+                />
               </div>
 
               <div className="space-y-2">
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={(e) =>
-                    onProfileFileChange(e.target.files?.[0] || null)
-                  }
+                <label
+                  htmlFor="admin-email"
+                  className="text-sm font-semibold text-foreground"
+                >
+                  Email *
+                </label>
+                <Input
+                  id="admin-email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="e.g., admin@example.com"
+                  className="h-10 border-input bg-background text-foreground placeholder:text-muted-foreground"
+                  required
                 />
-                <div className="flex items-center gap-2">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => fileInputRef.current?.click()}
-                    className="border-border bg-background text-foreground hover:bg-accent"
-                  >
-                    <ImagePlus className="h-4 w-4" />
-                    Pick Image
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    disabled={!profilePreview}
-                    onClick={() => onProfileFileChange(null)}
-                    className="text-foreground hover:text-foreground"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                    Remove
-                  </Button>
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  PNG, JPG, WEBP image files are supported.
-                </p>
+              </div>
+
+              <div className="space-y-2">
+                <label
+                  htmlFor="admin-password"
+                  className="text-sm font-semibold text-foreground"
+                >
+                  Password *
+                </label>
+                <Input
+                  id="admin-password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter a strong password"
+                  className="h-10 border-input bg-background text-foreground placeholder:text-muted-foreground"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label
+                  htmlFor="admin-role"
+                  className="text-sm font-semibold text-foreground"
+                >
+                  Role *
+                </label>
+                <select
+                  id="admin-role"
+                  value={roleId}
+                  onChange={(e) => setRoleId(e.target.value)}
+                  className="h-10 w-full rounded-md border border-input bg-[var(--background)] px-3 py-2 text-sm text-foreground focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/20"
+                  required
+                >
+                  <option value="" className="text-foreground">
+                    Select a role
+                  </option>
+                  {roleOptions.map((role) => (
+                    <option
+                      key={role._id}
+                      value={role._id}
+                      className="text-foreground"
+                    >
+                      {role.name}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
-          </div>
 
-          {/* Form Fields */}
-          <div className="space-y-4 pt-2">
-            <div className="space-y-2">
-              <label htmlFor="admin-name" className="text-sm font-semibold text-foreground">
-                Username *
-              </label>
-              <Input
-                id="admin-name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="e.g., john.doe"
-                className="h-10 border-input bg-background text-foreground placeholder:text-muted-foreground"
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="admin-email" className="text-sm font-semibold text-foreground">
-                Email *
-              </label>
-              <Input
-                id="admin-email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="e.g., admin@example.com"
-                className="h-10 border-input bg-background text-foreground placeholder:text-muted-foreground"
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="admin-password" className="text-sm font-semibold text-foreground">
-                Password *
-              </label>
-              <Input
-                id="admin-password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter a strong password"
-                className="h-10 border-input bg-background text-foreground placeholder:text-muted-foreground"
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="admin-role" className="text-sm font-semibold text-foreground">
-                Role *
-              </label>
-              <select
-                id="admin-role"
-                value={roleId}
-                onChange={(e) => setRoleId(e.target.value)}
-                className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/20"
-                required
+            {/* Action Buttons */}
+            <div className="flex items-center justify-between gap-3 border-t border-border pt-6">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => router.back()}
+                disabled={createAdminMutation.isPending}
+                className="border-border bg-background text-foreground hover:bg-accent"
               >
-                <option value="" className="text-foreground">
-                  Select a role
-                </option>
-                {roleOptions.map((role) => (
-                  <option
-                    key={role._id}
-                    value={role._id}
-                    className="text-foreground"
-                  >
-                    {role.name}
-                  </option>
-                ))}
-              </select>
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                disabled={createAdminMutation.isPending}
+                className="bg-primary text-primary-foreground hover:bg-primary/90"
+              >
+                {createAdminMutation.isPending ? "Creating..." : "Create Admin"}
+              </Button>
             </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex items-center justify-between gap-3 border-t border-border pt-6">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => router.back()}
-              disabled={createAdminMutation.isPending}
-              className="border-border bg-background text-foreground hover:bg-accent"
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              disabled={createAdminMutation.isPending}
-              className="bg-primary text-primary-foreground hover:bg-primary/90"
-            >
-              {createAdminMutation.isPending ? "Creating..." : "Create Admin"}
-            </Button>
-          </div>
-        </form>
+          </form>
         </div>
       </div>
     </div>

@@ -1,13 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -124,9 +118,9 @@ export function WebsiteTable({
                   <TableRow key={website._id}>
                     <TableCell>
                       <div className="flex items-center justify-start gap-3">
-                        <div className="w-12.5 h-12.5 flex items-center justify-center border rounded-full">
+                        <div className="w-10 h-10 flex overflow-hidden items-center justify-center border rounded-full">
                           {toLogoPreviewUrl(website.logo) ? (
-                            <div>
+                            <div className="w-full h-full">
                               <Image
                                 src={toLogoPreviewUrl(website.logo)}
                                 width={50}
@@ -191,6 +185,7 @@ export function WebsiteTable({
                           size="sm"
                           disabled={deletingId === website._id}
                           onClick={() => onDelete(website)}
+                          className="bg-red-600 text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-400"
                         >
                           {deletingId === website._id
                             ? "Deleting..."
