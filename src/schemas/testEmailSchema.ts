@@ -1,11 +1,7 @@
 import { z } from "zod";
 
 export const testEmailSchema = z.object({
-  from: z
-    .string()
-    .trim()
-    .min(1, "From name is required")
-    .max(100, "From name too long"),
+  from: z.string().trim().min(1, "From is required").max(100, "Too long"),
   email: z.string().email("Invalid email format").max(255, "Email too long"),
   subject: z
     .string()
