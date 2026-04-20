@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "../ui/input";
 import { updateEmailSettingType } from "@/schemas/updateEmailSettingSchema";
-import { UseFormReturn } from "react-hook-form";
+import { Controller, UseFormReturn } from "react-hook-form";
 import {
   Select,
   SelectContent,
@@ -30,8 +30,7 @@ export function EmailUpdateForm({
     register,
     formState: { errors },
     handleSubmit,
-    setValue,
-    watch,
+    control,
   } = emailSettingForm;
   return (
     <Card>
@@ -45,7 +44,7 @@ export function EmailUpdateForm({
           </div>
         ) : (
           <form onSubmit={handleSubmit(updateEmailSetting)}>
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-3">
+            <div className="grid md:grid-cols-2 sm:grid-cols-1 gap-3">
               <div className="space-y-1.5">
                 <label htmlFor="edit-host" className="text-sm font-medium">
                   Host
@@ -57,7 +56,7 @@ export function EmailUpdateForm({
                   {...register("host")}
                 />
                 {errors.host && (
-                  <span className="text-sm text-destructive">
+                  <span className="text-sm text-[var(--destructive)]">
                     {errors.host.message}
                   </span>
                 )}
@@ -79,7 +78,7 @@ export function EmailUpdateForm({
                   }}
                 />
                 {errors.port && (
-                  <span className="text-sm text-destructive">
+                  <span className="text-sm text-[var(--destructive)]">
                     {errors.port.message}
                   </span>
                 )}
@@ -95,7 +94,7 @@ export function EmailUpdateForm({
                   {...register("authUser")}
                 />
                 {errors.authUser && (
-                  <span className="text-sm text-destructive">
+                  <span className="text-sm text-[var(--destructive)]">
                     {errors.authUser.message}
                   </span>
                 )}
@@ -112,34 +111,40 @@ export function EmailUpdateForm({
                   {...register("authPass")}
                 />
                 {errors.authPass && (
-                  <span className="text-sm text-destructive">
+                  <span className="text-sm text-[var(--destructive)]">
                     {errors.authPass.message}
                   </span>
                 )}
               </div>
-              <div className="space-y-1.5">
+              <div className="space-y-1.5 md:col-span-2 sm:col-span-1">
                 <label
                   htmlFor="edit-admin-email"
                   className="text-sm font-medium"
                 >
                   Secure
                 </label>
-                <Select
-                  onValueChange={(value) =>
-                    setValue("secure", value === "true")
-                  }
-                  value={watch("secure") ? "true" : "false"}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="true">True</SelectItem>
-                    <SelectItem value="false">False</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Controller
+                  name="secure"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      value={Boolean(field.value) ? "true" : "false"}
+                      onValueChange={(value) =>
+                        field.onChange(value === "true")
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-[var(--background)]">
+                        <SelectItem value="true">True</SelectItem>
+                        <SelectItem value="false">False</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
                 {errors.secure && (
-                  <span className="text-sm text-destructive">
+                  <span className="text-sm text-[var(--destructive)]">
                     {errors.secure.message}
                   </span>
                 )}
@@ -155,12 +160,12 @@ export function EmailUpdateForm({
                   {...register("from")}
                 />
                 {errors.from && (
-                  <span className="text-sm text-destructive">
+                  <span className="text-sm text-[var(--destructive)]">
                     {errors.from.message}
                   </span>
                 )}
               </div>
-              <div className="space-y-1.5 lg:col-span-3 md:col-span-2 sm:col-span-1">
+              <div className="space-y-1.5">
                 <label htmlFor="edit-email" className="text-sm font-medium">
                   Email
                 </label>
@@ -171,7 +176,7 @@ export function EmailUpdateForm({
                   {...register("email")}
                 />
                 {errors.email && (
-                  <span className="text-sm text-destructive">
+                  <span className="text-sm text-[var(--destructive)]">
                     {errors.email.message}
                   </span>
                 )}

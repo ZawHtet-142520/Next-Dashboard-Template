@@ -10,6 +10,7 @@ import {
   updateEmailSettingType,
 } from "@/schemas/updateEmailSettingSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -22,8 +23,7 @@ export function useEmailManagement() {
   } = useEmail();
   const [updating, setUpdating] = useState<boolean>(false);
   const [sending, setSending] = useState<boolean>(false);
-  const [isTestEmailModalOpen, setIsTestEmailModalOpen] =
-    useState<boolean>(false);
+  const router = useRouter();
 
   const emailSetting = emailSettingResponse?.data?.emailSetting;
   const emailSettingForm = useForm<updateEmailSettingType>({
@@ -31,7 +31,7 @@ export function useEmailManagement() {
       email: "",
       host: "",
       port: 0,
-      secure: false,
+      secure: true,
       authUser: "",
       authPass: "",
       from: "",
@@ -50,19 +50,21 @@ export function useEmailManagement() {
   });
 
   const resetEmailSettingForm = useCallback(() => {
-    emailSettingForm.reset(emailSetting);
+    if (emailSetting) emailSettingForm.reset(emailSetting);
   }, [emailSettingForm, emailSetting]);
 
   const resetTestEmailForm = useCallback(() => {
-    testEmailForm.reset(emailSetting);
+    if (emailSetting) testEmailForm.reset(emailSetting);
   }, [testEmailForm, emailSetting]);
 
   const updateEmailMutation = useUpdateEmail();
   const testEmailMutation = useTestEmail();
 
   useEffect(() => {
-    resetEmailSettingForm();
-    resetTestEmailForm();
+    if (!emailSettingLoading && !emailSettingFetching) {
+      resetEmailSettingForm();
+      resetTestEmailForm();
+    }
   }, [
     emailSettingLoading,
     emailSettingFetching,
@@ -70,13 +72,13 @@ export function useEmailManagement() {
     resetTestEmailForm,
   ]);
 
-  const openTestEmailModal = () => {
-    setIsTestEmailModalOpen(true);
+  const openTestEmail = () => {
+    router.push("/dashboard/settings/email/test");
   };
 
-  const closeTestEmailModal = () => {
+  const closeTestEmail = () => {
     if (sending) return;
-    setIsTestEmailModalOpen(false);
+    router.push("/dashboard/settings/email");
   };
 
   const updateEmailSetting = async (data: updateEmailSettingType) => {
@@ -102,12 +104,12 @@ export function useEmailManagement() {
     try {
       const response = await testEmailMutation.mutateAsync(data);
       toast.success(response?.message || "Email is sent successfully");
+      closeTestEmail();
     } catch (error) {
       console.error("Failed to send email:", error);
       toast.error("Unable to send email");
     } finally {
       setSending(false);
-      setIsTestEmailModalOpen(false);
     }
   };
 
@@ -119,9 +121,8 @@ export function useEmailManagement() {
     updating,
     testEmailForm,
     sendEmail,
-    openTestEmailModal,
-    closeTestEmailModal,
-    isTestEmailModalOpen,
+    openTestEmail,
+    closeTestEmail,
     sending,
   };
 }
