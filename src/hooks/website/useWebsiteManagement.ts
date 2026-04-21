@@ -14,7 +14,6 @@ import {
   updateWebsiteEmailSettingSchema,
   UpdateWebsiteEmailSettingType,
 } from "@/schemas/updateWebsiteEmailSettingSchema";
-import { getWebsiteEmailSetting } from "@/services/websiteService";
 import { WebsiteItem } from "@/types/website";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -30,8 +29,6 @@ export function useWebsiteManagement() {
   const [search, setSearch] = useState("");
   const [createdAfter, setCreatedAfter] = useState("");
   const [createdBefore, setCreatedBefore] = useState("");
-
-  const [openConfigureModal, setOpenConfigureModal] = useState(false);
 
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [editId, setEditId] = useState<string | null>(null);
@@ -49,7 +46,7 @@ export function useWebsiteManagement() {
   const openCreateWebsite = () => router.push("/dashboard/website/create");
   const closeCreateWebsite = () => router.push("/dashboard/website");
   const closeEditWebsite = () => router.push("/dashboard/website");
-  const closeConfigureModal = () => setOpenConfigureModal(false);
+  const closeConfigure = () => router.push("/dashboard/website");
 
   const onSearchChange = (value: string) => {
     setSearch(value);
@@ -241,29 +238,8 @@ export function useWebsiteManagement() {
     },
   });
 
-  const openConfigureWebsiteEmailSettingModal = async (
-    website: WebsiteItem,
-  ) => {
-    setOpenConfigureModal(true);
-    setConfigureId(website._id);
-    configrueEmailSettingForm.reset({
-      host: "",
-      port: 0,
-      secure: false,
-      authUser: "",
-      authPass: "",
-    });
-    if (website.emailSetting) {
-      const response = await getWebsiteEmailSetting(website._id);
-      const emailSetting = response.data.emailSetting;
-      configrueEmailSettingForm.reset({
-        host: emailSetting.host,
-        port: emailSetting.port,
-        secure: emailSetting.secure,
-        authUser: emailSetting.authUser,
-        authPass: emailSetting.authPass,
-      });
-    }
+  const openConfigureWebsiteEmailSetting = async (website: WebsiteItem) => {
+    router.push(`/dashboard/website/configure/${website._id}`);
   };
 
   const onConfigureWebsiteEmailSetting = async (
@@ -277,8 +253,7 @@ export function useWebsiteManagement() {
         websiteId: configureId,
         payload: emailSetting,
       });
-      configrueEmailSettingForm.reset();
-      setOpenConfigureModal(false);
+      closeConfigure();
       toast.success(response?.message || "Email setting updated successfully");
     } catch (error) {
       console.error("Failed to update email setting:", error);
@@ -326,13 +301,13 @@ export function useWebsiteManagement() {
     editLogoPreview,
     onEditLogoFileChange,
     configrueEmailSettingForm,
-    openConfigureWebsiteEmailSettingModal,
+    openConfigureWebsiteEmailSetting,
     onConfigureWebsiteEmailSetting,
     configureId,
-    openConfigureModal,
-    closeConfigureModal,
+    closeConfigure,
     setEditId,
     setEditLogoFile,
     setEditLogoPreview,
+    setConfigureId,
   };
 }

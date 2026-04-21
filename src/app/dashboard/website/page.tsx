@@ -1,6 +1,5 @@
 "use client";
 
-import { ConfigureWebsiteEmailSettingModal } from "@/components/website/ConfigureWebsiteEmailSettingModal";
 import { DeleteWebsiteConfirmModal } from "@/components/website/DeleteWebsiteModal";
 import { WebsiteHeader } from "@/components/website/WebsiteHeader";
 import { WebsiteTable } from "@/components/website/WebsiteTable";
@@ -29,7 +28,7 @@ export default function WebsitePage() {
         deletingId={website.deletingId}
         onEdit={website.openEditWebsite}
         onDelete={website.openDeleteConfirm}
-        onConfigure={website.openConfigureWebsiteEmailSettingModal}
+        onConfigure={website.openConfigureWebsiteEmailSetting}
         onPageSizeChange={website.onPageSizeChange}
         onPageChange={website.setPage}
         toLogoPreviewUrl={website.toLogoPreviewUrl}
@@ -39,13 +38,6 @@ export default function WebsitePage() {
         isPending={Boolean(website.deletingId)}
         onClose={website.closeDeleteConfirm}
         onConfirm={website.confirmDeleteAdmin}
-      />
-      <ConfigureWebsiteEmailSettingModal
-        open={website.openConfigureModal}
-        isPending={website.isConfiguring}
-        onClose={website.closeConfigureModal}
-        configureEmailSettingForm={website.configrueEmailSettingForm}
-        onSubmit={website.onConfigureWebsiteEmailSetting}
       />
     </div>
   );
