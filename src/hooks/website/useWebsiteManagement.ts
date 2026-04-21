@@ -14,23 +14,21 @@ import {
   updateWebsiteEmailSettingSchema,
   UpdateWebsiteEmailSettingType,
 } from "@/schemas/updateWebsiteEmailSettingSchema";
-import { getWebsiteEmailSetting } from "@/services/websiteService";
 import { WebsiteItem } from "@/types/website";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 export function useWebsiteManagement() {
+  const router = useRouter();
+
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState("");
   const [createdAfter, setCreatedAfter] = useState("");
   const [createdBefore, setCreatedBefore] = useState("");
-
-  const [openCreateModal, setOpenCreateModal] = useState(false);
-  const [openEditModal, setOpenEditModal] = useState(false);
-  const [openConfigureModal, setOpenConfigureModal] = useState(false);
 
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [editId, setEditId] = useState<string | null>(null);
@@ -45,10 +43,10 @@ export function useWebsiteManagement() {
     name: string;
   } | null>(null);
 
-  const openCreateWebisteModal = () => setOpenCreateModal(true);
-  const closeCreateWebsiteModal = () => setOpenCreateModal(false);
-  const closeEditWebsiteModal = () => setOpenEditModal(false);
-  const closeConfigureModal = () => setOpenConfigureModal(false);
+  const openCreateWebsite = () => router.push("/dashboard/website/create");
+  const closeCreateWebsite = () => router.push("/dashboard/website");
+  const closeEditWebsite = () => router.push("/dashboard/website");
+  const closeConfigure = () => router.push("/dashboard/website");
 
   const onSearchChange = (value: string) => {
     setSearch(value);
@@ -105,7 +103,7 @@ export function useWebsiteManagement() {
     resolver: zodResolver(createWebsiteSchama),
   });
 
-  const onCreateWebiste = async (data: CreateWebsiteType) => {
+  const onCreateWebsite = async (data: CreateWebsiteType) => {
     try {
       const response = await createWebsiteMutation.mutateAsync({
         name: data.name,
@@ -117,7 +115,7 @@ export function useWebsiteManagement() {
         organization: data.organization,
       });
       createWebsiteForm.reset();
-      setOpenCreateModal(false);
+      closeCreateWebsite();
       toast.success(response?.message || "Website created successfully");
     } catch (error) {
       console.error("Failed to create website:", error);
@@ -200,20 +198,8 @@ export function useWebsiteManagement() {
     resolver: zodResolver(createWebsiteSchama),
   });
 
-  const openEditWebsiteModal = (website: WebsiteItem) => {
-    setEditLogoFile(undefined);
-    setEditLogoPreview(toLogoPreviewUrl(website.logo));
-    setOpenEditModal(true);
-    setEditId(website._id);
-    editWebsiteForm.reset({
-      name: website.name || undefined,
-      email: website.email || undefined,
-      phone: website.phone || undefined,
-      logo: undefined,
-      url: website.url || undefined,
-      organization: website.organization || undefined,
-      subject: website.subject || undefined,
-    });
+  const openEditWebsite = (website: WebsiteItem) => {
+    router.push(`/dashboard/website/edit/${website._id}`);
   };
 
   const onEditWebsite = async (data: CreateWebsiteType) => {
@@ -233,8 +219,7 @@ export function useWebsiteManagement() {
           organization: data.organization,
         },
       });
-      editWebsiteForm.reset();
-      setOpenEditModal(false);
+      closeEditWebsite();
       toast.success(response?.message || "Website updated successfully");
     } catch (error) {
       console.error("Failed to update website:", error);
@@ -253,29 +238,8 @@ export function useWebsiteManagement() {
     },
   });
 
-  const openConfigureWebsiteEmailSettingModal = async (
-    website: WebsiteItem,
-  ) => {
-    setOpenConfigureModal(true);
-    setConfigureId(website._id);
-    configrueEmailSettingForm.reset({
-      host: "",
-      port: 0,
-      secure: false,
-      authUser: "",
-      authPass: "",
-    });
-    if (website.emailSetting) {
-      const response = await getWebsiteEmailSetting(website._id);
-      const emailSetting = response.data.emailSetting;
-      configrueEmailSettingForm.reset({
-        host: emailSetting.host,
-        port: emailSetting.port,
-        secure: emailSetting.secure,
-        authUser: emailSetting.authUser,
-        authPass: emailSetting.authPass,
-      });
-    }
+  const openConfigureWebsiteEmailSetting = async (website: WebsiteItem) => {
+    router.push(`/dashboard/website/configure/${website._id}`);
   };
 
   const onConfigureWebsiteEmailSetting = async (
@@ -289,8 +253,7 @@ export function useWebsiteManagement() {
         websiteId: configureId,
         payload: emailSetting,
       });
-      configrueEmailSettingForm.reset();
-      setOpenConfigureModal(false);
+      closeConfigure();
       toast.success(response?.message || "Email setting updated successfully");
     } catch (error) {
       console.error("Failed to update email setting:", error);
@@ -308,7 +271,6 @@ export function useWebsiteManagement() {
     websites,
     websiteListLoading,
     deletingId,
-    openCreateModal,
     isCreating: createWebsiteMutation.isPending,
     isEditing: updateWebsiteMutation.isPending,
     isConfiguring: updateWebsiteEmailSettingMutatiion.isPending,
@@ -319,13 +281,13 @@ export function useWebsiteManagement() {
     onSearchChange,
     onCreatedAfterChange,
     onCreatedBeforeChange,
-    openCreateWebisteModal,
+    openCreateWebsite,
     toLogoPreviewUrl,
     setPage,
-    closeCreateWebsiteModal,
-    closeEditWebsiteModal,
+    closeCreateWebsite,
+    closeEditWebsite,
     createWebsiteForm,
-    onCreateWebiste,
+    onCreateWebsite,
     logoPreview,
     onLogoFileChange,
     openDeleteConfirm,
@@ -333,17 +295,19 @@ export function useWebsiteManagement() {
     confirmDeleteAdmin,
     pendingDeleteWebsite,
     organizationOptions,
-    openEditModal,
-    openEditWebsiteModal,
+    openEditWebsite,
     editWebsiteForm,
     onEditWebsite,
     editLogoPreview,
     onEditLogoFileChange,
     configrueEmailSettingForm,
-    openConfigureWebsiteEmailSettingModal,
+    openConfigureWebsiteEmailSetting,
     onConfigureWebsiteEmailSetting,
     configureId,
-    openConfigureModal,
-    closeConfigureModal,
+    closeConfigure,
+    setEditId,
+    setEditLogoFile,
+    setEditLogoPreview,
+    setConfigureId,
   };
 }
