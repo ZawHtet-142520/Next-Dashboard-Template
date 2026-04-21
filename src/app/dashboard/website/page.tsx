@@ -2,7 +2,6 @@
 
 import { ConfigureWebsiteEmailSettingModal } from "@/components/website/ConfigureWebsiteEmailSettingModal";
 import { DeleteWebsiteConfirmModal } from "@/components/website/DeleteWebsiteModal";
-import { EditWebsiteModal } from "@/components/website/EditWebsiteModal";
 import { WebsiteHeader } from "@/components/website/WebsiteHeader";
 import { WebsiteTable } from "@/components/website/WebsiteTable";
 import { useWebsiteManagement } from "@/hooks/website/useWebsiteManagement";
@@ -28,23 +27,12 @@ export default function WebsitePage() {
         page={website.page}
         pageSize={website.limit}
         deletingId={website.deletingId}
-        onEdit={website.openEditWebsiteModal}
+        onEdit={website.openEditWebsite}
         onDelete={website.openDeleteConfirm}
         onConfigure={website.openConfigureWebsiteEmailSettingModal}
         onPageSizeChange={website.onPageSizeChange}
         onPageChange={website.setPage}
         toLogoPreviewUrl={website.toLogoPreviewUrl}
-      />
-
-      <EditWebsiteModal
-        open={website.openEditModal}
-        isPending={website.isEditing}
-        onClose={website.closeEditWebsiteModal}
-        onEditWebsite={website.onEditWebsite}
-        editWebsiteForm={website.editWebsiteForm}
-        logoPreview={website.editLogoPreview}
-        onLogoFileChange={website.onEditLogoFileChange}
-        organizationOptions={website.organizationOptions}
       />
       <DeleteWebsiteConfirmModal
         open={Boolean(website.pendingDeleteWebsite)}

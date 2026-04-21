@@ -31,7 +31,6 @@ export function useWebsiteManagement() {
   const [createdAfter, setCreatedAfter] = useState("");
   const [createdBefore, setCreatedBefore] = useState("");
 
-  const [openEditModal, setOpenEditModal] = useState(false);
   const [openConfigureModal, setOpenConfigureModal] = useState(false);
 
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -49,7 +48,7 @@ export function useWebsiteManagement() {
 
   const openCreateWebsite = () => router.push("/dashboard/website/create");
   const closeCreateWebsite = () => router.push("/dashboard/website");
-  const closeEditWebsiteModal = () => setOpenEditModal(false);
+  const closeEditWebsite = () => router.push("/dashboard/website");
   const closeConfigureModal = () => setOpenConfigureModal(false);
 
   const onSearchChange = (value: string) => {
@@ -202,20 +201,8 @@ export function useWebsiteManagement() {
     resolver: zodResolver(createWebsiteSchama),
   });
 
-  const openEditWebsiteModal = (website: WebsiteItem) => {
-    setEditLogoFile(undefined);
-    setEditLogoPreview(toLogoPreviewUrl(website.logo));
-    setOpenEditModal(true);
-    setEditId(website._id);
-    editWebsiteForm.reset({
-      name: website.name || undefined,
-      email: website.email || undefined,
-      phone: website.phone || undefined,
-      logo: undefined,
-      url: website.url || undefined,
-      organization: website.organization || undefined,
-      subject: website.subject || undefined,
-    });
+  const openEditWebsite = (website: WebsiteItem) => {
+    router.push(`/dashboard/website/edit/${website._id}`);
   };
 
   const onEditWebsite = async (data: CreateWebsiteType) => {
@@ -235,8 +222,7 @@ export function useWebsiteManagement() {
           organization: data.organization,
         },
       });
-      editWebsiteForm.reset();
-      setOpenEditModal(false);
+      closeEditWebsite();
       toast.success(response?.message || "Website updated successfully");
     } catch (error) {
       console.error("Failed to update website:", error);
@@ -324,7 +310,7 @@ export function useWebsiteManagement() {
     toLogoPreviewUrl,
     setPage,
     closeCreateWebsite,
-    closeEditWebsiteModal,
+    closeEditWebsite,
     createWebsiteForm,
     onCreateWebsite,
     logoPreview,
@@ -334,8 +320,7 @@ export function useWebsiteManagement() {
     confirmDeleteAdmin,
     pendingDeleteWebsite,
     organizationOptions,
-    openEditModal,
-    openEditWebsiteModal,
+    openEditWebsite,
     editWebsiteForm,
     onEditWebsite,
     editLogoPreview,
@@ -346,5 +331,8 @@ export function useWebsiteManagement() {
     configureId,
     openConfigureModal,
     closeConfigureModal,
+    setEditId,
+    setEditLogoFile,
+    setEditLogoPreview,
   };
 }
