@@ -1,7 +1,6 @@
 "use client";
 
 import { ConfigureWebsiteEmailSettingModal } from "@/components/website/ConfigureWebsiteEmailSettingModal";
-import { CreateWebsiteModal } from "@/components/website/CreateWebsiteModal";
 import { DeleteWebsiteConfirmModal } from "@/components/website/DeleteWebsiteModal";
 import { EditWebsiteModal } from "@/components/website/EditWebsiteModal";
 import { WebsiteHeader } from "@/components/website/WebsiteHeader";
@@ -13,7 +12,7 @@ export default function WebsitePage() {
   return (
     <div className="space-y-4">
       <WebsiteHeader
-        onOpenCreate={website.openCreateWebisteModal}
+        onOpenCreate={website.openCreateWebsite}
         onClearFilters={website.clearFilters}
         search={website.search}
         onSearchChange={website.onSearchChange}
@@ -36,16 +35,7 @@ export default function WebsitePage() {
         onPageChange={website.setPage}
         toLogoPreviewUrl={website.toLogoPreviewUrl}
       />
-      <CreateWebsiteModal
-        open={website.openCreateModal}
-        isPending={website.isCreating}
-        onClose={website.closeCreateWebsiteModal}
-        onCreateWebsite={website.onCreateWebiste}
-        createWebsiteForm={website.createWebsiteForm}
-        logoPreview={website.logoPreview}
-        onLogoFileChange={website.onLogoFileChange}
-        organizationOptions={website.organizationOptions}
-      />
+
       <EditWebsiteModal
         open={website.openEditModal}
         isPending={website.isEditing}

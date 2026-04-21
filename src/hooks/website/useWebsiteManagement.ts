@@ -17,18 +17,20 @@ import {
 import { getWebsiteEmailSetting } from "@/services/websiteService";
 import { WebsiteItem } from "@/types/website";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 export function useWebsiteManagement() {
+  const router = useRouter();
+
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState("");
   const [createdAfter, setCreatedAfter] = useState("");
   const [createdBefore, setCreatedBefore] = useState("");
 
-  const [openCreateModal, setOpenCreateModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openConfigureModal, setOpenConfigureModal] = useState(false);
 
@@ -45,8 +47,8 @@ export function useWebsiteManagement() {
     name: string;
   } | null>(null);
 
-  const openCreateWebisteModal = () => setOpenCreateModal(true);
-  const closeCreateWebsiteModal = () => setOpenCreateModal(false);
+  const openCreateWebsite = () => router.push("/dashboard/website/create");
+  const closeCreateWebsite = () => router.push("/dashboard/website");
   const closeEditWebsiteModal = () => setOpenEditModal(false);
   const closeConfigureModal = () => setOpenConfigureModal(false);
 
@@ -105,7 +107,7 @@ export function useWebsiteManagement() {
     resolver: zodResolver(createWebsiteSchama),
   });
 
-  const onCreateWebiste = async (data: CreateWebsiteType) => {
+  const onCreateWebsite = async (data: CreateWebsiteType) => {
     try {
       const response = await createWebsiteMutation.mutateAsync({
         name: data.name,
@@ -117,7 +119,7 @@ export function useWebsiteManagement() {
         organization: data.organization,
       });
       createWebsiteForm.reset();
-      setOpenCreateModal(false);
+      closeCreateWebsite();
       toast.success(response?.message || "Website created successfully");
     } catch (error) {
       console.error("Failed to create website:", error);
@@ -308,7 +310,6 @@ export function useWebsiteManagement() {
     websites,
     websiteListLoading,
     deletingId,
-    openCreateModal,
     isCreating: createWebsiteMutation.isPending,
     isEditing: updateWebsiteMutation.isPending,
     isConfiguring: updateWebsiteEmailSettingMutatiion.isPending,
@@ -319,13 +320,13 @@ export function useWebsiteManagement() {
     onSearchChange,
     onCreatedAfterChange,
     onCreatedBeforeChange,
-    openCreateWebisteModal,
+    openCreateWebsite,
     toLogoPreviewUrl,
     setPage,
-    closeCreateWebsiteModal,
+    closeCreateWebsite,
     closeEditWebsiteModal,
     createWebsiteForm,
-    onCreateWebiste,
+    onCreateWebsite,
     logoPreview,
     onLogoFileChange,
     openDeleteConfirm,
