@@ -163,10 +163,10 @@ export function CreateWebsiteModal({
               Organization
             </label>
             <Select onValueChange={(value) => setValue("organization", value)}>
-              <SelectTrigger className="w-full">
+              <SelectTrigger className="w-full bg-[var(--background)] text-foreground">
                 <SelectValue placeholder="Select organization" />
               </SelectTrigger>
-              <SelectContent className="w-full">
+              <SelectContent className="w-[var(--radix-select-trigger-width)] border-border bg-[var(--background)] text-popover-foreground">
                 <div className="max-h-48 overflow-auto">
                   <SelectGroup>
                     <SelectLabel className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
@@ -177,7 +177,7 @@ export function CreateWebsiteModal({
                         <SelectItem
                           key={index}
                           value={organization}
-                          className="px-4 py-2.5 cursor-pointer hover:bg-accent/50 focus:bg-accent/50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                          className="cursor-pointer px-4 py-2.5 hover:bg-accent focus:bg-accent data-[state=checked]:bg-accent data-[state=checked]:text-accent-foreground"
                         >
                           <div className="flex items-center gap-3">
                             <div className="w-2 h-2 rounded-full bg-primary/60" />
@@ -202,14 +202,14 @@ export function CreateWebsiteModal({
                   </SelectGroup>
                 </div>
 
-                <div className="mt-2 pt-2 border-t border-border bg-gradient-to-r from-muted/50 to-background">
-                  <div className="flex items-center gap-2 p-2 rounded-lg hover:bg-accent focus-within:bg-accent transition-all duration-200">
+                <div className="mt-2 border-t border-border bg-muted/40 p-2 dark:bg-muted/20">
+                  <div className="flex items-center gap-2 rounded-lg border border-border bg-background/80 p-2 transition-all duration-200 hover:bg-accent/60 focus-within:bg-accent/60 dark:bg-background/40">
                     <Input
                       ref={newOrganizationRef}
                       onKeyDown={(e) => e.stopPropagation()}
                       onFocus={(e) => e.stopPropagation()}
                       placeholder="Create new organization..."
-                      className="h-9 flex-1 bg-transparent border-0 shadow-none placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-0 px-3 py-1.5 text-sm"
+                      className="h-9 flex-1 border border-input bg-background px-3 py-1.5 text-sm placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-0 dark:bg-background/70"
                     />
                     <Button
                       type="button"

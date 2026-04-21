@@ -17,9 +17,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { formatDate } from "@/lib/formatDate";
 import { WebsiteItem, WebsiteListPagination } from "@/types/website";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 interface WebsiteTableProps {
   websites: WebsiteItem[];
@@ -78,6 +78,34 @@ export function WebsiteTable({
   onPageChange,
   toLogoPreviewUrl,
 }: WebsiteTableProps) {
+  const copyWebsiteId = async (websiteId: string) => {
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(websiteId);
+        toast.success("Website ID copied");
+        return;
+      }
+
+      const textArea = document.createElement("textarea");
+      textArea.value = websiteId;
+      textArea.style.position = "fixed";
+      textArea.style.opacity = "0";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      const copied = document.execCommand("copy");
+      document.body.removeChild(textArea);
+
+      if (copied) {
+        toast.success("Website ID copied");
+      } else {
+        toast.error("Failed to copy Website ID");
+      }
+    } catch {
+      toast.error("Failed to copy Website ID");
+    }
+  };
+
   const currentLimit = pagination?.limit || pageSize;
   const totalPages = Math.max(
     1,
@@ -107,8 +135,6 @@ export function WebsiteTable({
                   <TableHead>Phone</TableHead>
                   <TableHead>URL</TableHead>
                   <TableHead>Subject</TableHead>
-                  <TableHead>Created At</TableHead>
-                  <TableHead>Updated At</TableHead>
                   <TableHead>Organization</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
@@ -156,12 +182,10 @@ export function WebsiteTable({
                     <TableCell>{website.email || "-"}</TableCell>
                     <TableCell>{website.phone || "-"}</TableCell>
                     <TableCell>{website.url || "-"}</TableCell>
-                    <TableCell>{website.subject || "-"}</TableCell>
-                    <TableCell>
-                      {website.createdAt ? formatDate(website.createdAt) : "-"}
-                    </TableCell>
-                    <TableCell>
-                      {website.updatedAt ? formatDate(website.updatedAt) : "-"}
+                    <TableCell className="max-w-[220px]">
+                      <span className="block truncate" title={website.subject || "-"}>
+                        {website.subject || "-"}
+                      </span>
                     </TableCell>
                     <TableCell>{website.organization || "-"}</TableCell>
                     <TableCell className="text-right">
@@ -172,6 +196,13 @@ export function WebsiteTable({
                           onClick={() => onConfigure(website)}
                         >
                           Configure
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => copyWebsiteId(website._id)}
+                        >
+                          Copy ID
                         </Button>
                         <Button
                           variant="outline"
