@@ -20,10 +20,12 @@ import { useChangeAdminPassword } from "@/queries/admin/useChangeAdminPassword";
 import { useAdminById } from "@/queries/admin/useAdminById";
 import toast from "react-hot-toast";
 import { isAuthErrorStatus } from "@/lib/showErrorToast";
+import { LogoutConfirmModal } from "../admin/LogoutConfirmModal";
 
 export default function ProfileDropdown() {
   const router = useRouter();
   const handleLogout = useDashboardStore((state) => state.handleLogout);
+  const [openLogout, setOpenLogout] = useState<boolean>(false);
   const [changePasswordOpen, setChangePasswordOpen] = useState(false);
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -213,7 +215,7 @@ export default function ProfileDropdown() {
           <DropdownMenuSeparator />
 
           <DropdownMenuItem
-            onClick={() => onLogout()}
+            onClick={() => setOpenLogout(true)}
             variant="destructive"
             className="cursor-pointer font-semibold"
           >
@@ -221,6 +223,12 @@ export default function ProfileDropdown() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      <LogoutConfirmModal
+        open={openLogout}
+        onClose={() => setOpenLogout(false)}
+        onConfirm={onLogout}
+      />
 
       <ChangePasswordModal
         open={changePasswordOpen}
