@@ -170,7 +170,7 @@ export function AdminsTable({
                     >
                       <SelectValue placeholder="10" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-[var(--background)]">
                       <SelectItem value="2">2</SelectItem>
                       <SelectItem value="5">5</SelectItem>
                       <SelectItem value="10">10</SelectItem>

@@ -1,13 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -117,11 +111,12 @@ export function MessagesTable({
     <Card>
       <CardHeader>
         <CardTitle>Messages ({messages.length})</CardTitle>
-        <CardDescription>Current message list from the API</CardDescription>
       </CardHeader>
       <CardContent>
         {messagesLoading ? (
-          <div className="text-sm text-muted-foreground">Loading messages...</div>
+          <div className="text-sm text-muted-foreground">
+            Loading messages...
+          </div>
         ) : messages.length === 0 ? (
           <div className="text-sm text-muted-foreground">No messages found</div>
         ) : (
@@ -225,7 +220,7 @@ export function MessagesTable({
                     >
                       <SelectValue placeholder="10" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-[var(--background)]">
                       <SelectItem value="5">5</SelectItem>
                       <SelectItem value="10">10</SelectItem>
                       <SelectItem value="20">20</SelectItem>
