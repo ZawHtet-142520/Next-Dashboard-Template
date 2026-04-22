@@ -150,9 +150,10 @@ export default function CreateAdminPage() {
                     type="file"
                     accept="image/*"
                     className="hidden"
-                    onChange={(e) =>
-                      onProfileFileChange(e.target.files?.[0] || null)
-                    }
+                    onChange={(e) => {
+                      onProfileFileChange(e.target.files?.[0] || null);
+                      e.target.value = "";
+                    }}
                   />
                   <div className="flex items-center gap-2">
                     <Button
