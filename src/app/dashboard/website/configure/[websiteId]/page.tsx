@@ -170,7 +170,7 @@ export default function ConfigureWebsitePage() {
               <Input
                 id="edit-password"
                 type="string"
-                placeholder="Passowrd"
+                placeholder="Password"
                 {...register("authPass")}
               />
               {errors.authPass && (

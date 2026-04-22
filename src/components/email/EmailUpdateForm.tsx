@@ -107,7 +107,7 @@ export function EmailUpdateForm({
                 <Input
                   id="edit-password"
                   type="string"
-                  placeholder="Passowrd"
+                  placeholder="Password"
                   {...register("authPass")}
                 />
                 {errors.authPass && (

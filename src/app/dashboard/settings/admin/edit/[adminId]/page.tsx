@@ -27,6 +27,7 @@ export default function EditAdminPage() {
   const updateAdminMutation = useUpdateAdmin();
 
   const admins = adminsResponse?.data?.admins ?? [];
+  const fileLocation = adminsResponse?.data?.fileLocation?.admin ?? "";
   const admin = admins.find((a) => a._id === adminId);
   const roleOptions = rolesResponse?.data?.roles ?? [];
 
@@ -38,7 +39,9 @@ export default function EditAdminPage() {
       const roleId =
         typeof admin.role === "string" ? admin.role : admin.role?._id || "";
       setEditRoleId(roleId);
-      setEditProfilePreview(admin.profile || "");
+      setEditProfilePreview(
+        admin.profile ? `${fileLocation}${admin?.profile}` : "",
+      );
     }
   }, [admin]);
 
@@ -49,7 +52,9 @@ export default function EditAdminPage() {
       setEditProfilePreview(preview);
     } else {
       if (admin?.profile) {
-        setEditProfilePreview(admin.profile);
+        setEditProfilePreview(
+          admin.profile ? `${fileLocation}${admin?.profile}` : "",
+        );
       } else {
         setEditProfilePreview("");
       }
@@ -155,9 +160,10 @@ export default function EditAdminPage() {
                     type="file"
                     accept="image/*"
                     className="hidden"
-                    onChange={(e) =>
-                      onEditProfileFileChange(e.target.files?.[0] || null)
-                    }
+                    onChange={(e) => {
+                      onEditProfileFileChange(e.target.files?.[0] || null);
+                      e.target.value = "";
+                    }}
                   />
                   <div className="flex items-center gap-2">
                     <Button
