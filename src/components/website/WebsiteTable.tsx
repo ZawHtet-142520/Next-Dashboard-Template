@@ -183,7 +183,10 @@ export function WebsiteTable({
                     <TableCell>{website.phone || "-"}</TableCell>
                     <TableCell>{website.url || "-"}</TableCell>
                     <TableCell className="max-w-[220px]">
-                      <span className="block truncate" title={website.subject || "-"}>
+                      <span
+                        className="block truncate"
+                        title={website.subject || "-"}
+                      >
                         {website.subject || "-"}
                       </span>
                     </TableCell>
@@ -252,7 +255,7 @@ export function WebsiteTable({
                     >
                       <SelectValue placeholder="10" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-[var(--background)]">
                       <SelectItem value="2">2</SelectItem>
                       <SelectItem value="5">5</SelectItem>
                       <SelectItem value="10">10</SelectItem>

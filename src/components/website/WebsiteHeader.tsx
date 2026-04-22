@@ -51,7 +51,7 @@ export function WebsiteHeader({
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
           placeholder="Search by name, email and organization"
-          className="col-span-3"
+          className="md:col-span-3"
         />
 
         <Popover open={openDateAfter} onOpenChange={setOpenDateAfter}>
