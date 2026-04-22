@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { ArrowLeft, Search } from "lucide-react";
+import { ArrowLeft, LoaderIcon, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRoles, useUpdateRole, usePermissionNames } from "@/queries";
@@ -30,7 +30,7 @@ export default function EditRolePage() {
   );
   const [permissionSearch, setPermissionSearch] = useState("");
 
-  const { data: rolesResponse } = useRoles();
+  const { data: rolesResponse, isLoading: rolesResponseLoading } = useRoles();
   const { data: permissionNamesResponse, isFetching: permissionsLoading } =
     usePermissionNames(true);
   const updateRoleMutation = useUpdateRole();
@@ -175,6 +175,23 @@ export default function EditRolePage() {
       },
     );
   };
+
+  if (rolesResponseLoading)
+    return (
+      <div className="min-h-screen bg-transparent p-4">
+        <div className="mx-auto max-w-2xl space-y-6 flex justify-center items-center h-20">
+          <LoaderIcon />
+        </div>
+      </div>
+    );
+  if (!role)
+    return (
+      <div className="min-h-screen bg-transparent p-4">
+        <div className="mx-auto max-w-2xl space-y-6 flex justify-center items-center h-20">
+          There is no role
+        </div>
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-transparent p-4">

@@ -249,7 +249,7 @@ export default function CreateAdminPage() {
                   onValueChange={(value) => setStatus(value)}
                 >
                   <SelectTrigger
-                    id="edit-admin-role"
+                    id="edit-admin-status"
                     className="h-10 w-full rounded-md border border-input bg-[var(--background)] px-3 py-2 text-sm text-foreground focus:ring-2 focus:ring-ring/20"
                   >
                     <SelectValue placeholder="Select status" />
