@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { ImagePlus, Trash2, ArrowLeft } from "lucide-react";
+import { ImagePlus, Trash2, ArrowLeft, LoaderIcon } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,7 +32,9 @@ export default function EditAdminPage() {
   const [editProfileFile, setEditProfileFile] = useState<File | null>(null);
   const [editProfilePreview, setEditProfilePreview] = useState("");
 
-  const { data: adminsResponse } = useAdmins({});
+  const { data: adminsResponse, isLoading: adminsResponseLoading } = useAdmins(
+    {},
+  );
   const { data: rolesResponse } = useRoles();
   const updateAdminMutation = useUpdateAdmin();
 
@@ -123,6 +125,23 @@ export default function EditAdminPage() {
       },
     );
   };
+
+  if (adminsResponseLoading)
+    return (
+      <div className="min-h-screen bg-transparent p-4">
+        <div className="mx-auto max-w-2xl space-y-6 flex justify-center items-center h-20">
+          <LoaderIcon />
+        </div>
+      </div>
+    );
+  if (!admin)
+    return (
+      <div className="min-h-screen bg-transparent p-4">
+        <div className="mx-auto max-w-2xl space-y-6 flex justify-center items-center h-20">
+          There is no admin
+        </div>
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-transparent p-4">
@@ -280,7 +299,7 @@ export default function EditAdminPage() {
                     onValueChange={(value) => setEditStatus(value)}
                   >
                     <SelectTrigger
-                      id="edit-admin-role"
+                      id="edit-admin-status"
                       className="h-10 w-full rounded-md border border-input bg-[var(--background)] px-3 py-2 text-sm text-foreground focus:ring-2 focus:ring-ring/20"
                     >
                       <SelectValue placeholder="Select status" />
