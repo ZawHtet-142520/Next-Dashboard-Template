@@ -20,7 +20,7 @@ const getRoleId = (role: AdminItem["role"]): string => {
 export function useAdminManagement() {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
-  const [statusFilter, setStatusFilter] = useState("active");
+  const [statusFilter, setStatusFilter] = useState("");
   const [roleFilter, setRoleFilter] = useState("");
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -43,6 +43,7 @@ export function useAdminManagement() {
   const [editAdminId, setEditAdminId] = useState("");
   const [editName, setEditName] = useState("");
   const [editEmail, setEditEmail] = useState("");
+  const [editStatus, setEditStatus] = useState("");
   const [editProfileFile, setEditProfileFile] = useState<File | null>(null);
   const [editProfilePreview, setEditProfilePreview] = useState("");
   const [editPassword, setEditPassword] = useState("");
@@ -178,6 +179,7 @@ export function useAdminManagement() {
         profile: profileFile,
         password,
         role: roleId,
+        status: "",
       });
 
       await refetchAdmins();
@@ -198,6 +200,7 @@ export function useAdminManagement() {
     setEditProfilePreview(toProfilePreviewUrl(admin.profile));
     setEditPassword("");
     setEditRoleId(getRoleId(admin.role));
+    setEditStatus(admin.status || "active");
     setOpenEditModal(true);
   };
 
@@ -223,6 +226,7 @@ export function useAdminManagement() {
           profile: editProfileFile,
           role: editRoleId,
           ...(editPassword.trim() ? { password: editPassword } : {}),
+          status: editStatus,
         },
       });
 

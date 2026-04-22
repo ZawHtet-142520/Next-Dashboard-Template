@@ -18,6 +18,7 @@ import { useUpdateAdmin } from "@/queries/admin/useUpdateAdmin";
 import type { Admin } from "@/types/auth";
 import type { Role as RoleOption } from "@/types/role";
 import type { AdminItem } from "@/types/admin";
+import { useRouter } from "next/navigation";
 
 const getRoleName = (role: AdminItem["role"] | undefined): string => {
   if (!role) return "-";
@@ -54,7 +55,10 @@ const resolveRoleId = (
   return role;
 };
 
-const resolveProfileUrl = (profile: string | null | undefined, baseUrl: string) => {
+const resolveProfileUrl = (
+  profile: string | null | undefined,
+  baseUrl: string,
+) => {
   if (!profile) return "";
   if (profile.startsWith("http://") || profile.startsWith("https://")) {
     return profile;
@@ -63,6 +67,7 @@ const resolveProfileUrl = (profile: string | null | undefined, baseUrl: string) 
 };
 
 export function AdminProfileForm() {
+  const router = useRouter();
   const { user, setUser } = useAuthStore();
   const { data: adminDetailResponse, isLoading: profileLoading } = useAdminById(
     user?._id,
@@ -80,6 +85,7 @@ export function AdminProfileForm() {
   const [adminId, setAdminId] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [status, setStatus] = useState("");
   const [roleId, setRoleId] = useState("");
   const [profileFile, setProfileFile] = useState<File | null>(null);
   const [profilePreview, setProfilePreview] = useState("");
@@ -96,7 +102,10 @@ export function AdminProfileForm() {
   useEffect(() => {
     if (!profile) return;
     const nextRoleId = resolveRoleId(profile.role, roleOptions);
-    setRoleId((currentRoleId) => (currentRoleId === nextRoleId ? currentRoleId : nextRoleId));
+    setRoleId((currentRoleId) =>
+      currentRoleId === nextRoleId ? currentRoleId : nextRoleId,
+    );
+    setStatus(profile.status || "suspend");
   }, [profile, roleOptions]);
 
   const handleProfileFileChange = (file: File | null) => {
@@ -123,8 +132,8 @@ export function AdminProfileForm() {
       return;
     }
 
-    if (!name.trim() || !email.trim() || !roleId) {
-      toast.error("Name, email, and role are required");
+    if (!name.trim() || !email.trim() || !roleId || !status) {
+      toast.error("Name, email, status and role are required");
       return;
     }
 
@@ -136,6 +145,7 @@ export function AdminProfileForm() {
           email: email.trim(),
           profile: profileFile,
           role: roleId,
+          status: status,
         },
       });
 
@@ -145,7 +155,7 @@ export function AdminProfileForm() {
         email: email.trim(),
         profile: profilePreview,
       } as Admin);
-
+      router.push("/dashboard/settings/admin");
       toast.success(response?.message || "Profile updated successfully");
     } catch (error) {
       console.error("Failed to update profile:", error);
@@ -154,14 +164,18 @@ export function AdminProfileForm() {
   };
 
   if (profileLoading && !profile) {
-    return <div className="text-sm text-muted-foreground">Loading profile...</div>;
+    return (
+      <div className="text-sm text-muted-foreground">Loading profile...</div>
+    );
   }
 
   return (
     <div className="space-y-4">
       <div>
         <h1 className="text-2xl font-semibold">Admin Update</h1>
-        <p className="text-sm text-muted-foreground">Update your profile information</p>
+        <p className="text-sm text-muted-foreground">
+          Update your profile information
+        </p>
       </div>
 
       <form onSubmit={onSubmit} className="space-y-4 rounded-lg border p-4">
@@ -187,7 +201,10 @@ export function AdminProfileForm() {
               type="file"
               accept="image/*"
               className="block w-full text-sm"
-              onChange={(e) => handleProfileFileChange(e.target.files?.[0] || null)}
+              onChange={(e) => {
+                handleProfileFileChange(e.target.files?.[0] || null);
+                e.target.value = "";
+              }}
             />
             <p className="text-xs text-muted-foreground">
               PNG, JPG, WEBP image files are supported.
@@ -223,26 +240,48 @@ export function AdminProfileForm() {
             />
           </div>
 
-          <div className="space-y-1.5 md:col-span-2">
-            <label htmlFor="profile-role" className="text-sm font-medium">
-              Role
-            </label>
-            <Select value={roleId} onValueChange={setRoleId}>
-              <SelectTrigger id="profile-role">
-                <SelectValue placeholder="Select role" />
-              </SelectTrigger>
-              <SelectContent>
-                {roleOptions.map((role: RoleOption) => (
-                  <SelectItem key={role._id} value={role._id}>
-                    {role.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <p className="text-xs text-muted-foreground">
-              Current role: {getRoleName(profile?.role)}
-            </p>
-          </div>
+          {status && (
+            <div className="space-y-1.5 md:col-span-2">
+              <label htmlFor="profile-role" className="text-sm font-medium">
+                Status
+              </label>
+              <Select value={status} onValueChange={setStatus}>
+                <SelectTrigger id="profile-role">
+                  <SelectValue placeholder="Select status" />
+                </SelectTrigger>
+                <SelectContent className="bg-[var(--background)]">
+                  <SelectItem value="active">Active</SelectItem>
+                  <SelectItem value="suspend">Suspend</SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground">
+                Current status: {getRoleName(profile?.status)}
+              </p>
+            </div>
+          )}
+
+          {roleId && (
+            <div className="space-y-1.5 md:col-span-2">
+              <label htmlFor="profile-role" className="text-sm font-medium">
+                Role
+              </label>
+              <Select value={roleId} onValueChange={setRoleId}>
+                <SelectTrigger id="profile-role">
+                  <SelectValue placeholder="Select role" />
+                </SelectTrigger>
+                <SelectContent className="bg-[var(--background)]">
+                  {roleOptions.map((role: RoleOption) => (
+                    <SelectItem key={role._id} value={role._id}>
+                      {role.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground">
+                Current role: {getRoleName(profile?.role)}
+              </p>
+            </div>
+          )}
         </div>
 
         <div className="flex items-center justify-end gap-2">

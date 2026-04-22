@@ -61,6 +61,7 @@ export interface CreateAdminPayload {
   profile?: File | null;
   password: string;
   role: string;
+  status: string;
 }
 
 export interface UpdateAdminPayload {
@@ -69,6 +70,7 @@ export interface UpdateAdminPayload {
   profile?: File | null;
   role: string;
   password?: string;
+  status: string;
 }
 
 export interface CreateAdminResponse {

@@ -8,6 +8,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCreateAdmin, useRoles } from "@/queries";
 import toast from "react-hot-toast";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function CreateAdminPage() {
   const router = useRouter();
@@ -16,6 +23,7 @@ export default function CreateAdminPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [status, setStatus] = useState("");
   const [roleId, setRoleId] = useState("");
   const [profileFile, setProfileFile] = useState<File | null>(null);
   const [profilePreview, setProfilePreview] = useState("");
@@ -53,6 +61,11 @@ export default function CreateAdminPage() {
       return;
     }
 
+    if (!status) {
+      toast.error("Status is required");
+      return;
+    }
+
     if (!roleId) {
       toast.error("Role is required");
       return;
@@ -65,6 +78,7 @@ export default function CreateAdminPage() {
         password,
         role: roleId,
         profile: profileFile,
+        status: status,
       },
       {
         onSuccess: () => {
@@ -225,31 +239,56 @@ export default function CreateAdminPage() {
 
               <div className="space-y-2">
                 <label
+                  htmlFor="edit-admin-status"
+                  className="text-sm font-semibold text-foreground"
+                >
+                  Status *
+                </label>
+                <Select
+                  value={status || ""}
+                  onValueChange={(value) => setStatus(value)}
+                >
+                  <SelectTrigger
+                    id="edit-admin-role"
+                    className="h-10 w-full rounded-md border border-input bg-[var(--background)] px-3 py-2 text-sm text-foreground focus:ring-2 focus:ring-ring/20"
+                  >
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+
+                  <SelectContent className="bg-[var(--background)]">
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="suspend">Suspend</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <label
                   htmlFor="admin-role"
                   className="text-sm font-semibold text-foreground"
                 >
                   Role *
                 </label>
-                <select
-                  id="admin-role"
-                  value={roleId}
-                  onChange={(e) => setRoleId(e.target.value)}
-                  className="h-10 w-full rounded-md border border-input bg-[var(--background)] px-3 py-2 text-sm text-foreground focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/20"
-                  required
+
+                <Select
+                  value={roleId || ""}
+                  onValueChange={(value) => setRoleId(value)}
                 >
-                  <option value="" className="text-foreground">
-                    Select a role
-                  </option>
-                  {roleOptions.map((role) => (
-                    <option
-                      key={role._id}
-                      value={role._id}
-                      className="text-foreground"
-                    >
-                      {role.name}
-                    </option>
-                  ))}
-                </select>
+                  <SelectTrigger
+                    id="edit-admin-role"
+                    className="h-10 w-full rounded-md border border-input bg-[var(--background)] px-3 py-2 text-sm text-foreground focus:ring-2 focus:ring-ring/20"
+                  >
+                    <SelectValue placeholder="Select a role" />
+                  </SelectTrigger>
+
+                  <SelectContent className="bg-[var(--background)]">
+                    {roleOptions.map((role) => (
+                      <SelectItem key={role._id} value={role._id}>
+                        {role.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 
