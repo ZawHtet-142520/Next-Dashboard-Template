@@ -20,10 +20,12 @@ import { useChangeAdminPassword } from "@/queries/admin/useChangeAdminPassword";
 import { useAdminById } from "@/queries/admin/useAdminById";
 import toast from "react-hot-toast";
 import { isAuthErrorStatus } from "@/lib/showErrorToast";
+import { LogoutConfirmModal } from "../admin/LogoutConfirmModal";
 
 export default function ProfileDropdown() {
   const router = useRouter();
   const handleLogout = useDashboardStore((state) => state.handleLogout);
+  const [openLogout, setOpenLogout] = useState<boolean>(false);
   const [changePasswordOpen, setChangePasswordOpen] = useState(false);
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -61,13 +63,23 @@ export default function ProfileDropdown() {
     return "User";
   };
   const userName =
-    adminDetailResponse?.data?.admin?.username || user?.username || user?.name || "User";
-  const userEmail = adminDetailResponse?.data?.admin?.email || user?.email || "user@example.com";
-  const userRole = getRoleName(adminDetailResponse?.data?.admin?.role || user?.role);
+    adminDetailResponse?.data?.admin?.username ||
+    user?.username ||
+    user?.name ||
+    "User";
+  const userEmail =
+    adminDetailResponse?.data?.admin?.email ||
+    user?.email ||
+    "user@example.com";
+  const userRole = getRoleName(
+    adminDetailResponse?.data?.admin?.role || user?.role,
+  );
   const userProfileBase = adminDetailResponse?.data?.fileLocation?.admin || "";
-  const userProfileRaw = adminDetailResponse?.data?.admin?.profile || user?.profile;
+  const userProfileRaw =
+    adminDetailResponse?.data?.admin?.profile || user?.profile;
   const userProfile = userProfileRaw
-    ? userProfileRaw.startsWith("http://") || userProfileRaw.startsWith("https://")
+    ? userProfileRaw.startsWith("http://") ||
+      userProfileRaw.startsWith("https://")
       ? userProfileRaw
       : `${userProfileBase}${userProfileRaw}`
     : "/profile.jpg";
@@ -88,7 +100,9 @@ export default function ProfileDropdown() {
     setConfirmNewPassword("");
   };
 
-  const onChangePasswordSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onChangePasswordSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+  ) => {
     e.preventDefault();
 
     if (!oldPassword.trim() || !newPassword.trim()) {
@@ -150,7 +164,11 @@ export default function ProfileDropdown() {
 
           <DropdownMenuTrigger asChild>
             <Avatar className="h-10 w-10 cursor-pointer border border-border bg-card">
-              <AvatarImage src={userProfile} alt="User Profile" />
+              <AvatarImage
+                src={userProfile}
+                alt="User Profile"
+                className="object-cover"
+              />
               <AvatarFallback className="bg-muted text-foreground">
                 {getInitials(userName)}
               </AvatarFallback>
@@ -164,7 +182,11 @@ export default function ProfileDropdown() {
         >
           <div className="flex items-center gap-3 p-3">
             <Avatar className="h-10 w-10 border border-border bg-card">
-              <AvatarImage src={userProfile} alt="User Profile" />
+              <AvatarImage
+                src={userProfile}
+                alt="User Profile"
+                className="object-cover"
+              />
               <AvatarFallback className="bg-muted text-foreground">
                 {getInitials(userName)}
               </AvatarFallback>
@@ -177,17 +199,23 @@ export default function ProfileDropdown() {
 
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem className="cursor-pointer" onClick={openProfilePage}>
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={openProfilePage}
+          >
             <User className="w-4 h-4 mr-2" /> My Profile
           </DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer" onClick={openChangePassword}>
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={openChangePassword}
+          >
             <Settings className="w-4 h-4 mr-2" /> Change Password
           </DropdownMenuItem>
 
           <DropdownMenuSeparator />
 
           <DropdownMenuItem
-            onClick={() => onLogout()}
+            onClick={() => setOpenLogout(true)}
             variant="destructive"
             className="cursor-pointer font-semibold"
           >
@@ -195,6 +223,12 @@ export default function ProfileDropdown() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      <LogoutConfirmModal
+        open={openLogout}
+        onClose={() => setOpenLogout(false)}
+        onConfirm={onLogout}
+      />
 
       <ChangePasswordModal
         open={changePasswordOpen}

@@ -1,13 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -97,7 +91,6 @@ export function AdminsTable({
     <Card>
       <CardHeader>
         <CardTitle>Admins ({admins.length})</CardTitle>
-        <CardDescription>Current admins from the API</CardDescription>
       </CardHeader>
       <CardContent>
         {adminsLoading ? (

@@ -39,9 +39,6 @@ export function AdminHeader({
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold">Admin Management</h1>
-          <p className="text-sm text-muted-foreground">
-            Create, view, update, and delete admins
-          </p>
         </div>
         <div className="flex items-center gap-2">
           <Button
@@ -75,7 +72,7 @@ export function AdminHeader({
           <SelectContent className="bg-[var(--background)]">
             <SelectItem value="all">All status</SelectItem>
             <SelectItem value="active">Active</SelectItem>
-            <SelectItem value="inactive">Inactive</SelectItem>
+            <SelectItem value="suspend">Suspend</SelectItem>
           </SelectContent>
         </Select>
 

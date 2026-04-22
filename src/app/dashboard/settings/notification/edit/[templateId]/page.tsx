@@ -100,7 +100,7 @@ export default function UpdateNotificationTemplatePage() {
             <div className="space-y-1.5">
               <label
                 htmlFor="subject"
-                className="text-sm font-medium text-slate-900 dark:text-slate-100"
+                className="text-sm font-medium text-[var(--foreground)]"
               >
                 Subject
               </label>
@@ -119,7 +119,7 @@ export default function UpdateNotificationTemplatePage() {
             <div className="space-y-1.5">
               <label
                 htmlFor="edit-admin-email"
-                className="text-sm font-medium text-slate-900 dark:text-slate-100"
+                className="text-sm font-medium text-[var(--foreground)]"
               >
                 Template
               </label>

@@ -8,8 +8,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAdmins, useUpdateAdmin, useRoles } from "@/queries";
 import toast from "react-hot-toast";
+import { useAuthStore } from "@/stores/authStore";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function EditAdminPage() {
+  const { user } = useAuthStore();
   const router = useRouter();
   const params = useParams();
   const adminId = params.adminId as string;
@@ -19,6 +28,7 @@ export default function EditAdminPage() {
   const [editEmail, setEditEmail] = useState("");
   const [editPassword, setEditPassword] = useState("");
   const [editRoleId, setEditRoleId] = useState("");
+  const [editStatus, setEditStatus] = useState("");
   const [editProfileFile, setEditProfileFile] = useState<File | null>(null);
   const [editProfilePreview, setEditProfilePreview] = useState("");
 
@@ -27,6 +37,7 @@ export default function EditAdminPage() {
   const updateAdminMutation = useUpdateAdmin();
 
   const admins = adminsResponse?.data?.admins ?? [];
+  const fileLocation = adminsResponse?.data?.fileLocation?.admin ?? "";
   const admin = admins.find((a) => a._id === adminId);
   const roleOptions = rolesResponse?.data?.roles ?? [];
 
@@ -38,9 +49,12 @@ export default function EditAdminPage() {
       const roleId =
         typeof admin.role === "string" ? admin.role : admin.role?._id || "";
       setEditRoleId(roleId);
-      setEditProfilePreview(admin.profile || "");
+      setEditStatus(admin?.status || "active");
+      setEditProfilePreview(
+        admin.profile ? `${fileLocation}${admin?.profile}` : "",
+      );
     }
-  }, [admin]);
+  }, [admin, fileLocation]);
 
   const onEditProfileFileChange = (file: File | null) => {
     setEditProfileFile(file);
@@ -49,7 +63,9 @@ export default function EditAdminPage() {
       setEditProfilePreview(preview);
     } else {
       if (admin?.profile) {
-        setEditProfilePreview(admin.profile);
+        setEditProfilePreview(
+          admin.profile ? `${fileLocation}${admin?.profile}` : "",
+        );
       } else {
         setEditProfilePreview("");
       }
@@ -74,6 +90,11 @@ export default function EditAdminPage() {
       return;
     }
 
+    if (!editStatus) {
+      toast.error("Status is required");
+      return;
+    }
+
     updateAdminMutation.mutate(
       {
         adminId,
@@ -83,6 +104,7 @@ export default function EditAdminPage() {
           ...(editPassword && { password: editPassword }),
           role: editRoleId,
           profile: editProfileFile,
+          status: editStatus,
         },
       },
       {
@@ -155,9 +177,10 @@ export default function EditAdminPage() {
                     type="file"
                     accept="image/*"
                     className="hidden"
-                    onChange={(e) =>
-                      onEditProfileFileChange(e.target.files?.[0] || null)
-                    }
+                    onChange={(e) => {
+                      onEditProfileFileChange(e.target.files?.[0] || null);
+                      e.target.value = "";
+                    }}
                   />
                   <div className="flex items-center gap-2">
                     <Button
@@ -224,52 +247,82 @@ export default function EditAdminPage() {
                 />
               </div>
 
-              <div className="space-y-2">
-                <label
-                  htmlFor="edit-admin-password"
-                  className="text-sm font-semibold text-foreground"
-                >
-                  Password{" "}
-                  <span className="text-muted-foreground">(optional)</span>
-                </label>
-                <Input
-                  id="edit-admin-password"
-                  type="password"
-                  value={editPassword}
-                  onChange={(e) => setEditPassword(e.target.value)}
-                  placeholder="Leave empty to keep current password"
-                  className="h-10 border-input bg-background text-foreground placeholder:text-muted-foreground"
-                />
-              </div>
+              {user?._id !== adminId && (
+                <div className="space-y-2">
+                  <label
+                    htmlFor="edit-admin-password"
+                    className="text-sm font-semibold text-foreground"
+                  >
+                    Password{" "}
+                    <span className="text-muted-foreground">(optional)</span>
+                  </label>
+                  <Input
+                    id="edit-admin-password"
+                    type="password"
+                    value={editPassword}
+                    onChange={(e) => setEditPassword(e.target.value)}
+                    placeholder="Leave empty to keep current password"
+                    className="h-10 border-input bg-background text-foreground placeholder:text-muted-foreground"
+                  />
+                </div>
+              )}
 
-              <div className="space-y-2">
-                <label
-                  htmlFor="edit-admin-role"
-                  className="text-sm font-semibold text-foreground"
-                >
-                  Role *
-                </label>
-                <select
-                  id="edit-admin-role"
-                  value={editRoleId}
-                  onChange={(e) => setEditRoleId(e.target.value)}
-                  className="h-10 w-full rounded-md border border-input bg-[var(--background)] px-3 py-2 text-sm text-foreground focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/20"
-                  required
-                >
-                  <option value="" className="text-foreground">
-                    Select a role
-                  </option>
-                  {roleOptions.map((role) => (
-                    <option
-                      key={role._id}
-                      value={role._id}
-                      className="text-foreground"
+              {editStatus && (
+                <div className="space-y-2">
+                  <label
+                    htmlFor="edit-admin-status"
+                    className="text-sm font-semibold text-foreground"
+                  >
+                    Status *
+                  </label>
+                  <Select
+                    value={editStatus || ""}
+                    onValueChange={(value) => setEditStatus(value)}
+                  >
+                    <SelectTrigger
+                      id="edit-admin-role"
+                      className="h-10 w-full rounded-md border border-input bg-[var(--background)] px-3 py-2 text-sm text-foreground focus:ring-2 focus:ring-ring/20"
                     >
-                      {role.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
+                      <SelectValue placeholder="Select status" />
+                    </SelectTrigger>
+
+                    <SelectContent className="bg-[var(--background)]">
+                      <SelectItem value="active">Active</SelectItem>
+                      <SelectItem value="suspend">Suspend</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+
+              {editRoleId && (
+                <div className="space-y-2">
+                  <label
+                    htmlFor="edit-admin-role"
+                    className="text-sm font-semibold text-foreground"
+                  >
+                    Role *
+                  </label>
+                  <Select
+                    value={editRoleId || ""}
+                    onValueChange={(value) => setEditRoleId(value)}
+                  >
+                    <SelectTrigger
+                      id="edit-admin-role"
+                      className="h-10 w-full rounded-md border border-input bg-[var(--background)] px-3 py-2 text-sm text-foreground focus:ring-2 focus:ring-ring/20"
+                    >
+                      <SelectValue placeholder="Select a role" />
+                    </SelectTrigger>
+
+                    <SelectContent className="bg-[var(--background)]">
+                      {roleOptions.map((role) => (
+                        <SelectItem key={role._id} value={role._id}>
+                          {role.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
             </div>
 
             {/* Action Buttons */}

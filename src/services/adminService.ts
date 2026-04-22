@@ -20,6 +20,7 @@ const buildAdminFormData = (
   formData.append("username", payload.username);
   formData.append("email", payload.email);
   formData.append("role", payload.role);
+  formData.append("status", payload.status);
 
   if ("password" in payload && payload.password) {
     formData.append("password", payload.password);
@@ -39,7 +40,9 @@ export const getAdmins = async (
   return response.data;
 };
 
-export const getAdminById = async (adminId: string): Promise<GetAdminResponse> => {
+export const getAdminById = async (
+  adminId: string,
+): Promise<GetAdminResponse> => {
   const response = await readClient.get(`/api/v1/admins/${adminId}`);
   return response.data;
 };

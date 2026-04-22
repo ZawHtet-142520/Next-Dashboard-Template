@@ -1,13 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -38,7 +32,6 @@ export function RolesTable({
     <Card>
       <CardHeader>
         <CardTitle>Roles ({roles.length})</CardTitle>
-        <CardDescription>Current roles from the API</CardDescription>
       </CardHeader>
       <CardContent>
         {rolesLoading ? (

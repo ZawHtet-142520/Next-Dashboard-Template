@@ -1,13 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -90,7 +84,6 @@ export function LogsTable({
     <Card>
       <CardHeader>
         <CardTitle>Logs ({logs.length})</CardTitle>
-        <CardDescription>Current logs from the API</CardDescription>
       </CardHeader>
       <CardContent>
         {logsLoading ? (
