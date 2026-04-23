@@ -18,7 +18,6 @@ import { useUpdateAdmin } from "@/queries/admin/useUpdateAdmin";
 import type { Admin } from "@/types/auth";
 import type { Role as RoleOption } from "@/types/role";
 import type { AdminItem } from "@/types/admin";
-import { useRouter } from "next/navigation";
 
 const getRoleName = (role: AdminItem["role"] | undefined): string => {
   if (!role) return "-";
@@ -60,14 +59,17 @@ const resolveProfileUrl = (
   baseUrl: string,
 ) => {
   if (!profile) return "";
-  if (profile.startsWith("http://") || profile.startsWith("https://")) {
+  if (
+    profile.startsWith("http://") ||
+    profile.startsWith("https://") ||
+    profile.startsWith("blob")
+  ) {
     return profile;
   }
   return `${baseUrl}${profile}`;
 };
 
 export function AdminProfileForm() {
-  const router = useRouter();
   const { user, setUser } = useAuthStore();
   const { data: adminDetailResponse, isLoading: profileLoading } = useAdminById(
     user?._id,
@@ -93,20 +95,29 @@ export function AdminProfileForm() {
   useEffect(() => {
     if (!profile) return;
 
-    setAdminId(profile._id || "");
-    setName(profile.username || profile.name || "");
-    setEmail(profile.email || "");
-    setProfilePreview(resolveProfileUrl(profile.profile, profileBaseUrl));
-  }, [profile, profileBaseUrl]);
+    setAdminId(user?._id || profile._id || "");
+    setName(user?.name || profile.username || profile.name || "");
+    setEmail(user?.email || profile.email || "");
+    setProfilePreview(
+      resolveProfileUrl(user?.profile || profile.profile, profileBaseUrl),
+    );
+  }, [
+    user?.name,
+    user?.profile,
+    user?._id,
+    user?.email,
+    profile,
+    profileBaseUrl,
+  ]);
 
   useEffect(() => {
     if (!profile) return;
-    const nextRoleId = resolveRoleId(profile.role, roleOptions);
+    const nextRoleId = resolveRoleId(user?.role || profile.role, roleOptions);
     setRoleId((currentRoleId) =>
       currentRoleId === nextRoleId ? currentRoleId : nextRoleId,
     );
-    setStatus(profile.status || "suspend");
-  }, [profile, roleOptions]);
+    setStatus(user?.status || profile.status || "suspend");
+  }, [user?.role, user?.status, profile, roleOptions]);
 
   const handleProfileFileChange = (file: File | null) => {
     setProfileFile(file);
@@ -154,8 +165,12 @@ export function AdminProfileForm() {
         name: name.trim(),
         email: email.trim(),
         profile: profilePreview,
+        role: {
+          _id: roleId,
+          name: roleOptions.find((role) => role._id == roleId)?.name,
+        },
+        status: status,
       } as Admin);
-      router.push("/dashboard/settings/admin");
       toast.success(response?.message || "Profile updated successfully");
     } catch (error) {
       console.error("Failed to update profile:", error);
@@ -255,7 +270,7 @@ export function AdminProfileForm() {
                 </SelectContent>
               </Select>
               <p className="text-xs text-muted-foreground">
-                Current status: {getRoleName(profile?.status)}
+                Current status: {getRoleName(user?.status || profile?.status)}
               </p>
             </div>
           )}
@@ -278,7 +293,7 @@ export function AdminProfileForm() {
                 </SelectContent>
               </Select>
               <p className="text-xs text-muted-foreground">
-                Current role: {getRoleName(profile?.role)}
+                Current role: {getRoleName(user?.role || profile?.role)}
               </p>
             </div>
           )}

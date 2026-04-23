@@ -11,6 +11,7 @@ export interface Admin {
   email: string;
   profile: string;
   role: Role;
+  status: string;
   [key: string]: any;
 }
 
