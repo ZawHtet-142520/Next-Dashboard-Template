@@ -20,7 +20,7 @@ export default function TopNavbar() {
 
   if (!mounted) {
     return (
-      <div className="sticky top-0 z-10 flex items-center justify-between rounded-2xl border border-border/60 bg-card/85 p-4 shadow-sm backdrop-blur-sm animate-pulse">
+      <div className="flex items-center justify-between rounded-2xl border border-border/60 bg-card/85 p-4 shadow-sm backdrop-blur-sm animate-pulse">
         <div className="w-6 h-6 bg-gray-300 dark:bg-gray-600 rounded-md" />
         <div className="flex items-center gap-4">
           <div className="w-5 h-5 bg-gray-300 dark:bg-gray-600 rounded-full" />
@@ -32,7 +32,7 @@ export default function TopNavbar() {
   }
 
   return (
-    <div className="sticky top-0 z-10 flex items-center justify-between rounded-2xl border border-border/60 bg-card/85 p-4 text-foreground shadow-sm backdrop-blur-sm">
+    <div className="flex items-center justify-between rounded-2xl border border-border/60 bg-card/85 p-4 text-foreground shadow-sm backdrop-blur-sm">
       <button
         className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border/70 bg-background/70 text-foreground transition-colors hover:bg-accent"
         onClick={toggleSidebar}

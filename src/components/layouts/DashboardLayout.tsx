@@ -19,9 +19,9 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
     <div className="flex h-screen bg-transparent">
       <Sidebar />
 
-      <div className="relative flex flex-1 flex-col overflow-y-auto">
+      <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
         {!mounted ? (
-          <div className="sticky top-0 z-20 px-4 pt-4 bg-transparent">
+          <div className="z-20 px-4 pt-4 bg-transparent">
             <div className="flex items-center justify-between rounded-2xl border border-border/60 bg-card/85 p-4 shadow-sm backdrop-blur-sm animate-pulse">
               <div className="w-6 h-6 bg-gray-300 dark:bg-gray-600 rounded-md" />
               <div className="flex items-center gap-4">
@@ -32,12 +32,12 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             </div>
           </div>
         ) : (
-          <div className="sticky top-0 z-20 bg-transparent px-4 pt-4">
+          <div className="z-20 bg-transparent px-4 pt-4">
             <TopNavbar />
           </div>
         )}
 
-        <div className="flex-1 p-4 bg-transparent">
+        <div className="min-h-0 flex-1 overflow-y-auto p-4 bg-transparent">
           <main className="min-h-[200px] rounded-2xl border border-border/70 bg-card p-4 shadow-[0_10px_40px_-24px_rgba(10,14,45,0.65)]">
             {children}
           </main>
