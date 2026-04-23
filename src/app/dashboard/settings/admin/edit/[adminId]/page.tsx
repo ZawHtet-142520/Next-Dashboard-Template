@@ -16,9 +16,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Admin } from "@/types/auth";
 
 export default function EditAdminPage() {
-  const { user } = useAuthStore();
+  const { user, setUser } = useAuthStore();
   const router = useRouter();
   const params = useParams();
   const adminId = params.adminId as string;
@@ -111,6 +112,19 @@ export default function EditAdminPage() {
       },
       {
         onSuccess: () => {
+          if (user && user._id == adminId) {
+            setUser({
+              ...user,
+              name: editName.trim(),
+              email: editEmail.trim(),
+              profile: editProfilePreview,
+              role: {
+                _id: editRoleId,
+                name: roleOptions.find((role) => role._id == editRoleId)?.name,
+              },
+              status: editStatus,
+            } as Admin);
+          }
           toast.success("Admin updated successfully");
           router.push("/dashboard/settings/admin");
         },

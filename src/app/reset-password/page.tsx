@@ -90,7 +90,7 @@ const ResetPasswordForm = () => {
                 </button>
               </div>
               {errors.newPassword && (
-                <p className="mt-1 text-sm text-destructive">
+                <p className="mt-1 text-sm text-[var(--destructive)]">
                   {errors.newPassword.message}
                 </p>
               )}

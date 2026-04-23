@@ -63,23 +63,21 @@ export default function ProfileDropdown() {
     return "User";
   };
   const userName =
-    adminDetailResponse?.data?.admin?.username ||
-    user?.username ||
-    user?.name ||
-    "User";
+    user?.name || adminDetailResponse?.data?.admin?.username || "User";
   const userEmail =
-    adminDetailResponse?.data?.admin?.email ||
     user?.email ||
+    adminDetailResponse?.data?.admin?.email ||
     "user@example.com";
   const userRole = getRoleName(
-    adminDetailResponse?.data?.admin?.role || user?.role,
+    user?.role || adminDetailResponse?.data?.admin?.role,
   );
   const userProfileBase = adminDetailResponse?.data?.fileLocation?.admin || "";
   const userProfileRaw =
-    adminDetailResponse?.data?.admin?.profile || user?.profile;
+    user?.profile || adminDetailResponse?.data?.admin?.profile;
   const userProfile = userProfileRaw
     ? userProfileRaw.startsWith("http://") ||
-      userProfileRaw.startsWith("https://")
+      userProfileRaw.startsWith("https://") ||
+      userProfileRaw.startsWith("blob")
       ? userProfileRaw
       : `${userProfileBase}${userProfileRaw}`
     : "/profile.jpg";
