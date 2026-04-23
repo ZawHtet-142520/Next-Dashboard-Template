@@ -90,7 +90,7 @@ const ForgotPasswordPage = () => {
                     {...register("email")}
                   />
                   {errors.email && (
-                    <p className="mt-1 text-sm text-destructive">
+                    <p className="mt-1 text-sm text-[var(--destructive)]">
                       {errors.email.message}
                     </p>
                   )}

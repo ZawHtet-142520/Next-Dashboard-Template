@@ -82,7 +82,7 @@ const LoginPage = () => {
                 {...register("identifier")}
               />
               {errors.identifier && (
-                <p className="mt-1 text-sm text-destructive">
+                <p className="mt-1 text-sm text-[var(--destructive)]">
                   {errors.identifier.message}
                 </p>
               )}
@@ -111,7 +111,7 @@ const LoginPage = () => {
                 </button>
               </div>
               {errors.password && (
-                <p className="mt-1 text-sm text-destructive">
+                <p className="mt-1 text-sm text-[var(--destructive)]">
                   {errors.password.message}
                 </p>
               )}

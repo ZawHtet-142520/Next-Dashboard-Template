@@ -91,7 +91,7 @@ const VerifyOtpForm = () => {
               </h1>
               <p className="mt-2 text-sm text-muted-foreground">
                 We&apos;ve sent a 6-digit verification code to{" "}
-                <span className="font-medium text-foreground">
+                <span className="font-medium text-[--var(foreground)]">
                   {email}
                 </span>
               </p>
@@ -114,7 +114,7 @@ const VerifyOtpForm = () => {
                   className="text-center text-2xl tracking-widest"
                 />
                 {errors.otpCode && (
-                  <p className="mt-1 text-sm text-destructive">
+                  <p className="mt-1 text-sm text-[var(--destructive)]">
                     {errors.otpCode.message}
                   </p>
                 )}
