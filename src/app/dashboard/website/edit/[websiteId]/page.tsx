@@ -244,7 +244,8 @@ export default function EditWebsitePage() {
                       <div className="max-h-48 overflow-auto">
                         <SelectGroup>
                           <SelectLabel className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                            Organizations ({organizations?.length || 0})
+                            Organizations (
+                            {[...new Set([...organizations])]?.length || 0})
                           </SelectLabel>
                           {organizations?.length ? (
                             [...new Set([...organizations])].map(
@@ -296,7 +297,7 @@ export default function EditWebsitePage() {
                               if (newOrganizationRef?.current?.value) {
                                 setOrganizations([
                                   ...organizations,
-                                  newOrganizationRef.current.value,
+                                  newOrganizationRef.current.value.trim(),
                                 ]);
                                 newOrganizationRef.current.value = "";
                               }
@@ -336,12 +337,12 @@ export default function EditWebsitePage() {
 
             <div className="space-y-1.5">
               <label htmlFor="url" className="text-sm font-medium">
-                URL
+                Domain
               </label>
               <Input
                 id="url"
                 type="string"
-                placeholder="URL"
+                placeholder="https://example.com"
                 {...register("url")}
               />
               {errors.url && (
@@ -377,7 +378,11 @@ export default function EditWebsitePage() {
               >
                 Cancel
               </Button>
-             <Button type="submit" disabled={website.isEditing} className="bg-[var(--primary)] text-white">
+              <Button
+                type="submit"
+                disabled={website.isEditing}
+                className="bg-[var(--primary)] text-white"
+              >
                 {website.isEditing ? "Updating..." : "Update"}
               </Button>
             </div>
