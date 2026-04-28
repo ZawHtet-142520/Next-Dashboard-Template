@@ -9,6 +9,17 @@ import { ChevronDown, ChevronRight, DotIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { SidebarLink } from "@/types/sidebar";
 
+const isRouteActive = (route: string | undefined, pathname: string) => {
+  if (!route) return false;
+
+  return pathname === route || pathname.startsWith(`${route}/`);
+};
+
+const getActiveParentIndex = (pathname: string) =>
+  sidebarLinks.findIndex((item) =>
+    item.children?.some((child) => isRouteActive(child.href, pathname)),
+  );
+
 export default function Sidebar() {
   const { sidebarOpen } = useDashboardStore();
   const pathname = usePathname();
@@ -115,12 +126,7 @@ export default function Sidebar() {
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 100);
 
-    const activeParentIndex = sidebarLinks.findIndex((item) =>
-      item.children?.some((child) => child.href === pathname),
-    );
-    if (activeParentIndex !== -1) {
-      setOpenDropdown(activeParentIndex);
-    }
+    setOpenDropdown(getActiveParentIndex(pathname));
 
     return () => clearTimeout(timer);
   }, [pathname]);
@@ -154,7 +160,7 @@ export default function Sidebar() {
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [sidebarOpen]);
+  }, [sidebarOpen, openDropdown]);
 
   useEffect(() => {
     if (sidebarOpen) return;
@@ -240,7 +246,7 @@ export default function Sidebar() {
                   <div className="space-y-2">
                     {(() => {
                       const hasActiveChild = item.children.some(
-                        (child) => child.href === pathname,
+                        (child) => isRouteActive(child.href, pathname),
                       );
                       const parentStateClass = hasActiveChild
                         ? "bg-[var(--sidebar-primary)] text-[var(--sidebar-primary-foreground)]"
@@ -293,7 +299,7 @@ export default function Sidebar() {
                             key={ci}
                             href={child.href}
                             className={`block px-2 py-2 rounded transition-colors ${
-                              pathname === child.href
+                              isRouteActive(child.href, pathname)
                                 ? "bg-[var(--sidebar-primary)] text-[var(--sidebar-primary-foreground)] font-medium"
                                 : "text-[var(--sidebar-foreground)] hover:bg-[var(--sidebar-accent)] hover:text-[var(--sidebar-accent-foreground)]"
                             }`}
@@ -330,7 +336,7 @@ export default function Sidebar() {
                                 href={child.href}
                                 onClick={closeFloatingMenu}
                                 className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-colors ${
-                                  pathname === child.href
+                                  isRouteActive(child.href, pathname)
                                     ? "bg-[var(--sidebar-primary)] text-[var(--sidebar-primary-foreground)] font-medium"
                                     : "text-[var(--sidebar-foreground)] hover:bg-[var(--sidebar-accent)] hover:text-[var(--sidebar-accent-foreground)]"
                                 }`}
@@ -355,7 +361,7 @@ export default function Sidebar() {
                     }
                     onMouseLeave={sidebarOpen ? undefined : scheduleCloseHoverLabel}
                     className={`flex items-center rounded group transition-colors ${
-                      pathname === item.href
+                      isRouteActive(item.href, pathname)
                         ? "bg-[var(--sidebar-primary)] text-[var(--sidebar-primary-foreground)] font-medium"
                         : "text-[var(--sidebar-foreground)] hover:bg-[var(--sidebar-accent)] hover:text-[var(--sidebar-accent-foreground)]"
                     } ${
