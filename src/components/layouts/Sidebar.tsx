@@ -126,10 +126,14 @@ export default function Sidebar() {
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 100);
 
-    setOpenDropdown(getActiveParentIndex(pathname));
+    if (sidebarOpen) {
+      setOpenDropdown(getActiveParentIndex(pathname));
+    } else {
+      closeFloatingMenu();
+    }
 
     return () => clearTimeout(timer);
-  }, [pathname]);
+  }, [pathname, sidebarOpen]);
 
   useEffect(() => {
     if (sidebarOpen) {
