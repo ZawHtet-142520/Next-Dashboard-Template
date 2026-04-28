@@ -39,7 +39,7 @@ export function WebsiteHeader({
           <h1 className="text-2xl font-semibold">Website Management</h1>
         </div>
         <div className="flex items-center gap-2">
-          <Button onClick={onOpenCreate}>Create Website</Button>
+          <Button onClick={onOpenCreate} className="border bg-[var(--primary)] text-white border-transparent dark:border-primary/40">Create Website</Button>
           <Button onClick={onClearFilters} variant="outline">
             Clear Filters
           </Button>

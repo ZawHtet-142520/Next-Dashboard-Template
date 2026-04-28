@@ -307,7 +307,7 @@ export default function CreateAdminPage() {
               <Button
                 type="submit"
                 disabled={createAdminMutation.isPending}
-                className="bg-primary text-primary-foreground hover:bg-primary/90"
+                className="bg-[var(--primary)] text-white hover:bg-[var(--primary)/90]"
               >
                 {createAdminMutation.isPending ? "Creating..." : "Create Admin"}
               </Button>

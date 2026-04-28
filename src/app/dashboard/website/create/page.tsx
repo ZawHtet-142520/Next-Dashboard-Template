@@ -301,7 +301,7 @@ export default function CreateWebsitePage() {
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={website.isCreating}>
+              <Button type="submit" disabled={website.isCreating} className="bg-[var(--primary)] text-white">
                 {website.isCreating ? "Creating..." : "Create"}
               </Button>
             </div>

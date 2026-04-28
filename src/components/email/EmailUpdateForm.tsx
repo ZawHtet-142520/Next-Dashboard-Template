@@ -191,7 +191,7 @@ export function EmailUpdateForm({
                 >
                   Reset
                 </Button>
-                <Button type="submit" disabled={isUpdating}>
+                <Button type="submit" disabled={isUpdating} className="border bg-[var(--primary)] text-white border-transparent dark:border-primary/40">
                   {isUpdating ? "Updating..." : "Update"}
                 </Button>
               </div>

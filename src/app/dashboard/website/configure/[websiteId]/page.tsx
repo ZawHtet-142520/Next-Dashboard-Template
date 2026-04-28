@@ -216,7 +216,7 @@ export default function ConfigureWebsitePage() {
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={website.isConfiguring}>
+              <Button type="submit" disabled={website.isConfiguring} className="bg-[var(--primary)] text-white">
                 {website.isConfiguring ? "Configuring..." : "Configure"}
               </Button>
             </div>

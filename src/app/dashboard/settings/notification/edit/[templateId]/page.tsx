@@ -151,7 +151,7 @@ export default function UpdateNotificationTemplatePage() {
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={notification.updating}>
+             <Button type="submit" disabled={notification.updating} className="bg-[var(--primary)] text-white">
                 {notification.updating ? "Updating..." : "Update"}
               </Button>
             </div>

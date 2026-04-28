@@ -355,6 +355,7 @@ export default function CreateRolePage() {
               </Button>
               <Button
                 type="submit"
+                className="bg-[var(--primary)] text-white"
                 disabled={createRoleMutation.isPending || permissionsLoading}
               >
                 {createRoleMutation.isPending ? "Creating..." : "Create"}

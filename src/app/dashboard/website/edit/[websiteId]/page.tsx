@@ -377,7 +377,7 @@ export default function EditWebsitePage() {
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={website.isEditing}>
+             <Button type="submit" disabled={website.isEditing} className="bg-[var(--primary)] text-white">
                 {website.isEditing ? "Updating..." : "Update"}
               </Button>
             </div>

@@ -311,7 +311,7 @@ export function AdminProfileForm() {
           >
             Cancel
           </Button>
-          <Button type="submit" disabled={updateAdminMutation.isPending}>
+          <Button type="submit" disabled={updateAdminMutation.isPending} className="border bg-[var(--primary)] text-white border-transparent dark:border-primary/40">
             {updateAdminMutation.isPending ? "Updating..." : "Update Profile"}
           </Button>
         </div>

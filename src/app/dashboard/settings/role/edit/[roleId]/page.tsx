@@ -401,6 +401,7 @@ export default function EditRolePage() {
               <Button
                 type="submit"
                 disabled={updateRoleMutation.isPending || permissionsLoading}
+                className="bg-[var(--primary)] text-white"
               >
                 {updateRoleMutation.isPending ? "Updating..." : "Update"}
               </Button>

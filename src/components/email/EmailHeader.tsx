@@ -14,7 +14,7 @@ export function EmailHeader({ openTestEmail }: AdminHeaderProps) {
           <h1 className="text-2xl font-semibold">Email Setting</h1>
         </div>
         <div className="flex items-center gap-2">
-          <Button onClick={openTestEmail}>Test Email</Button>
+          <Button className="bg-[var(--primary)] text-white" onClick={openTestEmail}>Test Email</Button>
         </div>
       </div>
     </div>

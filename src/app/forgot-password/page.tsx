@@ -99,7 +99,7 @@ const ForgotPasswordPage = () => {
                 <Button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full border border-transparent dark:border-primary/40"
+                  className="w-full border border-transparent bg-[var(--primary)] text-white dark:border-primary/40"
                 >
                   {isLoading ? "Sending..." : "Send Verification Code"}
                 </Button>

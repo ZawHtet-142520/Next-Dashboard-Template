@@ -43,7 +43,7 @@ export function AdminHeader({
         <div className="flex items-center gap-2">
           <Button
             onClick={onOpenCreate}
-            className="border border-transparent dark:border-primary/40"
+            className="border bg-[var(--primary)] text-white border-transparent dark:border-primary/40"
           >
             Create Admin
           </Button>

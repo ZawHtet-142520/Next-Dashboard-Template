@@ -133,7 +133,7 @@ const LoginPage = () => {
             <Button
               type="submit"
               disabled={isLoading}
-              className="h-11 w-full border border-transparent bg-primary font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 dark:border-primary/40 disabled:cursor-not-allowed disabled:opacity-60"
+              className="h-11 w-full border border-transparent bg-[var(--primary)] font-medium text-white shadow-sm transition-colors hover:bg-[var(--primary)]/90 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 dark:border-primary/40 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isLoading ? "Logging in..." : "Login"}
             </Button>

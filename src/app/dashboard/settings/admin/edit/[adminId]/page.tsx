@@ -372,7 +372,7 @@ export default function EditAdminPage() {
               <Button
                 type="submit"
                 disabled={updateAdminMutation.isPending}
-                className="bg-primary text-primary-foreground hover:bg-primary/90"
+                className="bg-[var(--primary)] text-white hover:bg-primary/90"
               >
                 {updateAdminMutation.isPending ? "Updating..." : "Update Admin"}
               </Button>

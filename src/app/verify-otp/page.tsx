@@ -123,7 +123,7 @@ const VerifyOtpForm = () => {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full border border-transparent dark:border-primary/40"
+                className="w-full border border-transparent bg-[var(--primary)] text-white dark:border-primary/40"
               >
                 {isLoading ? "Verifying..." : "Verify OTP"}
               </Button>

@@ -118,7 +118,9 @@ export default function TestEmailPage() {
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={email.sending}>
+              <Button type="submit"
+                className="bg-[var(--primary)] text-white"
+               disabled={email.sending}>
                 {email.sending ? "Sending..." : "Send"}
               </Button>
             </div>
