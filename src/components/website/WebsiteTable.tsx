@@ -133,7 +133,7 @@ export function WebsiteTable({
                   <TableHead>Name</TableHead>
                   <TableHead>Email</TableHead>
                   <TableHead>Phone</TableHead>
-                  <TableHead>URL</TableHead>
+                  <TableHead>Domain</TableHead>
                   <TableHead>Subject</TableHead>
                   <TableHead>Organization</TableHead>
                   <TableHead className="text-right">Actions</TableHead>

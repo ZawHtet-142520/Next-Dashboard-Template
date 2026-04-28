@@ -171,7 +171,8 @@ export default function CreateWebsitePage() {
                   <div className="max-h-48 overflow-auto">
                     <SelectGroup>
                       <SelectLabel className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                        Organizations ({organizations?.length || 0})
+                        Organizations (
+                        {[...new Set([...organizations])]?.length || 0})
                       </SelectLabel>
                       {organizations?.length ? (
                         [...new Set([...organizations])].map(
@@ -222,7 +223,7 @@ export default function CreateWebsitePage() {
                           if (newOrganizationRef?.current?.value) {
                             setOrganizations([
                               ...organizations,
-                              newOrganizationRef.current.value,
+                              newOrganizationRef.current.value.trim(),
                             ]);
                             newOrganizationRef.current.value = "";
                           }
@@ -260,12 +261,12 @@ export default function CreateWebsitePage() {
 
             <div className="space-y-1.5">
               <label htmlFor="url" className="text-sm font-medium">
-                URL
+                Domain
               </label>
               <Input
                 id="url"
                 type="string"
-                placeholder="URL"
+                placeholder="https://example.com"
                 {...register("url")}
               />
               {errors.url && (
@@ -301,7 +302,11 @@ export default function CreateWebsitePage() {
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={website.isCreating} className="bg-[var(--primary)] text-white">
+              <Button
+                type="submit"
+                disabled={website.isCreating}
+                className="bg-[var(--primary)] text-white"
+              >
                 {website.isCreating ? "Creating..." : "Create"}
               </Button>
             </div>
