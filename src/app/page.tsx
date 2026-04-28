@@ -19,7 +19,7 @@ export default function Home() {
     const token = useAuthStore.getState().token;
 
     if (token && !isTokenExpired()) {
-      router.replace("/dashboard/messages");
+      router.replace("/dashboard");
     } else {
       router.replace("/login");
     }

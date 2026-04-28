@@ -1,17 +1,7 @@
-import { AtomIcon, MessageSquareMore, Settings } from "lucide-react";
+import { Settings } from "lucide-react";
 import type { SidebarLink } from "@/types/sidebar";
 
 export const sidebarLinks: SidebarLink[] = [
-  {
-    label: "Messages",
-    icon: MessageSquareMore,
-    href: "/dashboard/messages",
-  },
-  {
-    label: "Website",
-    icon: AtomIcon,
-    href: "/dashboard/website",
-  },
   {
     label: "Settings",
     icon: Settings,

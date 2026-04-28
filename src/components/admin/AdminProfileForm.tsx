@@ -305,13 +305,17 @@ export function AdminProfileForm() {
           <Button
             type="button"
             variant="outline"
-            onClick={() => router.push("/dashboard/messages")}
+            onClick={() => router.push("/dashboard")}
             disabled={updateAdminMutation.isPending}
             className="border-border bg-background text-foreground hover:bg-accent"
           >
             Cancel
           </Button>
-          <Button type="submit" disabled={updateAdminMutation.isPending} className="border bg-[var(--primary)] text-white border-transparent dark:border-primary/40">
+          <Button
+            type="submit"
+            disabled={updateAdminMutation.isPending}
+            className="border bg-[var(--primary)] text-white border-transparent dark:border-primary/40"
+          >
             {updateAdminMutation.isPending ? "Updating..." : "Update Profile"}
           </Button>
         </div>
