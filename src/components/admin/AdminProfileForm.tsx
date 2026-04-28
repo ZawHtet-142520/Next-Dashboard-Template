@@ -18,6 +18,7 @@ import { useUpdateAdmin } from "@/queries/admin/useUpdateAdmin";
 import type { Admin } from "@/types/auth";
 import type { Role as RoleOption } from "@/types/role";
 import type { AdminItem } from "@/types/admin";
+import { useRouter } from "next/navigation";
 
 const getRoleName = (role: AdminItem["role"] | undefined): string => {
   if (!role) return "-";
@@ -71,6 +72,7 @@ const resolveProfileUrl = (
 
 export function AdminProfileForm() {
   const { user, setUser } = useAuthStore();
+  const router = useRouter();
   const { data: adminDetailResponse, isLoading: profileLoading } = useAdminById(
     user?._id,
   );
@@ -300,6 +302,15 @@ export function AdminProfileForm() {
         </div>
 
         <div className="flex items-center justify-end gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => router.push("/dashboard/messages")}
+            disabled={updateAdminMutation.isPending}
+            className="border-border bg-background text-foreground hover:bg-accent"
+          >
+            Cancel
+          </Button>
           <Button type="submit" disabled={updateAdminMutation.isPending}>
             {updateAdminMutation.isPending ? "Updating..." : "Update Profile"}
           </Button>

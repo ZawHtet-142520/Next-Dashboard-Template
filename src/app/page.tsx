@@ -11,7 +11,7 @@ export default function Home() {
     useShallow((state) => ({
       initializeAuth: state.initializeAuth,
       isTokenExpired: state.isTokenExpired,
-    }))
+    })),
   );
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function Home() {
     const token = useAuthStore.getState().token;
 
     if (token && !isTokenExpired()) {
-      router.replace("/dashboard");
+      router.replace("/dashboard/messages");
     } else {
       router.replace("/login");
     }
