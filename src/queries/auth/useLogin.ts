@@ -26,7 +26,7 @@ export const useLogin = () => {
       if (token && adminData) {
         setToken(token, expiresIn);
         setUser(adminData);
-        router.push("/dashboard");
+        router.push("/dashboard/messages");
         toast.success(`Welcome ${adminData?.name || "to dashboard"}!`);
       } else {
         toast.error("Login succeeded but token or user data is missing!");
