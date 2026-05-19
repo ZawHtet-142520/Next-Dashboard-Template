@@ -7,8 +7,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL ||
-  "https://contact-us-mail-api.cbs.com.mm";
+  process.env.NEXT_PUBLIC_API_BASE_URL || "https://mail-b.cbs.com.mm";
 
 export const readClient = axios.create({
   baseURL: API_BASE_URL,

@@ -17,6 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { cn } from "@/lib/utils";
 import { LogItem, LogsPagination, LogType } from "@/types/log";
 import { format } from "date-fns";
 
@@ -196,7 +197,9 @@ export function LogsTable({
                         size="sm"
                         variant={item === page ? "default" : "outline"}
                         onClick={() => onPageChange(item)}
-                        className="h-7 min-w-7 px-2 text-xs"
+                        className={cn("h-7 min-w-7 px-2 text-xs", {
+                          "font-extrabold": item === page,
+                        })}
                       >
                         {item}
                       </Button>

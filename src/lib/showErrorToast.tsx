@@ -14,7 +14,7 @@ export const showSessionExpiredToast = () => {
   sessionExpiredToastId = toast.custom(
     () => (
       <div className="w-screen h-screen flex items-center justify-center">
-        <div className="px-4 py-8 w-1/3 bg-background border-l-4 border-red-500 z-50 shadow-lg">
+        <div className="px-4 py-8 w-1/3 bg-[var(--background)] border-l-4 border-red-500 z-50 shadow-lg">
           <div className="flex justify-start items-start gap-4">
             <span className="bg-destructive/20 rounded-full w-12 h-12 grid place-items-center">
               <TriangleAlert />
@@ -115,7 +115,7 @@ export const showErrorToast = (
     }, 5000);
 
     return (
-      <div className="p-4 border-l-4 border-red-500 shadow-lg bg-background rounded-[2px]">
+      <div className="p-4 border-l-4 border-red-500 shadow-lg bg-[var(--background)] rounded-[2px]">
         <strong className="text-lg text-red-500">{message}</strong>
         {details && details.length > 0 && (
           <div className="mt-2">

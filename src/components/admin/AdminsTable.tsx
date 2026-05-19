@@ -20,6 +20,7 @@ import {
 import { AdminItem } from "@/types/admin";
 import { formatDate } from "@/lib/formatDate";
 import { AdminsPagination } from "@/types/admin";
+import { cn } from "@/lib/utils";
 
 interface AdminsTableProps {
   admins: AdminItem[];
@@ -198,7 +199,9 @@ export function AdminsTable({
                         size="sm"
                         variant={item === page ? "default" : "outline"}
                         onClick={() => onPageChange(item)}
-                        className="h-7 min-w-7 px-2 text-xs"
+                        className={cn("h-7 min-w-7 px-2 text-xs", {
+                          "font-extrabold": item === page,
+                        })}
                       >
                         {item}
                       </Button>

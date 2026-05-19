@@ -105,11 +105,11 @@ export function LogHeader({
           </PopoverTrigger>
           <PopoverContent
             className="w-auto overflow-hidden p-0 bg-[var(--background)]"
-            align="center"
+            align="end"
           >
             <Calendar
               mode="single"
-              captionLayout="dropdown"
+              captionLayout="label"
               onSelect={(date) => {
                 onCreatedAfterChange(date?.toLocaleDateString("sv") || "");
                 setOpenDateAfter(false);
@@ -133,11 +133,11 @@ export function LogHeader({
           </PopoverTrigger>
           <PopoverContent
             className="w-auto overflow-hidden p-0 bg-[var(--background)]"
-            align="center"
+            align="end"
           >
             <Calendar
               mode="single"
-              captionLayout="dropdown"
+              captionLayout="label"
               onSelect={(date) => {
                 onCreatedBeforeChange(date?.toLocaleDateString("sv") || "");
                 setOpenDateBefore(false);

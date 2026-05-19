@@ -8,8 +8,7 @@ import {
 import { handleAuthErrorStatus, showErrorToast } from "@/lib/showErrorToast";
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL ||
-  "https://contact-us-mail-api.cbs.com.mm";
+  process.env.NEXT_PUBLIC_API_BASE_URL || "https://mail-b.cbs.com.mm";
 
 export const openWriteClient = axios.create({
   baseURL: API_BASE_URL,
@@ -50,7 +49,10 @@ openWriteClient.interceptors.response.use(
       );
 
       if (!isHandledAuthStatus) {
-        showErrorToast(message || "An error occurred. Please try again.", details);
+        showErrorToast(
+          message || "An error occurred. Please try again.",
+          details,
+        );
       }
     }
     return Promise.reject(error);
@@ -95,7 +97,10 @@ writeClient.interceptors.response.use(
       );
 
       if (!isHandledAuthStatus) {
-        showErrorToast(message || "An error occurred. Please try again.", details);
+        showErrorToast(
+          message || "An error occurred. Please try again.",
+          details,
+        );
       }
     }
     return Promise.reject(error);

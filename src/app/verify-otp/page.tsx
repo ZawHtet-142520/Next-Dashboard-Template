@@ -159,6 +159,7 @@ const VerifyOtpForm = () => {
           width={400}
           height={400}
           className="object-contain"
+          priority
         />
       </div>
     </div>

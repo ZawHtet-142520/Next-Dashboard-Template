@@ -79,7 +79,7 @@ export function ChangePasswordModal({
               <button
                 type="button"
                 onClick={() => setShowOldPassword((prev) => !prev)}
-                className="absolute inset-y-0 right-0 flex items-center px-3 hover:text-slate-700 text-[var(--foreground)]"
+                className="absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer text-[var(--foreground)]"
                 aria-label={
                   showOldPassword ? "Hide old password" : "Show old password"
                 }
@@ -113,7 +113,7 @@ export function ChangePasswordModal({
               <button
                 type="button"
                 onClick={() => setShowNewPassword((prev) => !prev)}
-                className="absolute inset-y-0 right-0 flex items-center px-3 hover:text-slate-700 text-[var(--foreground)]"
+                className="absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer text-[var(--foreground)]"
                 aria-label={
                   showNewPassword ? "Hide new password" : "Show new password"
                 }
@@ -147,7 +147,7 @@ export function ChangePasswordModal({
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword((prev) => !prev)}
-                className="absolute inset-y-0 right-0 flex items-center px-3 hover:text-slate-700 text-[var(--foreground)]"
+                className="absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer text-[var(--foreground)]"
                 aria-label={
                   showConfirmPassword
                     ? "Hide confirm password"
