@@ -1,14 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useRouter, useParams } from "next/navigation";
-import { ImagePlus, Trash2, ArrowLeft, LoaderIcon } from "lucide-react";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useAdmins, useUpdateAdmin, useRoles } from "@/queries";
-import toast from "react-hot-toast";
-import { useAuthStore } from "@/stores/authStore";
 import {
   Select,
   SelectContent,
@@ -16,7 +9,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useAdminById, useRoles, useUpdateAdmin } from "@/queries";
+import { useAuthStore } from "@/stores/authStore";
 import { Admin } from "@/types/auth";
+import { ArrowLeft, ImagePlus, LoaderIcon, Trash2 } from "lucide-react";
+import Image from "next/image";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function EditAdminPage() {
   const { user, setUser } = useAuthStore();
@@ -33,15 +33,13 @@ export default function EditAdminPage() {
   const [editProfileFile, setEditProfileFile] = useState<File | null>(null);
   const [editProfilePreview, setEditProfilePreview] = useState("");
 
-  const { data: adminsResponse, isLoading: adminsResponseLoading } = useAdmins(
-    {},
-  );
+  const { data: adminResponse, isLoading: adminResponseLoading } =
+    useAdminById(adminId);
   const { data: rolesResponse } = useRoles();
   const updateAdminMutation = useUpdateAdmin();
 
-  const admins = adminsResponse?.data?.admins ?? [];
-  const fileLocation = adminsResponse?.data?.fileLocation?.admin ?? "";
-  const admin = admins.find((a) => a._id === adminId);
+  const admin = adminResponse?.data?.admin;
+  const fileLocation = adminResponse?.data?.fileLocation?.admin ?? "";
   const roleOptions = rolesResponse?.data?.roles ?? [];
 
   // Load existing admin data
@@ -140,7 +138,7 @@ export default function EditAdminPage() {
     );
   };
 
-  if (adminsResponseLoading)
+  if (adminResponseLoading)
     return (
       <div className="min-h-screen bg-transparent p-4">
         <div className="mx-auto max-w-2xl space-y-6 flex justify-center items-center h-20">

@@ -15,6 +15,7 @@ export const useUpdateAdmin = () => {
       updateAdmin(adminId, payload),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["admins"] });
+      await queryClient.invalidateQueries({ queryKey: ["admin"] });
     },
   });
 };
