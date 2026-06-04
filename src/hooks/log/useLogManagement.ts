@@ -3,7 +3,7 @@ import { useDeleteAllLogs } from "@/queries/log/useDeleteAllLogs";
 import { useDeleteLog } from "@/queries/log/useDeleteLog";
 import { useLogs } from "@/queries/log/useLogs";
 import { LogItem, LogType } from "@/types/log";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 export function useLogManagement(type: LogType) {
@@ -13,6 +13,16 @@ export function useLogManagement(type: LogType) {
   const [roleFilter, setRoleFilter] = useState("");
   const [createdAfter, setCreatedAfter] = useState("");
   const [createdBefore, setCreatedBefore] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setDebouncedSearch(search.trim());
+      setPage(1);
+    }, 400);
+    return () => clearTimeout(timeout);
+  }, [search]);
+
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [pendingDeleteLog, setPendingDeleteLog] = useState<{
     id: string;
@@ -28,7 +38,7 @@ export function useLogManagement(type: LogType) {
   } = useLogs({
     page,
     limit,
-    search: search || undefined,
+    search: debouncedSearch || undefined,
     role: roleFilter || undefined,
     createdAfter: createdAfter || undefined,
     createdBefore: createdBefore || undefined,
@@ -58,6 +68,7 @@ export function useLogManagement(type: LogType) {
 
   const clearFilters = () => {
     setSearch("");
+    setDebouncedSearch("");
     setRoleFilter("");
     setCreatedAfter("");
     setCreatedBefore("");
